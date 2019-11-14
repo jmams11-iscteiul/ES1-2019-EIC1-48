@@ -20,7 +20,8 @@ public class GUI {
 		frame.setLayout(new BorderLayout());
 		addFrameContent();
 		frame.pack();
-		frame.setSize(1280, 720);
+		frame.setSize(500, 300);
+		//frame.setSize(1280, 720);
 		frame.setLocationRelativeTo(null);
 	}
 	public void open() {
