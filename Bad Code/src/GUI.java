@@ -1,6 +1,11 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -10,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class GUI {
 	private JFrame frame;
@@ -47,6 +54,14 @@ public class GUI {
 		JButton import_excel = new JButton("Import Excel");
 		search_file_result.setPreferredSize(new Dimension(100, 20));
 		search_file_result.setEditable(false);
+		import_excel.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 		JPanel feature_envy = new JPanel();
 		feature_envy.add(envy_button);
@@ -87,6 +102,17 @@ public class GUI {
 
 		frame.add(panel);
 	}
+	
+	private void importExcel() {
+		try {
+			XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream("./resources/Long-Method.xlsx"));
+		} catch (FileNotFoundException e) {
+			System.out.println("Ficheiro não encontrado!");
+		} catch (IOException e) {
+			System.out.println("Erro na procura do ficheiro...");
+		}
+	}
+	
 	public static void main(String[] args) {
 		GUI window = new GUI();
 		window.open();
