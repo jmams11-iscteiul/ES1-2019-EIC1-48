@@ -5,24 +5,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableModel;
 
-
-import java.awt.*;
-
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
@@ -33,6 +35,7 @@ public class GUI {
 	private JCheckBox long_button;
 	private JCheckBox envy_button;
 	private JButton start_button;
+	private JTable table;
 	
 	
 	public GUI() {
@@ -51,6 +54,7 @@ public class GUI {
 	
 	
 	private void addFrameContent() {
+		//////////////////envy and long buttons
 		envy_button = new JCheckBox();
 		JLabel feature_envy_label = new JLabel("Feature Envy");
 		JTextField feature_envy_result = new JTextField("");
@@ -70,8 +74,6 @@ public class GUI {
 		logic_function_result.setVisible(false);
 		
 		
-		
-
 		long_button = new JCheckBox();
 		JLabel long_method_label = new JLabel("Long Method");
 		JTextField long_method_result = new JTextField("");
@@ -84,15 +86,30 @@ public class GUI {
 				check_logic_button();
 			}
 		});
-		
+		///////////////////////////////////////////////////
 		
 		
 
 		JButton search_file = new JButton("Search File");
 		JTextField search_file_result = new JTextField("");
-		JButton import_excel = new JButton("Import Excel");
 		search_file_result.setPreferredSize(new Dimension(100, 20));
 		search_file_result.setEditable(false);
+		
+		
+		
+		search_file.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fc = new JFileChooser();
+				fc.setDialogTitle("Select excel file to import");
+				int result = fc.showOpenDialog(null);
+				if( result == JFileChooser.APPROVE_OPTION) {
+					String excelPath = fc.getSelectedFile().getAbsolutePath();
+					search_file_result.setText(excelPath);
+				}
+			}
+			
+		});
 
 		
 		
@@ -113,16 +130,52 @@ public class GUI {
 			
 		});
 		
-import_excel.addActionListener(new ActionListener() {
-			
+		//ScrollPane com tabela
+		table = new JTable();
+		JScrollPane jsp = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		
+		//botão import
+		JButton import_excel = new JButton("Import Excel");
+		import_excel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+					if(search_file_result.getText() != "") {
+						XSSFWorkbook workbook = importExcel(search_file_result.getText());
+						if(workbook != null) {
+							XSSFSheet excelSheet = workbook.getSheetAt(0);
+							String[] headerrow= {"methodID", "package", "class", "method", "loc", 
+									"cyclo", "atfd", "laa", "is_long_method", "iplasma", "pmd", "is_feature_envy"};
+							DefaultTableModel dtm = new DefaultTableModel(null, headerrow);
+							for(int row = 1; row < excelSheet.getLastRowNum() + 1; row++) {
+								XSSFRow excelRow = excelSheet.getRow(row);
+								
+								XSSFCell methodID = excelRow.getCell(0);
+								XSSFCell pacote = excelRow.getCell(1);
+								XSSFCell classe = excelRow.getCell(2);
+								XSSFCell method = excelRow.getCell(3);
+								XSSFCell loc = excelRow.getCell(4);
+								XSSFCell cyclo = excelRow.getCell(5);
+								XSSFCell atfd = excelRow.getCell(6);
+								XSSFCell laa = excelRow.getCell(7);
+								XSSFCell is_long_method = excelRow.getCell(8);
+								XSSFCell iplasma = excelRow.getCell(9);
+								XSSFCell pmd = excelRow.getCell(10);
+								XSSFCell is_feature_envy = excelRow.getCell(11);
+								
+								dtm.addRow(new Object[] { methodID, pacote, classe, method, loc, cyclo, atfd, laa,
+										is_long_method, iplasma, pmd, is_feature_envy});
+								
+							}
+							table.setModel(dtm);
+						}
+					}
+						
 			}
 		});
 		
 		
+		/////////////
 		JPanel feature_envy = new JPanel();
 		feature_envy.add(envy_button);
 		feature_envy.add(feature_envy_label);
@@ -150,6 +203,7 @@ import_excel.addActionListener(new ActionListener() {
 		search.add(search_file);
 		search.add(search_file_result);
 		search.add(import_excel);
+		
 
 		JPanel upper = new JPanel(new BorderLayout());
 		upper.add(left, BorderLayout.WEST);
@@ -160,12 +214,14 @@ import_excel.addActionListener(new ActionListener() {
 		JPanel excel = new JPanel(new BorderLayout());
 		//excel_sheet
 		//excel.add(excel_sheet);
+		excel.add(jsp);
 
 		JPanel panel = new JPanel(new GridLayout(2,1));
 		panel.add(upper);
 		panel.add(excel);
 
 		frame.add(panel);
+		//////////////
 	}
 	
 	public void check_logic_button() {
@@ -174,14 +230,16 @@ import_excel.addActionListener(new ActionListener() {
 		logic_function_result.setVisible(visible);
 	}
 
-	private void importExcel() {
+	private XSSFWorkbook importExcel(String path) {
+		XSSFWorkbook workbook = null;
 		try {
-			XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream("./resources/Long-Method.xlsx"));
+			workbook = new XSSFWorkbook(new FileInputStream(path));
 		} catch (FileNotFoundException e) {
 			System.out.println("Ficheiro não encontrado!");
 		} catch (IOException e) {
 			System.out.println("Erro na procura do ficheiro...");
 		}
+		return workbook;
 	}
 	
 	public static void main(String[] args) {
