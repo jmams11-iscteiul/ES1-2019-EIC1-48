@@ -30,7 +30,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class GUI {
 	private JFrame frame;
-	private JComboBox logic_function_result;
+	private JComboBox logic_function_threshold;
 	private JLabel logic_function_label;
 	private JCheckBox long_button;
 	private JCheckBox envy_button;
@@ -57,32 +57,32 @@ public class GUI {
 		//////////////////envy and long buttons
 		envy_button = new JCheckBox();
 		JLabel feature_envy_label = new JLabel("Feature Envy");
-		JTextField feature_envy_result = new JTextField("");
-		feature_envy_result.setPreferredSize(new Dimension(100, 20));
-		feature_envy_result.setEditable(false);
+		JTextField envy_threshold = new JTextField("");
+		envy_threshold.setPreferredSize(new Dimension(100, 20));
+		envy_threshold.setEditable(false);
 		envy_button.addItemListener(new ItemListener(){
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
-				feature_envy_result.setEditable((envy_button).isSelected());
+				envy_threshold.setEditable((envy_button).isSelected());
 				check_logic_button();
 			}
 		});
 
 		logic_function_label = new JLabel("Logic Function");
-		logic_function_result = new JComboBox(new Object[] {"AND", "OR"});
+		logic_function_threshold = new JComboBox(new Object[] {"AND", "OR"});
 		logic_function_label.setVisible(false);
-		logic_function_result.setVisible(false);
+		logic_function_threshold.setVisible(false);
 		
 		
 		long_button = new JCheckBox();
 		JLabel long_method_label = new JLabel("Long Method");
-		JTextField long_method_result = new JTextField("");
-		long_method_result.setPreferredSize(new Dimension(100, 20));
-		long_method_result.setEditable(false);
+		JTextField long_threshold = new JTextField("");
+		long_threshold.setPreferredSize(new Dimension(100, 20));
+		long_threshold.setEditable(false);
 		long_button.addItemListener(new ItemListener(){
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
-				long_method_result.setEditable((long_button).isSelected());
+				long_threshold.setEditable((long_button).isSelected());
 				check_logic_button();
 			}
 		});
@@ -119,9 +119,9 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				String feature_envy_treshold = feature_envy_result.getText();
-				String long_method_treshold	=long_method_result.getText();
-				String logic = (String) logic_function_result.getSelectedItem();
+				String feature_envy_treshold = envy_threshold.getText();
+				String long_method_treshold	=long_threshold.getText();
+				String logic = (String) logic_function_threshold.getSelectedItem();
 				System.out.println("feature_envy_treshold " + feature_envy_treshold);
 				System.out.println("logic function "+ logic);
 				System.out.println("long_method_treshold " + long_method_treshold);
@@ -179,17 +179,17 @@ public class GUI {
 		JPanel feature_envy = new JPanel();
 		feature_envy.add(envy_button);
 		feature_envy.add(feature_envy_label);
-		feature_envy.add(feature_envy_result);
+		feature_envy.add(envy_threshold);
 
 		JPanel logic_function = new JPanel();
 		logic_function.add(logic_function_label);
-		logic_function.add(logic_function_result);
+		logic_function.add(logic_function_threshold);
 		
 		
 		JPanel long_method = new JPanel();
 		long_method.add(long_button);
 		long_method.add(long_method_label);
-		long_method.add(long_method_result);
+		long_method.add(long_threshold);
 
 		JPanel left = new JPanel(new GridLayout(3,1));
 		left.add(feature_envy);
@@ -227,7 +227,7 @@ public class GUI {
 	public void check_logic_button() {
 		Boolean visible = long_button.isSelected() && envy_button.isSelected();
 		logic_function_label.setVisible(visible);
-		logic_function_result.setVisible(visible);
+		logic_function_threshold.setVisible(visible);
 	}
 
 	private XSSFWorkbook importExcel(String path) {
