@@ -127,31 +127,41 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				//fazer confirmação de int
-				//ler ficheiro
-				String logic = (String) logic_function_threshold.getSelectedItem();
-				if(long_button.isSelected()) {
-					try {
-						int locThreshold=Integer.parseInt(long_LOC.getText());
-						int cycloThreshold=Integer.parseInt(long_CYCLO.getText());
-						for(int row = 0; row<table.getRowCount(); row++) {
-							int locFunction=(int)Double.parseDouble(table.getModel().getValueAt(row, 4).toString());
-							int cycloFunction=(int)Double.parseDouble(table.getModel().getValueAt(row, 5).toString());
-							boolean isLongMethod = (locFunction> locThreshold && cycloFunction>cycloThreshold);
-							//o resultado para cado funcao esta no isLongMethod
-							//table.setValueAt(isLongMethod, row, 8);
+				if (table.getRowCount()!=0) {	
+					boolean isLongMethod = false;
+					boolean isEnvyFeature = false;
+					if(long_button.isSelected()) {
+						try {
+							int locThreshold=Integer.parseInt(long_LOC.getText());
+							int cycloThreshold=Integer.parseInt(long_CYCLO.getText());
+							for(int row = 0; row<table.getRowCount(); row++) {
+								int locFunction=(int)Double.parseDouble(table.getModel().getValueAt(row, 4).toString());
+								int cycloFunction=(int)Double.parseDouble(table.getModel().getValueAt(row, 5).toString());
+								isLongMethod = (locFunction> locThreshold && cycloFunction>cycloThreshold);
+								//o resultado para cado funcao esta no isLongMethod
+								//table.setValueAt(isLongMethod, row, 8);
+							}
+						}catch(NumberFormatException e) {
+							JOptionPane.showMessageDialog(null, "Introduza Numeros Inteiros");
 						}
-					}catch(NumberFormatException e) {
-						JOptionPane.showMessageDialog(null, "Introduza numeros inteiros");
+					}
+					if(envy_button.isSelected()) {
+						int atfd=Integer.parseInt(envy_ATFD.getText());
+						int laa=Integer.parseInt(envy_LAA.getText());
+					}
+					if(envy_button.isSelected() && long_button.isSelected()) {
+						String funLog = (String) logic_function_threshold.getSelectedItem();
+						boolean result;
+						// RESULT NAO É USADO PARA NADA
+						if(funLog=="AND") 
+							result=(isLongMethod && isEnvyFeature);
+						if(funLog=="OR")
+							result=(isLongMethod || isEnvyFeature);
 					}
 				}
-				if(envy_button.isSelected()) {
-					int atfd=Integer.parseInt(envy_ATFD.getText());
-					int laa=Integer.parseInt(envy_LAA.getText());
-				}
+				else {JOptionPane.showMessageDialog(null, "Importe um Ficheiro Excel");
+				;}
 			}
-
 		});
 
 
