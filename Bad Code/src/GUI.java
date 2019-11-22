@@ -46,7 +46,7 @@ public class GUI {
 		frame.setLayout(new BorderLayout());
 		addFrameContent();
 		frame.pack();
-		frame.setSize(500, 300);
+		frame.setSize(800, 450);
 		//frame.setSize(1280, 720);
 		frame.setLocationRelativeTo(null);
 	}
@@ -82,8 +82,8 @@ public class GUI {
 
 		long_button = new JCheckBox();
 		JLabel long_method_label = new JLabel("Long Method");
-		JTextField long_LOC = new JTextField("Min");
-		JTextField long_CYCLO = new JTextField("Max");
+		JTextField long_LOC = new JTextField("LOC");
+		JTextField long_CYCLO = new JTextField("CYCLO");
 		long_LOC.setPreferredSize(new Dimension(100, 20));
 		long_CYCLO.setPreferredSize(new Dimension(100, 20));
 		long_LOC.setEditable(false);
@@ -138,7 +138,7 @@ public class GUI {
 								int locFunction=(int)Double.parseDouble(table.getModel().getValueAt(row, 4).toString());
 								int cycloFunction=(int)Double.parseDouble(table.getModel().getValueAt(row, 5).toString());
 								isLongMethod = (locFunction> locThreshold && cycloFunction>cycloThreshold);
-								//o resultado para cado funcao esta no isLongMethod
+								//o resultado para cada função está no isLongMethod
 								//table.setValueAt(isLongMethod, row, 8);
 							}
 						}catch(NumberFormatException e) {
@@ -146,8 +146,19 @@ public class GUI {
 						}
 					}
 					if(envy_button.isSelected()) {
-						int atfd=Integer.parseInt(envy_ATFD.getText());
-						int laa=Integer.parseInt(envy_LAA.getText());
+						try {
+							int atfdThreshold=Integer.parseInt(envy_ATFD.getText());
+							int laaThreshold=Integer.parseInt(envy_LAA.getText());
+							for(int row = 0; row<table.getRowCount(); row++) {
+								int atfdFunction=(int)Double.parseDouble(table.getModel().getValueAt(row, 6).toString());
+								int laaFunction=(int)Double.parseDouble(table.getModel().getValueAt(row, 7).toString());
+								isEnvyFeature = (atfdFunction> atfdThreshold && laaFunction>laaThreshold);
+								//o resultado para cada função está no isEnvyMethod
+								//table.setValueAt(isLongMethod, row, 11);
+							}
+						}catch(NumberFormatException e) {
+							JOptionPane.showMessageDialog(null, "Introduza Numeros Inteiros");
+						}
 					}
 					if(envy_button.isSelected() && long_button.isSelected()) {
 						String funLog = (String) logic_function_threshold.getSelectedItem();
