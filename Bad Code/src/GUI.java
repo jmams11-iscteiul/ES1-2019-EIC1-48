@@ -12,7 +12,6 @@ import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -127,51 +127,23 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (table.getRowCount()!=0) {	
-					boolean isLongMethod = false;
-					boolean isEnvyFeature = false;
+				int locThreshold = -1;
+				int cycloThreshold = -1;
+				int atfdThreshold = -1;
+				double laaThreshold = -1;
+				try {
 					if(long_button.isSelected()) {
-						try {
-							int locThreshold=Integer.parseInt(long_LOC.getText());
-							int cycloThreshold=Integer.parseInt(long_CYCLO.getText());
-							for(int row = 0; row<table.getRowCount(); row++) {
-								int locFunction=(int)Double.parseDouble(table.getModel().getValueAt(row, 4).toString());
-								int cycloFunction=(int)Double.parseDouble(table.getModel().getValueAt(row, 5).toString());
-								isLongMethod = (locFunction> locThreshold && cycloFunction>cycloThreshold);
-								//o resultado para cada função está no isLongMethod
-								//table.setValueAt(isLongMethod, row, 8);
-							}
-						}catch(NumberFormatException e) {
-							JOptionPane.showMessageDialog(null, "Introduza Numeros Inteiros");
-						}
+						locThreshold = Integer.parseInt(long_LOC.getText());
+						cycloThreshold = Integer.parseInt(long_CYCLO.getText());						
 					}
 					if(envy_button.isSelected()) {
-						try {
-							int atfdThreshold=Integer.parseInt(envy_ATFD.getText());
-							int laaThreshold=Integer.parseInt(envy_LAA.getText());
-							for(int row = 0; row<table.getRowCount(); row++) {
-								int atfdFunction=(int)Double.parseDouble(table.getModel().getValueAt(row, 6).toString());
-								int laaFunction=(int)Double.parseDouble(table.getModel().getValueAt(row, 7).toString());
-								isEnvyFeature = (atfdFunction> atfdThreshold && laaFunction>laaThreshold);
-								//o resultado para cada função está no isEnvyMethod
-								//table.setValueAt(isLongMethod, row, 11);
-							}
-						}catch(NumberFormatException e) {
-							JOptionPane.showMessageDialog(null, "Introduza Numeros Inteiros");
-						}
+						atfdThreshold=Integer.parseInt(envy_ATFD.getText());
+						laaThreshold=Double.parseDouble(envy_LAA.getText());						
 					}
-					if(envy_button.isSelected() && long_button.isSelected()) {
-						String funLog = (String) logic_function_threshold.getSelectedItem();
-						boolean result;
-						// RESULT NAO É USADO PARA NADA
-						if(funLog=="AND") 
-							result=(isLongMethod && isEnvyFeature);
-						if(funLog=="OR")
-							result=(isLongMethod || isEnvyFeature);
-					}
+					analyzeTable(locThreshold, cycloThreshold, atfdThreshold, laaThreshold);
+				} catch(NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "Introduza Numeros Inteiros");
 				}
-				else {JOptionPane.showMessageDialog(null, "Importe um Ficheiro Excel");
-				;}
 			}
 		});
 
@@ -271,6 +243,111 @@ public class GUI {
 		frame.add(panel);
 		//////////////
 	}
+	
+	private void analyzeTable(int loc, int cyclo, int aftd, double laa) {
+		if (table.getRowCount()!=0) {	
+			boolean isLongMethod = false;
+			boolean isEnvyFeature = false;
+			int dciPLASMA = 0, diiPLASMA = 0;
+			int dciPMD = 0, diiPMD = 0;
+			int dciUSER = 0, diiUSER = 0;
+			int dciENVY = 0, diiENVY = 0;
+			
+			if(long_button.isSelected()) {
+				for(int row = 0; row<table.getRowCount(); row++) {
+					int locFunction=(int)Double.parseDouble(table.getModel().getValueAt(row, 4).toString());
+					int cycloFunction=(int)Double.parseDouble(table.getModel().getValueAt(row, 5).toString());
+					isLongMethod = (locFunction> loc && cycloFunction> cyclo);
+					//o resultado para cada função está no isLongMethod
+					//table.setValueAt(isLongMethod, row, 8);
+					
+					//ler booleans da tabela
+					boolean is_long_method = ((Cell)table.getModel().getValueAt(row,8)).getBooleanCellValue();
+					boolean iplasma= ((Cell)table.getModel().getValueAt(row,9)).getBooleanCellValue();
+					boolean pmd = ((Cell)table.getModel().getValueAt(row,10)).getBooleanCellValue();
+					
+					//comparação iplasma
+					if(is_long_method && iplasma) {
+						dciPLASMA++;
+					} else if(!is_long_method && iplasma) {
+						diiPLASMA++;
+					} else if(is_long_method && !iplasma) {
+						
+					} else {
+						
+					}
+					
+					//comparação pmd
+					if(is_long_method && pmd) {
+						dciPMD++;
+					} else if(!is_long_method && pmd) {
+						diiPMD++;
+					} else if(is_long_method && !pmd) {
+						
+					} else {
+						
+					}
+					
+					//comparação regras user long
+					if(is_long_method && isLongMethod) {
+						dciUSER++;
+					} else if(!is_long_method && isLongMethod) {
+						diiUSER++;
+					} else if(is_long_method && !isLongMethod) {
+						
+					} else {
+						
+					}
+				}
+			}
+			
+			
+			
+			if(envy_button.isSelected()) {
+				for(int row = 0; row<table.getRowCount(); row++) {
+					int atfdFunction = (int)Double.parseDouble(table.getModel().getValueAt(row, 6).toString());
+					double laaFunction = Double.parseDouble(table.getModel().getValueAt(row, 7).toString());
+					isEnvyFeature = (atfdFunction> aftd && laaFunction < laa);
+					//o resultado para cada função está no isEnvyFeature
+					//table.setValueAt(isLongMethod, row, 11);
+					
+					boolean is_envy_method = ((Cell)table.getModel().getValueAt(row,11)).getBooleanCellValue();
+					
+					//comparação regras user envy
+					if(is_envy_method && isEnvyFeature) {
+						dciENVY++;
+					} else if(!is_envy_method && isEnvyFeature) {
+						diiENVY++;
+					} else if(is_envy_method && !isEnvyFeature) {
+						
+					} else {
+						
+					}
+				}
+			}
+			
+			//resultado experimental 
+			System.out.println("DCI iPLASMA:   " + dciPLASMA + ";  DII iPLASMA:   " + diiPLASMA);
+			System.out.println("DCI PMD:       " + dciPMD + ";  DII PMD:       " + diiPMD);
+			System.out.println("DCI USER LONG: " + dciUSER + ";  DII USER LONG: " + diiUSER);
+			System.out.println("DCI USER ENVY: " + dciENVY + ";  DII USER ENVY: " + diiENVY);
+			
+			
+			
+			if(envy_button.isSelected() && long_button.isSelected()) {
+				String funLog = (String) logic_function_threshold.getSelectedItem();
+				boolean result;
+				// RESULT NAO É USADO PARA NADA
+				if(funLog=="AND") 
+					result=(isLongMethod && isEnvyFeature);
+				if(funLog=="OR")
+					result=(isLongMethod || isEnvyFeature);
+			}
+		}
+		else {JOptionPane.showMessageDialog(null, "Importe um Ficheiro Excel");
+		;}
+	}
+	
 
 	public void check_logic_button() {
 		Boolean visible = long_button.isSelected() && envy_button.isSelected();
