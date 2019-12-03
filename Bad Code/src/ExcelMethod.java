@@ -126,28 +126,5 @@ public class ExcelMethod {
 		toReturn += "]";
 		return toReturn;
 	}
-	
-	public static void main(String[] args) {
-		XSSFWorkbook workbook;
-		try {
-			workbook = new XSSFWorkbook(new FileInputStream("C:\\Users\\Magallhaes\\git\\trabalho_es_localrepo\\Bad Code\\resources\\Long-Method.xlsx"));
-			if(workbook != null) {
-				XSSFSheet excelSheet = workbook.getSheetAt(0);
-				for(int row = 1; row < 10; row++) {
-					XSSFRow excelRow = excelSheet.getRow(row);
-					ExcelMethod aux = new ExcelMethod(excelRow);
-					System.out.println(aux);
-				}
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-	}
 
 }

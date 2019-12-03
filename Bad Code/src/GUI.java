@@ -5,8 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -38,6 +41,7 @@ public class GUI {
 	public GUI(Main main) {
 		this.main = main;
 		
+		//JFrame.setDefaultLookAndFeelDecorated(true);
 		frame = new JFrame("GUI");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
@@ -87,18 +91,20 @@ public class GUI {
 				String feLogic="";
 				String lmLogic="";
 				try {
-					JTextField aux = (JTextField) featureEnvyPanel.getComponent(1);
-					atfdThreshold = Integer.parseInt(aux.getText());
-					aux = (JTextField) featureEnvyPanel.getComponent(3);
-					laaThreshold = Double.parseDouble(aux.getText());
-					feLogic = (String) ((JComboBox<String>) featureEnvyPanel.getComponent(2)).getSelectedItem();
-
-					aux = (JTextField) longMethodPanel.getComponent(1);
-					locThreshold = Integer.parseInt(aux.getText());
-					aux = (JTextField) longMethodPanel.getComponent(3);
-					cycloThreshold = Integer.parseInt(aux.getText());
-					lmLogic = (String) ((JComboBox<String>) longMethodPanel.getComponent(2)).getSelectedItem();
-
+					if(((JCheckBox) featureEnvyPanel.getComponent(0)).isSelected()) {
+						JTextField aux = (JTextField) featureEnvyPanel.getComponent(2);
+						atfdThreshold = Integer.parseInt(aux.getText());
+						aux = (JTextField) featureEnvyPanel.getComponent(4);
+						laaThreshold = Double.parseDouble(aux.getText());
+						feLogic = (String) ((JComboBox<String>) featureEnvyPanel.getComponent(3)).getSelectedItem();
+					}
+					if(((JCheckBox) longMethodPanel.getComponent(0)).isSelected()) {
+						JTextField aux = (JTextField) longMethodPanel.getComponent(2);
+						locThreshold = Integer.parseInt(aux.getText());
+						aux = (JTextField) longMethodPanel.getComponent(4);
+						cycloThreshold = Integer.parseInt(aux.getText());
+						lmLogic = (String) ((JComboBox<String>) longMethodPanel.getComponent(3)).getSelectedItem();
+					}
 					main.analyzeTable(locThreshold, cycloThreshold, lmLogic, atfdThreshold, laaThreshold, feLogic);
 				} catch (NumberFormatException e) {
 					JOptionPane.showMessageDialog(null, "Introduza Numeros Inteiros");
@@ -139,6 +145,7 @@ public class GUI {
 	private JPanel createPanel(String labelText, String textfield1, String textfield2) {
 		JPanel toReturn = new JPanel();
 
+		JCheckBox box = new JCheckBox();
 		JLabel label = new JLabel(labelText);
 		JTextField text1 = new JTextField(textfield1);
 		text1.addFocusListener(new FocusListener() {
@@ -168,6 +175,26 @@ public class GUI {
 		text1.setPreferredSize(new Dimension(100, 20));
 		text2.setPreferredSize(new Dimension(100, 20));
 
+		
+		text1.setEditable(false);
+		text2.setEditable(false);
+		box.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if(e.getStateChange() == ItemEvent.SELECTED)  {
+					text1.setEditable(true);
+					text2.setEditable(true);
+				}
+				else {
+					text1.setEditable(false);
+					text2.setEditable(false);
+				}
+				
+			}
+			
+		});
+		
+		toReturn.add(box);
 		toReturn.add(label);
 		toReturn.add(text1);
 		toReturn.add(logicFunction);
