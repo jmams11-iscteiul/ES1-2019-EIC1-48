@@ -3,29 +3,20 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -88,18 +79,22 @@ public class GUI {
 				int cycloThreshold = -1;
 				int atfdThreshold = -1;
 				double laaThreshold = -1;
+				String feLogic="";
+				String lmLogic="";
 				try {
 					JTextField aux = (JTextField) featureEnvyPanel.getComponent(1);
 					atfdThreshold = Integer.parseInt(aux.getText());
-					aux = (JTextField) featureEnvyPanel.getComponent(2);
+					aux = (JTextField) featureEnvyPanel.getComponent(3);
 					laaThreshold = Double.parseDouble(aux.getText());
+					feLogic = (String) ((JComboBox<String>) featureEnvyPanel.getComponent(2)).getSelectedItem();
 
 					aux = (JTextField) longMethodPanel.getComponent(1);
 					locThreshold = Integer.parseInt(aux.getText());
-					aux = (JTextField) longMethodPanel.getComponent(2);
+					aux = (JTextField) longMethodPanel.getComponent(3);
 					cycloThreshold = Integer.parseInt(aux.getText());
+					lmLogic = (String) ((JComboBox<String>) longMethodPanel.getComponent(2)).getSelectedItem();
 
-					main.analyzeTable(locThreshold, cycloThreshold, atfdThreshold, laaThreshold);
+					main.analyzeTable(locThreshold, cycloThreshold, lmLogic, atfdThreshold, laaThreshold, feLogic);
 				} catch (NumberFormatException e) {
 					JOptionPane.showMessageDialog(null, "Introduza Numeros Inteiros");
 				}
@@ -142,12 +137,14 @@ public class GUI {
 
 		JLabel label = new JLabel(labelText);
 		JTextField text1 = new JTextField(textfield1);
+		JComboBox<String> logicFunction = new JComboBox(new Object[] {"AND", "OR"});
 		JTextField text2 = new JTextField(textfield2);
 		text1.setPreferredSize(new Dimension(100, 20));
 		text2.setPreferredSize(new Dimension(100, 20));
 
 		toReturn.add(label);
 		toReturn.add(text1);
+		toReturn.add(logicFunction);
 		toReturn.add(text2);
 
 		return toReturn;

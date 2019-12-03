@@ -53,28 +53,31 @@ public class Main {
 		return workbook;
 	}
 
-	public void analyzeTable(int locThreshold, int cycloThreshold, int aftdThreshold, double laaThreshold) {
+	public void analyzeTable(int locThreshold, int cycloThreshold, String lmLogic, int aftdThreshold, double laaThreshold, String feLogic) {
 		if (list.size() != 0) {
 			boolean isLongMethod = false;
 			boolean isFeatureEnvy = false;
-			
+
 			int dciPlasma = 0, diiPlasma = 0;
 			int adiiPlasma = 0, adciPlasma = 0;
-			
+
 			int dciPMD = 0, diiPMD = 0;
 			int adiiPMD = 0, adciPMD = 0;
-			
+
 			int dciUser = 0, diiUser = 0;
 			int adciUser = 0, adiiUser = 0;
-			
+
 			int dciEnvy = 0, diiEnvy = 0;
 			int adciEnvy = 0, adiiEnvy = 0;
-			
+
 			for (int row = 0; row < list.size(); row++) {
 				ExcelMethod currentMethod = list.get(row);
 				int locFunction = currentMethod.getLoc();
 				int cycloFunction = currentMethod.getCyclo();
-				isLongMethod = (locFunction > locThreshold && cycloFunction > cycloThreshold);
+				if(lmLogic == "and")
+					isLongMethod = (locFunction > locThreshold && cycloFunction > cycloThreshold);
+				else if(lmLogic=="or")
+					isLongMethod = (locFunction > locThreshold || cycloFunction > cycloThreshold);
 				// o resultado para cada função está no isLongMethod
 				// table.setValueAt(isLongMethod, row, 8);
 
@@ -115,15 +118,18 @@ public class Main {
 				} else if(!isLongMethodExcelValue && !isLongMethod){
 					adciUser++;
 				}
-				
+
 				int atfdExcelValue = currentMethod.getAtfd();
 				double laaExcelValue = currentMethod.getLaa();
+				if(feLogic == "and")
 				isFeatureEnvy = (atfdExcelValue > aftdThreshold && laaExcelValue < laaThreshold);
+				if(feLogic == "or")
+					isFeatureEnvy = (atfdExcelValue > aftdThreshold || laaExcelValue < laaThreshold);
 				// o resultado para cada função está no isEnvyFeature
-				// table.setValueAt(isLongMethod, row, 11);
-				
+				// table.setValueAt(isFeatureEnvy, row, 11);
+
 				boolean isFeatureEnvyExcelValue = currentMethod.isFeatureEnvy();
-				
+
 				// comparação regras user envy
 				if (isFeatureEnvyExcelValue && isFeatureEnvy) {
 					dciEnvy++;
@@ -146,13 +152,13 @@ public class Main {
 			System.out.println("DCI USER ENVY: " + dciEnvy + ";  DII USER ENVY: " + diiEnvy);
 			System.out.println("ADCI USER ENVY: " + adciEnvy + ";  ADII USER ENVY: " + adiiEnvy);
 
-//			String funLog = (String) logic_function_threshold.getSelectedItem();
-//			boolean result;
-//			// RESULT NAO É USADO PARA NADA
-//			if (funLog == "AND")
-//				result = (isLongMethod && isEnvyFeature);
-//			if (funLog == "OR")
-//				result = (isLongMethod || isEnvyFeature);
+			//			String funLog = (String) logic_function_threshold.getSelectedItem();
+			//			boolean result;
+			//			// RESULT NAO É USADO PARA NADA
+			//			if (funLog == "AND")
+			//				result = (isLongMethod && isEnvyFeature);
+			//			if (funLog == "OR")
+			//				result = (isLongMethod || isEnvyFeature);
 		} else {
 			JOptionPane.showMessageDialog(null, "Importe um Ficheiro Excel");
 		}
