@@ -189,6 +189,7 @@ public class Main {
 			System.out.println("ADCI USER ENVY: " + adciEnvy + ";  ADII USER ENVY: " + adiiEnvy);
 			 */
 			
+			//array com todos os valores necessários para apresentar ao user
 			int[][] data = {{nMethods},
 					{dciPlasma, diiPlasma, adiiPlasma, adciPlasma},
 					{dciPMD, diiPMD, adiiPMD, adciPMD},
@@ -205,6 +206,7 @@ public class Main {
 		}
 	}
 	
+	//Tipos de informação dependendo das boxes assinaladas
 	private String[] tiposInfoPedido(String lm, String fe) {
 		if(lm.equals("") && fe.equals("")) {
 			String[] ini = {"iPlasma", "PMD"};

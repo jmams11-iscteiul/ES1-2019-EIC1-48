@@ -33,7 +33,6 @@ public class Results {
 		dtm.addRow(args);
 	}
 	
-	//data[1-4
 	//data[0] numero métodos
 	//data[1] info iPlasma
 	//data[2] info PMD
@@ -78,10 +77,12 @@ public class Results {
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		frame.add(tableSP, BorderLayout.WEST);
 		
+		//Jpanel com a legenda
 		JPanel bottom = new JPanel();
 		bottom.setLayout(new GridLayout(2,1));
 		bottom.setBorder(new EmptyBorder(0,5,0,0));
 		
+		//legenda
 		JLabel legenda = new JLabel("Subtitle:");
 		bottom.add(legenda);
 		
