@@ -3,6 +3,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -41,7 +43,8 @@ public class GUI {
 		frame.setLayout(new BorderLayout());
 		addFrameContent();
 		frame.pack();
-		frame.setSize(800, 450);
+		frame.setSize(500, 400);
+		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 	}
 
@@ -71,6 +74,8 @@ public class GUI {
 
 		// RightPanel - painel com botao start
 		startButton = new JButton("Start");
+		startButton.setSize(100, 100);
+		startButton.setPreferredSize(new Dimension(100, leftPanel.getPreferredSize().height - leftPanel.getPreferredSize().height*3/10));
 		startButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -122,7 +127,6 @@ public class GUI {
 		
 		JPanel bottomPanel = new JPanel(new BorderLayout());
 		bottomPanel.add(excelScrollPane);
-
 		
 
 		JPanel panel = new JPanel(new GridLayout(2, 1));
@@ -137,8 +141,30 @@ public class GUI {
 
 		JLabel label = new JLabel(labelText);
 		JTextField text1 = new JTextField(textfield1);
+		text1.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {
+				if(text1.getText().contentEquals(textfield1))
+					text1.setText("");
+			}
+			
+			public void focusLost(FocusEvent e) {
+				if(text1.getText().isEmpty())
+					text1.setText(textfield1);
+			}
+		});
 		JComboBox<String> logicFunction = new JComboBox(new Object[] {"AND", "OR"});
 		JTextField text2 = new JTextField(textfield2);
+		text2.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {
+				if(text2.getText().contentEquals(textfield2))
+					text2.setText("");
+			}
+			
+			public void focusLost(FocusEvent e) {
+				if(text2.getText().isEmpty())
+					text2.setText(textfield2);
+			}
+		});
 		text1.setPreferredSize(new Dimension(100, 20));
 		text2.setPreferredSize(new Dimension(100, 20));
 
