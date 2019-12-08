@@ -11,34 +11,59 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * @author Ricardo, João M., João R., Miguel.
+ *
+ */
+
 public class Results {
 	
+	/**
+	 * table - table to display results 
+	 */
 	private JFrame frame;
 	private JTable table;
 	private DefaultTableModel dtm;
 	private JPanel right;
 	
-	public Results(String[] headerrow) {
-		
+	
+	/**
+	 * @param headerrow - columns to create in the table to display results
+	 * {"MethodID", "iPlasma", "PMD", "UserLongMethod", "UserFeatureEnvy"}
+	 * Initiates variables 
+	 */
+	public Results(String[] headerrow) {	
 		frame = new JFrame("Analysis Results");
 		frame.setLayout(new BorderLayout());
 		table = new JTable();
 		dtm = new DefaultTableModel(null, headerrow);
 		right = new JPanel();
-		
 	}
 	
-	//adicionar linha à tabela de resultados
+
+	/**
+	 * @param args - information about a a method or function
+	 * {"MethodID", "iPlasma", "PMD", "UserLongMethod", "UserFeatureEnvy"}
+	 * create and add a row with information about a method to table
+	 */
 	public void addRow(String[] args) {
 		dtm.addRow(args);
 	}
 	
-	//data[0] numero métodos
-	//data[1] info iPlasma
-	//data[2] info PMD
-	//data[3] info User Long method
-	//data[4] info Envy
-	//ex: data[0][0] dci, data[0][1] dii, data[0][2] adii, data[0][3] adci
+	/**
+	 * @param data array with information about methods, id and different software analyzers results
+	 *data[0] number methods
+	 *data[1] info iPlasma
+	 *data[2] info PMD
+	 *data[3] info User Long method
+	 *data[4] info Envy
+	 *ex: data[0][0] dci, data[0][1] dii, data[0][2] adii, data[0][3] adci
+	 * 
+	 * @param tiposDefeitos - {"DCI","DII","ADII","ADCI"}
+	 * 
+	 * @param tiposInfo- iPlmas, PMD and others defects created by user
+	 * {"iPlasma", "PMD", "UserLongMethod", "UserFeatureEnvy"};
+	 */
 	public void addResults(int[][] data, String[] tiposDefeitos, String[] tiposInfo) {
 		right.setLayout(new GridLayout(9,1));
 		right.setBorder(new EmptyBorder(10,0,10,50));
@@ -66,7 +91,15 @@ public class Results {
 		frame.add(right, BorderLayout.EAST);
 	}
 	
-	//Adicionar tabela com a informação dos defeitos à frame
+	
+	
+	/**
+	 *  add content to frame:
+	 *  table with information about defects in different methods
+	 *  panel with statistics about defects analysis with iPlasma, PMD and this software
+	 *  panel with subtitle
+	 *  
+	 */
 	private void addContent() {
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
@@ -105,8 +138,11 @@ public class Results {
 		frame.add(bottom, BorderLayout.SOUTH);
 		
 	}
-	
-	//Pôr a informação na frame
+		
+	/**
+	 * set information in frame
+	 * display frame
+	 */
 	public void displayResults() {
 		addContent();
 		frame.setPreferredSize(new Dimension(700, 500));

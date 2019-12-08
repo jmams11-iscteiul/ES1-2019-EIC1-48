@@ -10,21 +10,44 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class Main {
 
+/**
+ * @author Ricardo, João M., João R., Miguel.
+ *
+ */
+
+public class Main {
+	/**
+	 * @see GUI, ExcelMethod
+	 * list - array with "ExcelMethods" information about functions of a existing project
+	 */
+	
 	private GUI gui;
 	private ArrayList<ExcelMethod> list;
 
+	/**
+	 * Initiate attributes
+	 * Open a window with JTextFields to enter thresholds and import an ExcelFile. 
+	 */
 	Main() {
 		this.gui = new GUI(this);
 		this.list = new ArrayList<>();
 		open();
 	}
-
+/**
+ * Open a window with JTextFields to enter thresholds and import an ExcelFile. 
+ * @see GUI.open() 
+ */
 	private void open() {
 		gui.open();
 	}
 
+	
+	/**
+	 * @param path - path to an Excel File
+	 * @see importExcel(String path)
+	 * If path is correct and the ExcelFile exists, load a XSSFSheet with the information of excel
+	 */
 	public void loadExcel(String path) {
 		XSSFWorkbook workbook = importExcel(path);
 		if (workbook != null) {
@@ -41,6 +64,13 @@ public class Main {
 		}
 	}
 
+	
+	
+	
+	/**
+	 * @param path - path to an existing excel file
+	 * @return XSSFWorkbook to read the information of Excel
+	 */
 	private XSSFWorkbook importExcel(String path) {
 		XSSFWorkbook workbook = null;
 		try {
@@ -55,6 +85,19 @@ public class Main {
 		return workbook;
 	}
 
+	/**
+	 * @param locThreshold - LOC (logMethod threshold)
+	 * @param cycloThreshold - CYCLO (logMethod threshold)
+	 * @param lmLogic - logical function between longMethod thresholds (and/or)
+	 * @param aftdThreshold - ATFD (envyFeature threshold)
+	 * @param laaThreshold - LAA (envyFeature threshold)
+	 * @param feLogic - logical function between envyFeature thresholds (and/or)
+	 * 
+	 * Iterates excel file with information about functions
+	 * For each function see if is a Long Method or a Envy Feature based on user thresholds
+	 * Compares  results between this software analyzer with other softwares analyzers (iPlasma and PMD)
+	 * 
+	 */
 	public void analyzeTable(int locThreshold, int cycloThreshold, String lmLogic, int aftdThreshold, double laaThreshold, String feLogic) {
 		if (list.size() != 0) {
 			boolean isLongMethod = false;
@@ -206,7 +249,13 @@ public class Main {
 		}
 	}
 	
-	//Tipos de informação dependendo das boxes assinaladas
+	
+	
+	/**
+	 * @param lm - indicate if Long Method is selected in user's interface (if (lm != "") long method is selected)
+	 * @param fe - indicate if Envy Feature is selected in user's interface 
+	 * @return a array of string with iPlasma, PMD and thresholds selected by user 
+	 */
 	private String[] tiposInfoPedido(String lm, String fe) {
 		if(lm.equals("") && fe.equals("")) {
 			String[] ini = {"iPlasma", "PMD"};
@@ -223,6 +272,9 @@ public class Main {
 		}
 	}
 
+	/**
+	 * @param args - this main doesn't receive any arguments
+	 */
 	public static void main(String[] args) {
 		new Main();
 	}
