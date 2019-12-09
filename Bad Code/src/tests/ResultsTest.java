@@ -92,7 +92,7 @@ class ResultsTest {
 		String[] s1 = {"iPlasma", "PMD", "UserFeatureEnvy"};
 		String[] s2 = {"iPlasma", "PMD", "UserLongMethod"};
 		String[] s3 = {"iPlasma", "PMD", "UserLongMethod", "UserFeatureEnvy"};
-		
+				
 		r.addResults(dt, td, s);
 		assertEquals(((JLabel)r.getRight().getComponent(0)).getText(),"> Número de Métodos: " + dt[0][0]);
 		
@@ -109,7 +109,7 @@ class ResultsTest {
 		assertEquals(((JLabel)((JPanel)r.getRight().getComponent(4)).getComponent(3)).getText()," > " + td[3] + ": " + dt[2][3]);
 	
 	
-	
+		
 	
 	
 	
