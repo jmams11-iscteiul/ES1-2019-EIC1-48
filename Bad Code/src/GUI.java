@@ -27,6 +27,10 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+/**
+ * @author Ricardo, João M., João R., Miguel.
+ *
+ */
 public class GUI {
 	private JFrame frame;
 	// private JComboBox logic_function_threshold;
@@ -38,6 +42,12 @@ public class GUI {
 	
 	private Main main;
 
+	/**
+	 * Creates a window and adds all the necessary components
+	 * 
+	 * @param main class that processes the information
+	 * @see GUI#addFrameContent()
+	 */
 	public GUI(Main main) {
 		this.main = main;
 		
@@ -52,10 +62,16 @@ public class GUI {
 		frame.setLocationRelativeTo(null);
 	}
 
+	/**
+	 * Opens the user interface
+	 */
 	public void open() {
 		frame.setVisible(true);
 	}
 
+	/**
+	 * Adds all the necessary components do the JFrame
+	 */
 	private void addFrameContent() {
 		//////////////////
 
@@ -142,6 +158,15 @@ public class GUI {
 		frame.add(panel);
 	}
 
+	/**
+	 * Creates a panel with a specific layout (one label and two textfields) 
+	 * based on the strings in the arguments
+	 * 
+	 * @param label for this panel
+	 * @param text for the first textfield
+	 * @param text for the second textfield
+	 * @return the whole panel to be added to the frame
+	 */
 	private JPanel createPanel(String labelText, String textfield1, String textfield2) {
 		JPanel toReturn = new JPanel();
 
@@ -203,6 +228,12 @@ public class GUI {
 		return toReturn;
 	}
 
+	/**
+	 * Creates the button with all the buttons related to importing 
+	 * and viewing the excel file
+	 * 
+	 * @return panel with all the buttons to be added to the frame
+	 */
 	private JPanel createImportFilePanel() {
 		JPanel toReturn = new JPanel();
 
@@ -242,6 +273,11 @@ public class GUI {
 		return toReturn;
 	}
 	
+	/**
+	 * Displays the excel file passed in the argument in the user interface
+	 * 
+	 * @param workbook excel file
+	 */
 	public void drawTable(XSSFWorkbook workbook) {
 		XSSFSheet excelSheet = workbook.getSheetAt(0);
 		String[] headerrow= {"methodID", "package", "class", "method", "loc", 

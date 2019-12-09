@@ -44,9 +44,10 @@ public class Main {
 
 	
 	/**
-	 * @param path - path to an Excel File
-	 * @see importExcel(String path)
 	 * If path is correct and the ExcelFile exists, load a XSSFSheet with the information of excel
+	 * 
+	 * @param path - path to an Excel File
+	 * @see Main#importExcel(String)
 	 */
 	public void loadExcel(String path) {
 		XSSFWorkbook workbook = importExcel(path);
