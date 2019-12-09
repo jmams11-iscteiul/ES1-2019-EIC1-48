@@ -127,4 +127,8 @@ public class Results {
 	public JPanel getRight() {
 		return right;
 	}
+	
+	public JFrame getFrame() {
+		return frame;
+	}
 }
