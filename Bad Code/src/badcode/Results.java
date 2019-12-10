@@ -24,7 +24,13 @@ public class Results {
 		frame = new JFrame("Analysis Results");
 		frame.setLayout(new BorderLayout());
 		table = new JTable();
-		dtm = new DefaultTableModel(null, headerrow);
+		dtm = new DefaultTableModel(null, headerrow) {
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
 		right = new JPanel();
 		
 	}

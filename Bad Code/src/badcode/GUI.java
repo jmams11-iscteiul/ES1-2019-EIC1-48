@@ -247,7 +247,13 @@ public class GUI {
 		XSSFSheet excelSheet = workbook.getSheetAt(0);
 		String[] headerrow= {"methodID", "package", "class", "method", "loc", 
 				"cyclo", "atfd", "laa", "is_long_method", "iplasma", "pmd", "is_feature_envy"};
-		DefaultTableModel dtm = new DefaultTableModel(null, headerrow);
+		DefaultTableModel dtm = new DefaultTableModel(null, headerrow) {
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
 		for(int row = 1; row < excelSheet.getLastRowNum() + 1; row++) {
 			XSSFRow excelRow = excelSheet.getRow(row);
 
