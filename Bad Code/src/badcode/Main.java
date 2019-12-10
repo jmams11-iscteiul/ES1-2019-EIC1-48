@@ -16,7 +16,7 @@ public class Main {
 	private GUI gui;
 	private ArrayList<ExcelMethod> list;
 
-	Main() {
+	public Main() {
 		this.gui = new GUI(this);
 		this.list = new ArrayList<>();
 		open();
