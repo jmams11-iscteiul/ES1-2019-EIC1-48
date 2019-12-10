@@ -245,8 +245,10 @@ public class GUI {
 	
 	public void drawTable(XSSFWorkbook workbook) {
 		XSSFSheet excelSheet = workbook.getSheetAt(0);
-		String[] headerrow= {"methodID", "package", "class", "method", "loc", 
-				"cyclo", "atfd", "laa", "is_long_method", "iplasma", "pmd", "is_feature_envy"};
+		XSSFRow header = excelSheet.getRow(0);
+		String[] headerrow = new String[header.getLastCellNum()];
+		for(int i = 0; i < header.getLastCellNum(); i++) 
+			headerrow[i] = header.getCell(i).getStringCellValue();
 		DefaultTableModel dtm = new DefaultTableModel(null, headerrow);
 		for(int row = 1; row < excelSheet.getLastRowNum() + 1; row++) {
 			XSSFRow excelRow = excelSheet.getRow(row);
@@ -269,6 +271,14 @@ public class GUI {
 
 		}
 		table.setModel(dtm);
+	}
+	
+	public JTable getTable() {
+		return table;
+	}
+	
+	public JFrame getFrame() {
+		return frame;
 	}
 
 }

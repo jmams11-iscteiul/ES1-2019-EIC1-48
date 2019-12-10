@@ -5,7 +5,7 @@ import org.junit.platform.suite.api.SelectClasses;
 import org.junit.runner.RunWith;
 
 @RunWith(JUnitPlatform.class)
-@SelectClasses({ResultsTest.class})
+@SelectClasses({ResultsTest.class, GUITest.class})
 public class AllTests {
 
 }
