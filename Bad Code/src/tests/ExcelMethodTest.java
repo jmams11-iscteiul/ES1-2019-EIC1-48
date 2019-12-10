@@ -95,9 +95,17 @@ class ExcelMethodTest {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Test method for {@link ExcelMethod#ExcelMethod(org.apache.poi.xssf.usermodel.XSSFRow)}.
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
+=======
+	 * Test method for
+	 * {@link ExcelMethod#ExcelMethod(org.apache.poi.xssf.usermodel.XSSFRow)}.
+	 * 
+	 * @throws IOException
+	 * @throws FileNotFoundException
+>>>>>>> branch 'tests' of https://github.com/jmams11-iscteiul/ES1-2019-EIC1-48.git
 	 */
 	@Test
 	final void testExcelMethod() throws FileNotFoundException, IOException {
@@ -205,6 +213,7 @@ class ExcelMethodTest {
 	@Test
 	final void testToString() {
 		String toString = excelMethod.toString();
+<<<<<<< HEAD
 		assertTrue(toString.contains("[ \n" + "MethodID: " + methodID +
 				"\n" + "Package: " + packageName + 
 				"\n" + "Class: " + className +
@@ -217,6 +226,10 @@ class ExcelMethodTest {
 				"\n" + "PMD: " + pmd +
 				"\n" + "is_feature_envy: " + isFeatureEnvy +
 				"\n" + "]"));
+		assertTrue(toString.contains("[ \n" + "MethodID: " + methodID + "\n" + "Package: " + packageName + "\n"
+				+ "Class: " + className + "\n" + "MethodName: " + methodName + "\n" + "LOC: " + loc + "\n" + "CYCLO: "
+				+ cyclo + "\n" + "LAA: " + laa + "\n" + "is_long_method:" + isLongMethod + "\n" + "iPlasma: " + iPlasma
+				+ "\n" + "PMD: " + pmd + "\n" + "is_feature_envy: " + isFeatureEnvy + "\n" + "]"));
 	}
 
 }
