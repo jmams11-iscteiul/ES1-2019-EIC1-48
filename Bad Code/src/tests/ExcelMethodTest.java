@@ -42,7 +42,6 @@ class ExcelMethodTest {
 	private static Boolean iPlasma;
 	private static Boolean pmd;
 	private static boolean isFeatureEnvy;
-	private static XSSFRow excelRow;
 	private static XSSFWorkbook workbook;
 
 	/**
@@ -56,7 +55,7 @@ class ExcelMethodTest {
 
 		workbook = new XSSFWorkbook(new FileInputStream(excelPath));
 		XSSFSheet excelSheet = workbook.getSheetAt(0);
-		excelRow = excelSheet.getRow(1);
+		XSSFRow excelRow = excelSheet.getRow(1);
 		
 		excelMethod = new ExcelMethod(excelRow);
 

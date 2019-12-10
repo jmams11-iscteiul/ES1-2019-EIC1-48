@@ -22,7 +22,7 @@ public class ExcelMethod {
 	private Boolean pmd;
 	private boolean isFeatureEnvy;
 	
-	ExcelMethod(XSSFRow excelRow){
+	public ExcelMethod(XSSFRow excelRow){
 		methodID = Integer.parseInt(excelRow.getCell(0).getRawValue());
 		packageName = excelRow.getCell(1).toString();
 		className = excelRow.getCell(2).toString();
