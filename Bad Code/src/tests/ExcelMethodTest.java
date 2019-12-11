@@ -213,19 +213,6 @@ class ExcelMethodTest {
 	@Test
 	final void testToString() {
 		String toString = excelMethod.toString();
-<<<<<<< HEAD
-		assertTrue(toString.contains("[ \n" + "MethodID: " + methodID +
-				"\n" + "Package: " + packageName + 
-				"\n" + "Class: " + className +
-				"\n" + "MethodName: " + methodName +
-				"\n" + "LOC: " + loc +
-				"\n" + "CYCLO: " + cyclo +
-				"\n" + "LAA: " + laa +
-				"\n" + "is_long_method:" + isLongMethod +
-				"\n" + "iPlasma: " + iPlasma +
-				"\n" + "PMD: " + pmd +
-				"\n" + "is_feature_envy: " + isFeatureEnvy +
-				"\n" + "]"));
 		assertTrue(toString.contains("[ \n" + "MethodID: " + methodID + "\n" + "Package: " + packageName + "\n"
 				+ "Class: " + className + "\n" + "MethodName: " + methodName + "\n" + "LOC: " + loc + "\n" + "CYCLO: "
 				+ cyclo + "\n" + "LAA: " + laa + "\n" + "is_long_method:" + isLongMethod + "\n" + "iPlasma: " + iPlasma
