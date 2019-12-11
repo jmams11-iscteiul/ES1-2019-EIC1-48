@@ -106,7 +106,8 @@ public class GUI {
 						cycloThreshold = Integer.parseInt(aux.getText());
 						lmLogic = (String) ((JComboBox<String>) longMethodPanel.getComponent(3)).getSelectedItem();
 					}
-					main.analyzeTable(locThreshold, cycloThreshold, lmLogic, atfdThreshold, laaThreshold, feLogic);
+					Results res = main.analyzeTable(locThreshold, cycloThreshold, lmLogic, atfdThreshold, laaThreshold, feLogic);
+					res.displayResults();
 				} catch (NumberFormatException e) {
 					JOptionPane.showMessageDialog(null, "Introduza Numeros Inteiros");
 				}

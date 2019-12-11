@@ -1,6 +1,8 @@
 package tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ class MainTest {
 	void testMain() {
 		fail("Not yet implemented");
 	}
-	
+
 	@Test
 	void testLoadExcel() {
 		Main aux = new Main();
@@ -35,6 +37,12 @@ class MainTest {
 		aux.loadExcel("./resources/Long-Method.xlsx");
 		auxList = aux.getList();
 		assertEquals(420, auxList.size());
+
+		NullPointerException thrown = assertThrows(NullPointerException.class,
+				() -> aux.loadExcel("./resources/LongMethods.xlsx"));
+		assertTrue(thrown.getMessage().contains("Workboout null!"));
+
+		aux.loadExcel("./resources/testes.txt");
 	}
 
 	@Test

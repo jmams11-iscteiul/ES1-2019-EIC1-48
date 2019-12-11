@@ -48,8 +48,8 @@ public class Main {
 			throw new NullPointerException("Workboout null!");
 		}
 	}
-	
-	public ArrayList<ExcelMethod> getList(){
+
+	public ArrayList<ExcelMethod> getList() {
 		return this.excelMethodsList;
 	}
 
@@ -81,8 +81,7 @@ public class Main {
 		return temp;
 	}
 
-	public void analyzeTable(int locThreshold, int cycloThreshold, String lmLogic, int aftdThreshold,
-			double laaThreshold, String feLogic) {
+	public Results analyzeTable(int locThreshold, int cycloThreshold, String lmLogic, int aftdThreshold, double laaThreshold, String feLogic) {
 		if (excelMethodsList.size() != 0) {
 			boolean isLongMethod = false;
 			boolean isFeatureEnvy = false;
@@ -157,11 +156,10 @@ public class Main {
 				// comparação regras user envy
 				if (!feLogic.equals("")) {
 					aux = getFaultType(isFeatureEnvyExcelValue, isFeatureEnvy);
-					indUFE =  aux.toString();
+					indUFE = aux.toString();
 					userFEFaults.add(aux);
 				}
-				String[] newRow = { String.valueOf(currentMethod.getMethodID()), indPlasma,
-						indPMD, indULM, indUFE };
+				String[] newRow = { String.valueOf(currentMethod.getMethodID()), indPlasma, indPMD, indULM, indUFE };
 				resultado.addRow(newRow);
 			}
 
@@ -194,9 +192,11 @@ public class Main {
 
 			resultado.addResults(data, tiposDefeitos, tiposInfo);
 
-			resultado.displayResults();
+//			resultado.displayResults();
+			return resultado;
 		} else {
 			JOptionPane.showMessageDialog(null, "Importe um Ficheiro Excel");
+			return null;
 		}
 	}
 
