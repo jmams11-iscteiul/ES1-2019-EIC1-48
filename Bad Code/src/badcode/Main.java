@@ -17,7 +17,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class Main {
 
 	private GUI gui;
-	private ArrayList<ExcelMethod> list;
+	private ArrayList<ExcelMethod> excelMethodsList;
 
 	private enum FaultType {
 		DCI, DII, ADCI, ADII;
@@ -25,7 +25,7 @@ public class Main {
 
 	public Main() {
 		this.gui = new GUI(this);
-		this.list = new ArrayList<>();
+		this.excelMethodsList = new ArrayList<>();
 		open();
 	}
 
@@ -41,12 +41,16 @@ public class Main {
 			for (int row = 1; row < excelSheet.getLastRowNum() + 1; row++) {
 				XSSFRow excelRow = excelSheet.getRow(row);
 				ExcelMethod aux = new ExcelMethod(excelRow);
-				list.add(aux);
+				excelMethodsList.add(aux);
 			}
 			gui.drawTable(workbook);
 		} else {
-
+			throw new NullPointerException("Workboout null!");
 		}
+	}
+	
+	public ArrayList<ExcelMethod> getList(){
+		return this.excelMethodsList;
 	}
 
 	private XSSFWorkbook importExcel(String path) {
@@ -79,7 +83,7 @@ public class Main {
 
 	public void analyzeTable(int locThreshold, int cycloThreshold, String lmLogic, int aftdThreshold,
 			double laaThreshold, String feLogic) {
-		if (list.size() != 0) {
+		if (excelMethodsList.size() != 0) {
 			boolean isLongMethod = false;
 			boolean isFeatureEnvy = false;
 
@@ -111,8 +115,8 @@ public class Main {
 			String[] header = { "MethodID", "iPlasma", "PMD", "UserLongMethod", "UserFeatureEnvy" };
 			Results resultado = new Results(header);
 
-			for (int row = 0; row < list.size(); row++) {
-				ExcelMethod currentMethod = list.get(row);
+			for (int row = 0; row < excelMethodsList.size(); row++) {
+				ExcelMethod currentMethod = excelMethodsList.get(row);
 				nMethods++;
 				int locFunction = currentMethod.getLoc();
 				int cycloFunction = currentMethod.getCyclo();
