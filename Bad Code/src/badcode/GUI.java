@@ -287,5 +287,9 @@ public class GUI {
 	public JFrame getFrame() {
 		return frame;
 	}
+	
+	public JButton getStartButton() {
+		return startButton;
+	}
 
 }

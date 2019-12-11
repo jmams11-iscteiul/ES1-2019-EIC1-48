@@ -1,16 +1,12 @@
+/**
+ * 
+ */
 package tests;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -18,26 +14,36 @@ import badcode.ExcelMethod;
 import badcode.Main;
 import badcode.Results;
 
+/**
+ * @author Ricardo, Joao M., Joao G., Miguel
+ *
+ */
 class MainTest {
-	static Main aux;
 
+	static Main aux;
+	
+	/**
+	 * @throws java.lang.Exception
+	 */
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-		 aux = new Main();
-
+		aux = new Main();
 	}
 
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
-
+	/**
+	 * Test method for {@link badcode.Main#Main()}.
+	 */
 	@Test
-	void testMain() {
-		fail("Not yet implemented");
+	final void testMain() {
+		Main test = new Main();
+		assertNotNull(test.getGUI());
 	}
 
+	/**
+	 * Test method for {@link badcode.Main#loadExcel(java.lang.String)}.
+	 */
 	@Test
-	void testLoadExcel() {
+	final void testLoadExcel() {
 		Main aux = new Main();
 		ArrayList<ExcelMethod> auxList = aux.getList();
 		assertEquals(0, auxList.size());
@@ -49,11 +55,32 @@ class MainTest {
 				() -> aux.loadExcel("./resources/LongMethods.xlsx"));
 		assertTrue(thrown.getMessage().contains("Workboout null!"));
 
-		aux.loadExcel("./resources/testes.txt");
+		NullPointerException thrown2 = assertThrows(NullPointerException.class,
+				() -> aux.loadExcel("./resources/testes.txt"));
+		assertTrue(thrown.getMessage().contains("Workboout null!"));
 	}
 
+	/**
+	 * Test method for {@link badcode.Main#getList()}.
+	 */
 	@Test
-	void testAnalyzeTable() {
+	final void testGetList() {
+		assertEquals(0, aux.getList().size());
+	}
+	
+	/**
+	 * Test method for {@link badcode.Main#getGUI()}.
+	 */
+	@Test
+	final void testGetGUI() {
+		assertNotNull(aux.getGUI());
+	}
+
+	/**
+	 * Test method for {@link badcode.Main#analyzeTable(int, int, java.lang.String, int, double, java.lang.String)}.
+	 */
+	@Test
+	final void testAnalyzeTable() {
 		assertNull(aux.analyzeTable(1, 1, "AND", 1, 1, "AND"));
 		aux.loadExcel("./resources/Long-Method.xlsx");
 		Results temp = aux.analyzeTable(1, 1, "AND", 1, 1, "AND");
@@ -71,13 +98,6 @@ class MainTest {
 		int [][] m2 = temp2.getMatrix();
 		int [][] tempMatrix2= {{420},{140,0,0,280},{140,18,0,262},{140,90,0,190},{114,306,0,0}};
 		assertArrayEquals(tempMatrix2, m2);
-		
-	}
-
-	@Test
-	void testMain1() {
-		String[] args= {};
-		Main.main(args);
 	}
 
 }

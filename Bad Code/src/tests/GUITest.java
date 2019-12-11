@@ -8,9 +8,20 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.awt.AWTException;
+import java.awt.Point;
+import java.awt.Robot;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -28,10 +39,9 @@ import badcode.Main;
  *
  */
 class GUITest {
-	
-	
-	Main m = new Main();
-	GUI g = new GUI(m);
+
+	Main m;
+	GUI g;
 
 	/**
 	 * @throws java.lang.Exception
@@ -65,19 +75,19 @@ class GUITest {
 		g = null;
 	}
 
-	
 	@Test
 	void testGetters() {
 		assertNotNull(g.getFrame());
 		assertNotNull(g.getTable().getModel());
 	}
-	
+
 	/**
 	 * Test method for {@link badcode.GUI#GUI(badcode.Main)}.
 	 */
 	@Test
 	void testGUI() {
-		
+		GUI test = new GUI(m);
+		JButton button = test.getStartButton();
 	}
 
 	/**
@@ -86,13 +96,14 @@ class GUITest {
 	@Test
 	void testOpen() {
 		assertFalse(g.getFrame().isVisible());
-		
+
 		g.open();
 		assertTrue(g.getFrame().isVisible());
 	}
 
 	/**
-	 * Test method for {@link badcode.GUI#drawTable(org.apache.poi.xssf.usermodel.XSSFWorkbook)}.
+	 * Test method for
+	 * {@link badcode.GUI#drawTable(org.apache.poi.xssf.usermodel.XSSFWorkbook)}.
 	 */
 	@Test
 	void testDrawTable() {
@@ -103,18 +114,18 @@ class GUITest {
 			System.out.println("Ficheiro não encontrado!");
 		} catch (IOException e) {
 			System.out.println("Erro na procura do ficheiro...");
-		} 
-		
+		}
+
 		g.drawTable(workbook);
 		assertEquals(g.getTable().getColumnCount(), 12);
 		assertEquals(g.getTable().getRowCount(), 420);
-		
+
 		XSSFRow header = workbook.getSheetAt(0).getRow(0);
 		String[] headerWorkbook = new String[header.getLastCellNum()];
-		for(int i = 0; i < header.getLastCellNum(); i++) 
+		for (int i = 0; i < header.getLastCellNum(); i++)
 			headerWorkbook[i] = header.getCell(i).getStringCellValue();
-		
-		for(int j = 0; j < headerWorkbook.length; j++)
+
+		for (int j = 0; j < headerWorkbook.length; j++)
 			assertEquals(headerWorkbook[j], g.getTable().getColumnName(j));
 	}
 

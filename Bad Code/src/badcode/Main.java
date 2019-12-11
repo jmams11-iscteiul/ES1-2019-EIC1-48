@@ -52,6 +52,10 @@ public class Main {
 	public ArrayList<ExcelMethod> getList() {
 		return this.excelMethodsList;
 	}
+	
+	public GUI getGUI() {
+		return gui;
+	}
 
 	private XSSFWorkbook importExcel(String path) {
 		XSSFWorkbook workbook = null;
