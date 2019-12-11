@@ -18,6 +18,7 @@ public class Results {
 	private JTable table;
 	private DefaultTableModel dtm;
 	private JPanel right;
+	private int [][] matrix;
 	
 	public Results(String[] headerrow) {
 		
@@ -47,6 +48,7 @@ public class Results {
 	//data[4] info Envy
 	//ex: data[0][0] dci, data[0][1] dii, data[0][2] adii, data[0][3] adci
 	public void addResults(int[][] data, String[] tiposDefeitos, String[] tiposInfo) {
+		matrix=data;
 		right.setLayout(new GridLayout(9,1));
 		right.setBorder(new EmptyBorder(10,0,10,50));
 		
@@ -134,6 +136,10 @@ public class Results {
 		return right;
 	}
 	
+	public int[][] getMatrix() {
+		return matrix;
+	}
+
 	public JFrame getFrame() {
 		return frame;
 	}
