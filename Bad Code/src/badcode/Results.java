@@ -59,12 +59,20 @@ public class Results {
 		dtm.addRow(args);
 	}
 	
-	//data[0] numero métodos
-	//data[1] info iPlasma
-	//data[2] info PMD
-	//data[3] info User Long method
-	//data[4] info Envy
-	//ex: data[0][0] dci, data[0][1] dii, data[0][2] adii, data[0][3] adci
+	/**
+	 * data[0] number methods
+	 * data[1] info iPlasma
+	 * data[2] info PMD
+	 * data[3] info User Long method
+	 * data[4] info Envy
+	 * ex: data[0][0] dci, data[0][1] dii, data[0][2] adii, data[0][3] adci
+	 * 
+	 * @param data array with information about methods, id and different software analyzers results
+	 * @param tiposDefeitos - {"DCI","DII","ADII","ADCI"}
+	 * 
+	 * @param tiposInfo- iPlmas, PMD and others defects created by user
+	 * {"iPlasma", "PMD", "UserLongMethod", "UserFeatureEnvy"};
+	 */
 	public void addResults(int[][] data, String[] tiposDefeitos, String[] tiposInfo) {
 		matrix=data;
 		right.setLayout(new GridLayout(9,1));

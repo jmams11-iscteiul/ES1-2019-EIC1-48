@@ -9,19 +9,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.AWTException;
-import java.awt.Point;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JCheckBox;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.JRootPane;
 
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -35,7 +33,7 @@ import badcode.GUI;
 import badcode.Main;
 
 /**
- * @author joaor
+ * @author Ricardo, João M., João R., Miguel.
  *
  */
 class GUITest {
@@ -127,6 +125,8 @@ class GUITest {
 
 		for (int j = 0; j < headerWorkbook.length; j++)
 			assertEquals(headerWorkbook[j], g.getTable().getColumnName(j));
+		
+		
 	}
 
 }

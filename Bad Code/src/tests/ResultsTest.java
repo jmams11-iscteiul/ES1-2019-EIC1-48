@@ -4,7 +4,9 @@
 package tests;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.swing.JLabel;
@@ -20,7 +22,7 @@ import badcode.Results;
 
 
 /**
- * @author 
+ * @author Ricardo, João M., João R., Miguel.
  *
  */
 class ResultsTest {
@@ -63,6 +65,7 @@ class ResultsTest {
 		r2.addRow(aux);
 		r3.addRow(aux);
 		assertEquals(r.getDTM().getRowCount(), 1);
+		assertFalse(r.getDTM().isCellEditable(0, 0));
 		
 		int[][] dt = {{200},
 				{50, 50, 50, 50},
@@ -76,6 +79,7 @@ class ResultsTest {
 		String[] s3 = {"iPlasma", "PMD", "UserLongMethod", "UserFeatureEnvy"};
 				
 		r.addResults(dt, td, s);
+		assertArrayEquals(dt, r.getMatrix());
 		assertEquals(((JLabel)r.getRight().getComponent(0)).getText(),"> Número de Métodos: " + dt[0][0]);
 		
 		assertEquals(((JLabel)r.getRight().getComponent(1)).getText(),"- " + s[0] + ": ");

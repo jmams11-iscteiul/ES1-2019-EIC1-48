@@ -114,6 +114,8 @@ public class GUI {
 					res.displayResults();
 				} catch (NumberFormatException e) {
 					JOptionPane.showMessageDialog(null, "Introduza Numeros Inteiros");
+				} catch (NullPointerException e) {
+					JOptionPane.showMessageDialog(null, "Importe um Ficheiro Excel");
 				}
 			}
 		});

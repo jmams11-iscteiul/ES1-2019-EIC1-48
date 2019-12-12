@@ -70,8 +70,6 @@ public class Main {
 				excelMethodsList.add(aux);
 			}
 			gui.drawTable(workbook);
-		} else {
-			throw new NullPointerException("Workboout null!");
 		}
 	}
 
@@ -241,7 +239,6 @@ public class Main {
 //			resultado.displayResults();
 			return resultado;
 		} else {
-			JOptionPane.showMessageDialog(null, "Importe um Ficheiro Excel");
 			return null;
 		}
 	}
