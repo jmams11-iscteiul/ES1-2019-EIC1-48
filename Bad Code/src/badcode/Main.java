@@ -129,6 +129,10 @@ public class Main {
 	}
 
 	/**
+	 * Iterates excel file with information about functions
+	 * For each function see if is a Long Method or a Envy Feature based on user thresholds
+	 * Compares  results between this software analyzer with other softwares analyzers (iPlasma and PMD)
+	 * 
 	 * @param locThreshold - LOC (logMethod threshold)
 	 * @param cycloThreshold - CYCLO (logMethod threshold)
 	 * @param lmLogic - logical function between longMethod thresholds (and/or)
@@ -136,10 +140,7 @@ public class Main {
 	 * @param laaThreshold - LAA (envyFeature threshold)
 	 * @param feLogic - logical function between envyFeature thresholds (and/or)
 	 * 
-	 * Iterates excel file with information about functions
-	 * For each function see if is a Long Method or a Envy Feature based on user thresholds
-	 * Compares  results between this software analyzer with other softwares analyzers (iPlasma and PMD)
-	 * 
+	 * @return results
 	 */
 	public Results analyzeTable(int locThreshold, int cycloThreshold, String lmLogic, int aftdThreshold, double laaThreshold, String feLogic) {
 		if (excelMethodsList.size() != 0) {
