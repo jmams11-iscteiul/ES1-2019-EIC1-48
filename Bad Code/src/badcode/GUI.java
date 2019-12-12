@@ -28,17 +28,23 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+/**
+ * @author Ricardo, João M., João R., Miguel.
+ *
+ */
 public class GUI {
 	private JFrame frame;
-	// private JComboBox logic_function_threshold;
-	// private JLabel logic_function_label;
-	// private JCheckBox long_button;
-	// private JCheckBox envy_button;
 	private JButton startButton;
 	private JTable table;
 	
 	private Main main;
 
+	/**
+	 * Creates a window and adds all the necessary components
+	 * 
+	 * @param main class that processes the information
+	 * @see GUI#addFrameContent()
+	 */
 	public GUI(Main main) {
 		this.main = main;
 		
@@ -53,20 +59,17 @@ public class GUI {
 		frame.setLocationRelativeTo(null);
 	}
 
+	/**
+	 * Opens the user interface
+	 */
 	public void open() {
 		frame.setVisible(true);
 	}
 
+	/**
+	 * Adds all the necessary components do the JFrame
+	 */
 	private void addFrameContent() {
-		//////////////////
-
-		// logic_function_label = new JLabel("Logic Function");
-		// logic_function_threshold = new JComboBox(new Object[] {"AND", "OR"});
-		// logic_function_label.setVisible(false);
-		// logic_function_threshold.setVisible(false);
-
-		///////////////////////////////////////////////////
-
 		// Left Panel - painel com as opcoes para escolher
 		JPanel featureEnvyPanel = createPanel("Feature Envy", "ATFD", "LAA");
 
@@ -83,6 +86,7 @@ public class GUI {
 		startButton.setPreferredSize(new Dimension(100, leftPanel.getPreferredSize().height - leftPanel.getPreferredSize().height*3/10));
 		startButton.addActionListener(new ActionListener() {
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				int locThreshold = -1;
@@ -144,6 +148,16 @@ public class GUI {
 		frame.add(panel);
 	}
 
+	/**
+	 * Creates a panel with a specific layout (one label and two textfields) 
+	 * based on the strings in the arguments
+	 * 
+	 * @param label for this panel
+	 * @param text for the first textfield
+	 * @param text for the second textfield
+	 * @return the whole panel to be added to the frame
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private JPanel createPanel(String labelText, String textfield1, String textfield2) {
 		JPanel toReturn = new JPanel();
 
@@ -205,6 +219,12 @@ public class GUI {
 		return toReturn;
 	}
 
+	/**
+	 * Creates the panel with all the buttons related to importing 
+	 * and viewing the excel file
+	 * 
+	 * @return panel with all the buttons to be added to the frame
+	 */
 	private JPanel createImportFilePanel() {
 		JPanel toReturn = new JPanel();
 
@@ -244,6 +264,12 @@ public class GUI {
 		return toReturn;
 	}
 	
+	/**
+	 * Displays the excel file passed in the argument in the user interface
+	 * 
+	 * @param workbook excel file
+	 */
+	@SuppressWarnings("serial")
 	public void drawTable(XSSFWorkbook workbook) {
 		XSSFSheet excelSheet = workbook.getSheetAt(0);
 		XSSFRow header = excelSheet.getRow(0);
@@ -280,14 +306,24 @@ public class GUI {
 		table.setModel(dtm);
 	}
 	
+	
+	/**
+	 * @return GUI table
+	 */
 	public JTable getTable() {
 		return table;
 	}
 	
+	/**
+	 * @return GUI frame
+	 */
 	public JFrame getFrame() {
 		return frame;
 	}
 	
+	/**
+	 * @return GUI startButton
+	 */
 	public JButton getStartButton() {
 		return startButton;
 	}

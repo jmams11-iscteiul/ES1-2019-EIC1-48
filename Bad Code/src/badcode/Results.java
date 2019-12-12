@@ -12,14 +12,26 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * @author Ricardo, João M., João R., Miguel.
+ *
+ */
 public class Results {
 	
+	/**
+	 * table - table to display results 
+	 */
 	private JFrame frame;
 	private JTable table;
 	private DefaultTableModel dtm;
 	private JPanel right;
 	private int [][] matrix;
 	
+	/**
+	 * @param headerrow - columns to create in the table to display results
+	 * {"MethodID", "iPlasma", "PMD", "UserLongMethod", "UserFeatureEnvy"}
+	 * Initiates variables 
+	 */
 	public Results(String[] headerrow) {
 		
 		frame = new JFrame("Analysis Results");
@@ -36,7 +48,13 @@ public class Results {
 		
 	}
 	
-	//adicionar linha à tabela de resultados
+	/**
+	 * Add line to table results
+	 * 
+	 * @param args - information about a a method or function
+	 * {"MethodID", "iPlasma", "PMD", "UserLongMethod", "UserFeatureEnvy"}
+	 * create and add a row with information about a method to table
+	 */
 	public void addRow(String[] args) {
 		dtm.addRow(args);
 	}
@@ -75,7 +93,13 @@ public class Results {
 		frame.add(right, BorderLayout.EAST);
 	}
 	
-	//Adicionar tabela com a informação dos defeitos à frame
+	/**
+	 *  add content to frame:
+	 *  table with information about defects in different methods
+	 *  panel with statistics about defects analysis with iPlasma, PMD and this software
+	 *  panel with subtitle
+	 *  
+	 */
 	private void addContent() {
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
@@ -115,7 +139,10 @@ public class Results {
 		
 	}
 	
-	//Pôr a informação na frame
+	/**
+	 * set information in frame
+	 * display frame
+	 */
 	public void displayResults() {
 		addContent();
 		frame.setPreferredSize(new Dimension(700, 500));
@@ -124,22 +151,37 @@ public class Results {
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * @return table
+	 */
 	public JTable getTable() {
 		return table;
 	}
 	
+	/**
+	 * @return defaultTableModel
+	 */
 	public DefaultTableModel getDTM() {
 		return dtm;
 	}
 	
+	/**
+	 * @return right panel
+	 */
 	public JPanel getRight() {
 		return right;
 	}
 	
+	/**
+	 * @return matrix with data
+	 */
 	public int[][] getMatrix() {
 		return matrix;
 	}
 
+	/**
+	 * @return frame
+	 */
 	public JFrame getFrame() {
 		return frame;
 	}

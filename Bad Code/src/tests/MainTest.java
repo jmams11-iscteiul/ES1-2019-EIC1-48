@@ -57,7 +57,7 @@ class MainTest {
 
 		NullPointerException thrown2 = assertThrows(NullPointerException.class,
 				() -> aux.loadExcel("./resources/testes.txt"));
-		assertTrue(thrown.getMessage().contains("Workboout null!"));
+		assertTrue(thrown2.getMessage().contains("Workboout null!"));
 	}
 
 	/**

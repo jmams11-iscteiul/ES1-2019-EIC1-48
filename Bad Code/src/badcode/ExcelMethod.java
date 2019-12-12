@@ -1,12 +1,11 @@
 package badcode;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+/**
+ * @author Ricardo, João M., João R., Miguel.
+ *
+ */
 public class ExcelMethod {
 	
 	private int methodID;
@@ -22,6 +21,11 @@ public class ExcelMethod {
 	private Boolean pmd;
 	private boolean isFeatureEnvy;
 	
+	/**
+	 * Create java class based on the excel information for easier accessibility 
+	 * 
+	 * @param Excel file row
+	 */
 	public ExcelMethod(XSSFRow excelRow){
 		methodID = Integer.parseInt(excelRow.getCell(0).getRawValue());
 		packageName = excelRow.getCell(1).toString();
@@ -37,78 +41,98 @@ public class ExcelMethod {
 		isFeatureEnvy = excelRow.getCell(11).getBooleanCellValue();
 	}
 	
+	/**
+	 * @return methodID
+	 */
 	public int getMethodID() {
 		return methodID;
 	}
 
-
-
+	/**
+	 * @return method package name
+	 */
 	public String getPackageName() {
 		return packageName;
 	}
 
-
-
+	/**
+	 * @return class of the method
+	 */
 	public String getClassName() {
 		return className;
 	}
 
-
-
+	/**
+	 * @return method name
+	 */
 	public String getMethodName() {
 		return methodName;
 	}
 
-
-
+	/**
+	 * @return number of lines of code in this method
+	 */
 	public int getLoc() {
 		return loc;
 	}
 
-
-
+	/**
+	 * @return cyclic complexity of this method
+	 */
 	public int getCyclo() {
 		return cyclo;
 	}
 
-
-
+	/**
+	 * @return number of accesses to other classes
+	 */
 	public int getAtfd() {
 		return atfd;
 	}
 
-
-
+	/**
+	 * @return number of accesses to attributes of the same class
+	 */
 	public float getLaa() {
 		return laa;
 	}
 
-
-
+	/**
+	 * @return if LongMethod is true or false in the excel file
+	 */
 	public boolean isLongMethod() {
 		return isLongMethod;
 	}
 
-
-
+	/**
+	 * @return value of the iPlasma evaluation
+	 */
 	public Boolean getiPlasma() {
 		return iPlasma;
 	}
 
-
-
+	/**
+	 * @return value of the PDM evaluation
+	 */
 	public Boolean getPmd() {
 		return pmd;
 	}
 
-
-
+	/**
+	 * @return if FeatureEnvy is true or false in the excel file
+	 */
 	public boolean isFeatureEnvy() {
 		return isFeatureEnvy;
 	}
 
 
 
+	/* (non-Javadoc)
+	 * 
+	 * Prints all the atributes of this class in the console
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		String toReturn = "[ \n";
