@@ -49,11 +49,8 @@ class ExcelMethodTest {
 	 */
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-		JFileChooser fc = new JFileChooser();
-		fc.showOpenDialog(null);
-		String excelPath = fc.getSelectedFile().getAbsolutePath();
 
-		workbook = new XSSFWorkbook(new FileInputStream(excelPath));
+		workbook = new XSSFWorkbook(new FileInputStream("resources/Long-Method.xlsx"));
 		XSSFSheet excelSheet = workbook.getSheetAt(0);
 		XSSFRow excelRow = excelSheet.getRow(1);
 
@@ -93,24 +90,7 @@ class ExcelMethodTest {
 	@AfterEach
 	void tearDown() throws Exception {
 	}
-
-	/**
-<<<<<<< HEAD
-	 * Test method for {@link ExcelMethod#ExcelMethod(org.apache.poi.xssf.usermodel.XSSFRow)}.
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
-=======
-	 * Test method for
-	 * {@link ExcelMethod#ExcelMethod(org.apache.poi.xssf.usermodel.XSSFRow)}.
-	 * 
-	 * @throws IOException
-	 * @throws FileNotFoundException
->>>>>>> branch 'tests' of https://github.com/jmams11-iscteiul/ES1-2019-EIC1-48.git
-	 */
-	@Test
-	final void testExcelMethod() throws FileNotFoundException, IOException {
-	}
-
+	
 	/**
 	 * Test method for {@link ExcelMethod#getMethodID()}.
 	 */
@@ -213,10 +193,11 @@ class ExcelMethodTest {
 	@Test
 	final void testToString() {
 		String toString = excelMethod.toString();
-		assertTrue(toString.contains("[ \n" + "MethodID: " + methodID + "\n" + "Package: " + packageName + "\n"
-				+ "Class: " + className + "\n" + "MethodName: " + methodName + "\n" + "LOC: " + loc + "\n" + "CYCLO: "
-				+ cyclo + "\n" + "LAA: " + laa + "\n" + "is_long_method:" + isLongMethod + "\n" + "iPlasma: " + iPlasma
-				+ "\n" + "PMD: " + pmd + "\n" + "is_feature_envy: " + isFeatureEnvy + "\n" + "]"));
+		System.out.println(toString);
+		String test = "[ \n" + "MethodID: " + methodID + "\nPackage: " + packageName + "\nClass: " + className + "\nMethodName: " + methodName + "\nLOC: " + loc + "\nCYCLO: "
+				+ cyclo + "\nATFD: " + atfd + "\nLAA: " + laa + "\nis_long_method: " + isLongMethod + "\niPlasma: " + iPlasma
+				+ "\nPMD: " + pmd + "\nis_feature_envy: " + isFeatureEnvy + "\n]";
+		assertEquals(excelMethod.toString(), test);
 	}
 
 }
