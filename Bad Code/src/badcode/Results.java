@@ -46,6 +46,7 @@ public class Results {
 	 * {"MethodID", "iPlasma", "PMD", "UserLongMethod", "UserFeatureEnvy"}
 	 * Initiates variables 
 	 */
+	@SuppressWarnings("serial")
 	public Results(String[] headerrow) {
 		
 		frame = new JFrame("Analysis Results");
@@ -211,8 +212,6 @@ public class Results {
 		//frame.add(bottom, BorderLayout.SOUTH);
 		
 	}
-	
-	
 	
 	/**
 	 * set information in frame

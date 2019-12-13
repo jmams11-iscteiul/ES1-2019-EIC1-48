@@ -24,7 +24,7 @@ public class ExcelMethod {
 	/**
 	 * Create java class based on the excel information for easier accessibility 
 	 * 
-	 * @param Excel file row
+	 * @param excelRow Excel file row
 	 */
 	public ExcelMethod(XSSFRow excelRow){
 		methodID = Integer.parseInt(excelRow.getCell(0).getRawValue());

@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import badcode.ExcelMethod;
 import badcode.Main;
-import badcode.Results;
 
 /**
  * @author Ricardo, Joao M., Joao G., Miguel

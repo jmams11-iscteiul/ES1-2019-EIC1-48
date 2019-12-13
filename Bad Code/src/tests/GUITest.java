@@ -8,18 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.InputEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
-import javax.swing.JRootPane;
 
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -85,6 +78,7 @@ class GUITest {
 	@Test
 	void testGUI() {
 		GUI test = new GUI(m);
+		@SuppressWarnings("unused")
 		JButton button = test.getStartButton();
 	}
 

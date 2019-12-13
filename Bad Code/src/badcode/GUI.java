@@ -11,7 +11,6 @@ import java.awt.event.ItemListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -205,7 +204,6 @@ public class GUI {
 	 * @param text for the second textfield
 	 * @return the whole panel to be added to the frame
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private JPanel createPanel(String labelText, String textfield1, String textfield2) {
 		JPanel toReturn = new JPanel();
 

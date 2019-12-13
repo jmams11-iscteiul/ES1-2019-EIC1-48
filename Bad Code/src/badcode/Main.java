@@ -139,13 +139,11 @@ public class Main {
 	 * 
 	 * @param locThreshold   - LOC (logMethod threshold)
 	 * @param cycloThreshold - CYCLO (logMethod threshold)
-	 * @param lmLogic        - logical function between longMethod thresholds
-	 *                       (and/or)
 	 * @param aftdThreshold  - ATFD (envyFeature threshold)
 	 * @param laaThreshold   - LAA (envyFeature threshold)
-	 * @param feLogic        - logical function between envyFeature thresholds
-	 *                       (and/or)
-	 * 
+	 * @param featureEnvySelected checkbox value of feature envy
+	 * @param longMethodSelected checkbox value of long method
+	 * @param userExpression expression typed by the user
 	 * @return results
 	 */
 	public Results analyzeTable(int locThreshold, int cycloThreshold, int aftdThreshold, double laaThreshold,
@@ -290,6 +288,12 @@ public class Main {
 		}
 	}
 
+	/**
+	 * @param rules
+	 * @param ops
+	 * @param em
+	 * @return value of the metric created by user
+	 */
 	private Boolean userMetricValue(Rule[] rules, LinkedList<String> ops, ExcelMethod em) {
 		boolean b = rules[0].check(em);
 		for (int i = 1; i < rules.length - 1; i++) {
@@ -302,6 +306,12 @@ public class Main {
 		return b;
 	}
 
+	/**
+	 * Validates if the expression submited by the user is a valid expression.
+	 * 
+	 * @param rule
+	 * @return true if the expression is valid, false otherwise
+	 */
 	private Boolean validateUserExpression(String rule) {
 		String[] splitted = rule.split("AND|OR");
 		if(splitted.length == 0)
