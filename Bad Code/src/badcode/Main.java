@@ -140,7 +140,7 @@ public class Main {
 	 * 
 	 * @return results
 	 */
-	public Results analyzeTable(int locThreshold, int cycloThreshold, String lmLogic, int aftdThreshold, double laaThreshold, String feLogic) {
+	public Results analyzeTable(int locThreshold, int cycloThreshold, int aftdThreshold, double laaThreshold, boolean featureEnvySelected, boolean longMethodSelected) {
 		if (excelMethodsList.size() != 0) {
 			boolean isLongMethod = false;
 			boolean isFeatureEnvy = false;
@@ -171,18 +171,6 @@ public class Main {
 				boolean iPlasmaExcelValue = currentMethod.getiPlasma();
 				boolean pmdExcelValue = currentMethod.getPmd();
 
-				// o resultado para cada função está no isLongMethod
-				if (lmLogic == "AND")
-					isLongMethod = (locFunction > locThreshold && cycloFunction > cycloThreshold);
-				else if (lmLogic == "OR")
-					isLongMethod = (locFunction > locThreshold || cycloFunction > cycloThreshold);
-
-				// o resultado para cada função está no isEnvyFeature
-				if (feLogic == "AND")
-					isFeatureEnvy = (atfdExcelValue > aftdThreshold && laaExcelValue < laaThreshold);
-				if (feLogic == "OR")
-					isFeatureEnvy = (atfdExcelValue > aftdThreshold || laaExcelValue < laaThreshold);
-
 				// comparação iplasma
 				FaultType aux = getFaultType(isLongMethodExcelValue, iPlasmaExcelValue);
 				String indPlasma = aux.toString();
@@ -192,13 +180,15 @@ public class Main {
 				String indPMD = aux.toString();
 				PMDFaults.add(aux);
 				// comparação regras user long
-				if (!lmLogic.equals("")) {
+				if (longMethodSelected) {
+					isLongMethod = (locFunction > locThreshold && cycloFunction > cycloThreshold);
 					aux = getFaultType(isLongMethodExcelValue, isLongMethod);
 					indULM = aux.toString();
 					userLMFaults.add(aux);
 				}
 				// comparação regras user envy
-				if (!feLogic.equals("")) {
+				if (featureEnvySelected) {
+					isFeatureEnvy = (atfdExcelValue > aftdThreshold && laaExcelValue < laaThreshold);
 					aux = getFaultType(isFeatureEnvyExcelValue, isFeatureEnvy);
 					indUFE = aux.toString();
 					userFEFaults.add(aux);
@@ -232,7 +222,7 @@ public class Main {
 					{ dciPMD, diiPMD, adiiPMD, adciPMD }, { dciUser, diiUser, adiiUser, adciUser },
 					{ dciEnvy, diiEnvy, adiiEnvy, adciEnvy } };
 			String[] tiposDefeitos = { "DCI", "DII", "ADII", "ADCI" };
-			String[] tiposInfo = tiposInfoPedido(lmLogic, feLogic);
+			String[] tiposInfo = tiposInfoPedido(longMethodSelected, featureEnvySelected);
 
 			resultado.addResults(data, tiposDefeitos, tiposInfo);
 
@@ -248,14 +238,14 @@ public class Main {
 	 * @param fe - indicate if Envy Feature is selected in user's interface 
 	 * @return a array of string with iPlasma, PMD and thresholds selected by user 
 	 */
-	private String[] tiposInfoPedido(String lm, String fe) {
-		if (lm.equals("") && fe.equals("")) {
+	private String[] tiposInfoPedido(boolean lm, boolean fe) {
+		if (!lm && !fe) {
 			String[] ini = { "iPlasma", "PMD" };
 			return ini;
-		} else if (lm.equals("") && !fe.equals("")) {
+		} else if (!lm && fe) {
 			String[] ini = { "iPlasma", "PMD", "UserFeatureEnvy" };
 			return ini;
-		} else if (!lm.equals("") && fe.equals("")) {
+		} else if (lm && !fe) {
 			String[] ini = { "iPlasma", "PMD", "UserLongMethod" };
 			return ini;
 		} else {

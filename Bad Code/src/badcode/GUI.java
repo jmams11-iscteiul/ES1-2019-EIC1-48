@@ -76,8 +76,8 @@ public class GUI {
 		JPanel longMethodPanel = createPanel("Long Method", "LOC", "CYCLO");
 
 		JPanel leftPanel = new JPanel(new GridLayout(3, 1));
-		leftPanel.add(featureEnvyPanel);
 		leftPanel.add(longMethodPanel);
+		leftPanel.add(featureEnvyPanel);
 		// Fim Left Panel
 
 		// RightPanel - painel com botao start
@@ -96,21 +96,21 @@ public class GUI {
 				String feLogic="";
 				String lmLogic="";
 				try {
-					if(((JCheckBox) featureEnvyPanel.getComponent(0)).isSelected()) {
+					boolean isFeatureEnvySelected = ((JCheckBox) featureEnvyPanel.getComponent(0)).isSelected();
+					boolean isLongMethodSelected = ((JCheckBox) longMethodPanel.getComponent(0)).isSelected();
+					if(isFeatureEnvySelected) {
 						JTextField aux = (JTextField) featureEnvyPanel.getComponent(2);
 						atfdThreshold = Integer.parseInt(aux.getText());
-						aux = (JTextField) featureEnvyPanel.getComponent(4);
+						aux = (JTextField) featureEnvyPanel.getComponent(3);
 						laaThreshold = Double.parseDouble(aux.getText());
-						feLogic = (String) ((JComboBox<String>) featureEnvyPanel.getComponent(3)).getSelectedItem();
 					}
-					if(((JCheckBox) longMethodPanel.getComponent(0)).isSelected()) {
+					if(isLongMethodSelected) {
 						JTextField aux = (JTextField) longMethodPanel.getComponent(2);
 						locThreshold = Integer.parseInt(aux.getText());
-						aux = (JTextField) longMethodPanel.getComponent(4);
+						aux = (JTextField) longMethodPanel.getComponent(3);
 						cycloThreshold = Integer.parseInt(aux.getText());
-						lmLogic = (String) ((JComboBox<String>) longMethodPanel.getComponent(3)).getSelectedItem();
 					}
-					Results res = main.analyzeTable(locThreshold, cycloThreshold, lmLogic, atfdThreshold, laaThreshold, feLogic);
+					Results res = main.analyzeTable(locThreshold, cycloThreshold, atfdThreshold, laaThreshold, isFeatureEnvySelected, isLongMethodSelected);
 					res.displayResults();
 				} catch (NumberFormatException e) {
 					JOptionPane.showMessageDialog(null, "Introduza Numeros Válidos para cada Métrica");
@@ -177,7 +177,7 @@ public class GUI {
 					text1.setText(textfield1);
 			}
 		});
-		JComboBox<String> logicFunction = new JComboBox(new Object[] {"AND", "OR"});
+//		JComboBox<String> logicFunction = new JComboBox(new Object[] {"ANana "OR"});
 		JTextField text2 = new JTextField(textfield2);
 		text2.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
@@ -215,7 +215,7 @@ public class GUI {
 		toReturn.add(box);
 		toReturn.add(label);
 		toReturn.add(text1);
-		toReturn.add(logicFunction);
+//		toReturn.add(logicFunction);
 		toReturn.add(text2);
 
 		return toReturn;
