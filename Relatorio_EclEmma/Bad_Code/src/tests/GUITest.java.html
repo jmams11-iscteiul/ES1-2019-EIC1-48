@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>GUITest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (13/dez/2019 21:45:47)</a> &gt; <a href="../../index.html" class="el_group">Bad Code</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">tests</a> &gt; <span class="el_source">GUITest.java</span></div><h1>GUITest.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package tests;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import javax.swing.JButton;
+
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import badcode.GUI;
+import badcode.Main;
+
+/**
+ * @author Ricardo, João M., João R., Miguel.
+ *
+ */
+<span class="fc" id="L32">class GUITest {</span>
+
+	Main m;
+	GUI g;
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeAll
+	static void setUpBeforeClass() throws Exception {
+<span class="fc" id="L42">	}</span>
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@AfterAll
+	static void tearDownAfterClass() throws Exception {
+<span class="fc" id="L49">	}</span>
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeEach
+	void setUp() throws Exception {
+<span class="fc" id="L56">		m = new Main();</span>
+<span class="fc" id="L57">		g = new GUI(m);</span>
+<span class="fc" id="L58">	}</span>
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@AfterEach
+	void tearDown() throws Exception {
+<span class="fc" id="L65">		m = null;</span>
+<span class="fc" id="L66">		g = null;</span>
+<span class="fc" id="L67">	}</span>
+
+	@Test
+	void testGetters() {
+<span class="fc" id="L71">		assertNotNull(g.getFrame());</span>
+<span class="fc" id="L72">		assertNotNull(g.getTable().getModel());</span>
+<span class="fc" id="L73">	}</span>
+
+	/**
+	 * Test method for {@link badcode.GUI#GUI(badcode.Main)}.
+	 */
+	@Test
+	void testGUI() {
+<span class="fc" id="L80">		GUI test = new GUI(m);</span>
+		@SuppressWarnings(&quot;unused&quot;)
+<span class="fc" id="L82">		JButton button = test.getStartButton();</span>
+<span class="fc" id="L83">	}</span>
+
+	/**
+	 * Test method for {@link badcode.GUI#open()}.
+	 */
+	@Test
+	void testOpen() {
+<span class="fc" id="L90">		assertFalse(g.getFrame().isVisible());</span>
+
+<span class="fc" id="L92">		g.open();</span>
+<span class="fc" id="L93">		assertTrue(g.getFrame().isVisible());</span>
+<span class="fc" id="L94">	}</span>
+
+	/**
+	 * Test method for
+	 * {@link badcode.GUI#drawTable(org.apache.poi.xssf.usermodel.XSSFWorkbook)}.
+	 */
+	@Test
+	void testDrawTable() {
+<span class="fc" id="L102">		XSSFWorkbook workbook = null;</span>
+		try {
+<span class="fc" id="L104">			workbook = new XSSFWorkbook(new FileInputStream(&quot;resources/Long-Method.xlsx&quot;));</span>
+<span class="pc" id="L105">		} catch (FileNotFoundException e) {</span>
+<span class="nc" id="L106">			System.out.println(&quot;Ficheiro não encontrado!&quot;);</span>
+<span class="nc" id="L107">		} catch (IOException e) {</span>
+<span class="nc" id="L108">			System.out.println(&quot;Erro na procura do ficheiro...&quot;);</span>
+		}
+
+<span class="fc" id="L111">		g.drawTable(workbook);</span>
+<span class="fc" id="L112">		assertEquals(g.getTable().getColumnCount(), 12);</span>
+<span class="fc" id="L113">		assertEquals(g.getTable().getRowCount(), 420);</span>
+
+<span class="fc" id="L115">		XSSFRow header = workbook.getSheetAt(0).getRow(0);</span>
+<span class="fc" id="L116">		String[] headerWorkbook = new String[header.getLastCellNum()];</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">		for (int i = 0; i &lt; header.getLastCellNum(); i++)</span>
+<span class="fc" id="L118">			headerWorkbook[i] = header.getCell(i).getStringCellValue();</span>
+
+<span class="fc bfc" id="L120" title="All 2 branches covered.">		for (int j = 0; j &lt; headerWorkbook.length; j++)</span>
+<span class="fc" id="L121">			assertEquals(headerWorkbook[j], g.getTable().getColumnName(j));</span>
+		
+		
+<span class="fc" id="L124">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>AllTests (13/dez/2019 21:45:47)</div></body></html>

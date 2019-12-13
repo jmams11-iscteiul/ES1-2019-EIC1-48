@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>RuleTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (13/dez/2019 21:45:47)</a> &gt; <a href="../../index.html" class="el_group">Bad Code</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">tests</a> &gt; <span class="el_source">RuleTest.java</span></div><h1>RuleTest.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package tests;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import badcode.ExcelMethod;
+import badcode.Main;
+import badcode.Rule;
+
+/**
+ * @author Ricardo, João M., João R., Miguel.
+ *
+ */
+<span class="fc" id="L28">class RuleTest {</span>
+
+	static Rule rule;
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeAll
+	static void setUpBeforeClass() throws Exception {
+<span class="fc" id="L37">	}</span>
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@AfterAll
+	static void tearDownAfterClass() throws Exception {
+<span class="fc" id="L44">	}</span>
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeEach
+	void setUp() throws Exception {
+<span class="fc" id="L51">		rule = new Rule(&quot;LAA&quot;, &quot;&gt;&quot;, 2);</span>
+<span class="fc" id="L52">	}</span>
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@AfterEach
+	void tearDown() throws Exception {
+<span class="fc" id="L59">	}</span>
+
+	/**
+	 * Test method for
+	 * {@link badcode.Rule#Rule(java.lang.String, java.lang.String, double)}.
+	 */
+	@Test
+	final void testRule() {
+<span class="fc" id="L67">		Rule rule1 = new Rule(&quot;ATFD&quot;, &quot;&gt;&quot;, 20);</span>
+<span class="fc" id="L68">		assertNotNull(rule1);</span>
+
+<span class="fc" id="L70">	}</span>
+
+	/**
+	 * Test method for {@link badcode.Rule#check(badcode.ExcelMethod)}.
+	 */
+	@Test
+	final void testCheck() {
+<span class="fc" id="L77">		Main aux = new Main();</span>
+<span class="fc" id="L78">		aux.loadExcel(&quot;./resources/Long-Method.xlsx&quot;);</span>
+<span class="fc" id="L79">		ArrayList&lt;ExcelMethod&gt; auxList = aux.getList();</span>
+
+<span class="fc" id="L81">		assertFalse(rule.check(auxList.get(0)));</span>
+<span class="fc" id="L82">		rule = new Rule(&quot;ATFD&quot;, &quot;&gt;=&quot;, 20.0);</span>
+<span class="fc" id="L83">		assertFalse(rule.check(auxList.get(0)));</span>
+<span class="fc" id="L84">		rule = new Rule(&quot;LAA&quot;, &quot;&gt;&quot;, 20.0);</span>
+<span class="fc" id="L85">		assertFalse(rule.check(auxList.get(0)));</span>
+<span class="fc" id="L86">		rule = new Rule(&quot;LOC&quot;, &quot;&lt;&quot;, 20.0);</span>
+<span class="fc" id="L87">		assertTrue(rule.check(auxList.get(0)));</span>
+<span class="fc" id="L88">		rule = new Rule(&quot;CYCLO&quot;, &quot;&lt;=&quot;, 20.0);</span>
+<span class="fc" id="L89">		assertTrue(rule.check(auxList.get(0)));</span>
+<span class="fc" id="L90">		rule = new Rule(&quot;ATFD&quot;, &quot;=&quot;, 20.0);</span>
+<span class="fc" id="L91">		assertFalse(rule.check(auxList.get(0)));</span>
+
+<span class="fc" id="L93">	}</span>
+
+	/**
+	 * Test method for
+	 * {@link badcode.Rule#validateArguments(java.lang.String, java.lang.String, java.lang.Double)}.
+	 */
+	@Test
+	final void testValidateArguments() {
+<span class="fc" id="L101">		NullPointerException thrown = assertThrows(NullPointerException.class,</span>
+<span class="pc" id="L102">				() -&gt; Rule.validateArguments(&quot;cc&quot;, &quot;&gt;&quot;, 20.0));</span>
+<span class="fc" id="L103">		assertTrue(thrown.getMessage().contains(&quot;Metrica não existente&quot;));</span>
+
+<span class="fc" id="L105">		NullPointerException thrown2 = assertThrows(NullPointerException.class,</span>
+<span class="pc" id="L106">				() -&gt; Rule.validateArguments(&quot;LOC&quot;, &quot;aaaa&quot;, 20.0));</span>
+<span class="fc" id="L107">		assertTrue(thrown2.getMessage().contains(&quot;Comparador não suportado&quot;));</span>
+<span class="fc" id="L108">		Rule.validateArguments(&quot;ATFD&quot;, &quot;&gt;&quot;, 20.0);</span>
+<span class="fc" id="L109">		Rule.validateArguments(&quot;LOC&quot;, &quot;&lt;&quot;, 10.0);</span>
+<span class="fc" id="L110">		Rule.validateArguments(&quot;CYCLO&quot;, &quot;&gt;=&quot;, 0.0);</span>
+<span class="fc" id="L111">		Rule.validateArguments(&quot;LAA&quot;, &quot;&lt;=&quot;, 21.1);</span>
+<span class="fc" id="L112">		Rule.validateArguments(&quot;LAA&quot;, &quot;=&quot;, 21.2);</span>
+<span class="fc" id="L113">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>AllTests (13/dez/2019 21:45:47)</div></body></html>

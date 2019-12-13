@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Results.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (13/dez/2019 21:45:47)</a> &gt; <a href="../../index.html" class="el_group">Bad Code</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">badcode</a> &gt; <span class="el_source">Results.java</span></div><h1>Results.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">package badcode;</span>
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.StandardBarPainter;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+
+/**
+ * @author Ricardo, João M., João R., Miguel.
+ *
+ */
+public class Results {
+	
+	/**
+	 * table - table to display results 
+	 */
+	private JFrame frame;
+	private JTable table;
+	private DefaultTableModel dtm;
+	private JPanel text;
+	private JTabbedPane tab;
+	private int [][] matrix;
+	private JFreeChart chart;
+	
+	/**
+	 * @param headerrow - columns to create in the table to display results
+	 * {&quot;MethodID&quot;, &quot;iPlasma&quot;, &quot;PMD&quot;, &quot;UserLongMethod&quot;, &quot;UserFeatureEnvy&quot;}
+	 * Initiates variables 
+	 */
+	@SuppressWarnings(&quot;serial&quot;)
+<span class="fc" id="L50">	public Results(String[] headerrow) {</span>
+		
+<span class="fc" id="L52">		frame = new JFrame(&quot;Analysis Results&quot;);</span>
+<span class="fc" id="L53">		frame.setLayout(new BorderLayout());</span>
+<span class="fc" id="L54">		table = new JTable();</span>
+<span class="fc" id="L55">		dtm = new DefaultTableModel(null, headerrow) {</span>
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+<span class="fc" id="L59">		       return false;</span>
+		    }
+		};
+<span class="fc" id="L62">		tab = new JTabbedPane();</span>
+<span class="fc" id="L63">		text = new JPanel();</span>
+		
+<span class="fc" id="L65">	}</span>
+	
+	/**
+	 * Add line to table results
+	 * 
+	 * @param args - information about a a method or function
+	 * {&quot;MethodID&quot;, &quot;iPlasma&quot;, &quot;PMD&quot;, &quot;UserLongMethod&quot;, &quot;UserFeatureEnvy&quot;}
+	 * create and add a row with information about a method to table
+	 */
+	public void addRow(String[] args) {
+<span class="fc" id="L75">		dtm.addRow(args);</span>
+<span class="fc" id="L76">	}</span>
+	
+	/**
+	 * data[0] number methods
+	 * data[1] info iPlasma
+	 * data[2] info PMD
+	 * data[3] info User Long method
+	 * data[4] info Envy
+	 * ex: data[0][0] dci, data[0][1] dii, data[0][2] adii, data[0][3] adci
+	 * 
+	 * @param data array with information about methods, id and different software analyzers results
+	 * @param tiposDefeitos - {&quot;DCI&quot;,&quot;DII&quot;,&quot;ADII&quot;,&quot;ADCI&quot;}
+	 * 
+	 * @param tiposInfo- iPlmas, PMD and others defects created by user
+	 * {&quot;iPlasma&quot;, &quot;PMD&quot;, &quot;UserLongMethod&quot;, &quot;UserFeatureEnvy&quot;};
+	 */
+	public void addResults(int[][] data, String[] tiposDefeitos, String[] tiposInfo) {
+<span class="fc" id="L93">		DefaultCategoryDataset dataset = new DefaultCategoryDataset();</span>
+
+<span class="fc" id="L95">		matrix = data;</span>
+<span class="fc" id="L96">		text.setLayout(new GridLayout(13,1));</span>
+<span class="fc" id="L97">		text.setBorder(new EmptyBorder(10,0,10,0));</span>
+		
+<span class="fc" id="L99">		JLabel nMetodos = new JLabel(&quot;&gt; Número de Métodos: &quot; + data[0][0]);</span>
+<span class="fc" id="L100">		nMetodos.setHorizontalAlignment(JLabel.CENTER);</span>
+<span class="fc" id="L101">		text.add(nMetodos);</span>
+		
+<span class="fc" id="L103">		int k = 0;</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">		for(int i = 0; i &lt; tiposInfo.length; i++) {</span>
+<span class="fc" id="L105">			JLabel tipo = new JLabel(&quot;- &quot; + tiposInfo[i] + &quot;: &quot;);</span>
+<span class="fc" id="L106">			JPanel panel = new JPanel();</span>
+<span class="fc" id="L107">			panel.setLayout(new GridLayout(2,2));</span>
+					
+			//caso não seja necessário o UserLongMethod passar essa vetor de dados na matriz
+<span class="fc bfc" id="L110" title="All 4 branches covered.">			if(tiposInfo.length == 3 &amp;&amp; i == 2) </span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">				if(tiposInfo[2].equals(&quot;UserFeatureEnvy&quot;))</span>
+<span class="fc" id="L112">					k = 1;</span>
+			
+<span class="fc bfc" id="L114" title="All 2 branches covered.">			for(int j = 0; j &lt; tiposDefeitos.length; j++) {</span>
+<span class="fc" id="L115">				JLabel defeito = new JLabel(&quot; &gt; &quot; + tiposDefeitos[j] + &quot;: &quot; + data[i + 1 + k][j]);</span>
+<span class="fc" id="L116">				defeito.setHorizontalAlignment(JLabel.CENTER);</span>
+<span class="fc" id="L117">				dataset.addValue(data[i + 1 + k][j], tiposInfo[i], tiposDefeitos[j]);</span>
+<span class="fc" id="L118">				panel.add(defeito);</span>
+			}
+
+<span class="fc" id="L121">			float uip = (((float)data[i + 1 + k][1] + (float)data[i + 1 + k][2])/(float)data[0][0])*100;</span>
+<span class="fc" id="L122">			String uipS = String.format (&quot;%.2f&quot;, uip);</span>
+<span class="fc" id="L123">			JLabel uncorrectlyIdentifiedFaultPercentage = new JLabel(&quot;=&gt; Uncorretly Identified Fault Percentage: &quot; + uipS + &quot;%&quot;);</span>
+<span class="fc" id="L124">			uncorrectlyIdentifiedFaultPercentage.setHorizontalAlignment(JLabel.CENTER);</span>
+			
+<span class="fc" id="L126">			tipo.setHorizontalAlignment(JLabel.CENTER);</span>
+<span class="fc" id="L127">			text.add(tipo);</span>
+<span class="fc" id="L128">			panel.setOpaque(true);</span>
+<span class="fc" id="L129">			panel.setBackground(Color.WHITE);</span>
+<span class="fc" id="L130">			text.add(panel);</span>
+<span class="fc" id="L131">			uncorrectlyIdentifiedFaultPercentage.setOpaque(true);</span>
+<span class="fc" id="L132">			uncorrectlyIdentifiedFaultPercentage.setBackground(Color.WHITE);</span>
+<span class="fc" id="L133">			text.add(uncorrectlyIdentifiedFaultPercentage);</span>
+		}
+		
+<span class="fc" id="L136">		tab.addTab(&quot;Text&quot;, text);</span>
+		
+<span class="fc" id="L138">		chart = createChart(dataset);</span>
+<span class="fc" id="L139">		ChartPanel cp = new ChartPanel(chart);</span>
+<span class="fc" id="L140">		tab.addTab(&quot;Chart&quot;, cp);</span>
+<span class="fc" id="L141">	}</span>
+	
+	
+	/**
+	 * 
+	 * @param cds Dataset with the analyzer and user rules results
+	 * @return Bar Chart with the info from the dataset
+	 */
+	private JFreeChart createChart(CategoryDataset cds) {
+<span class="fc" id="L150">		JFreeChart fc = ChartFactory.createBarChart(&quot;Faults&quot;, &quot;Fault Types&quot;, &quot;Value&quot;, cds, PlotOrientation.VERTICAL, true, true, false);</span>
+		
+		//Customize chart
+<span class="fc" id="L153">		fc.setBackgroundPaint(Color.white);</span>
+<span class="fc" id="L154">		CategoryPlot cplot = (CategoryPlot)fc.getPlot();</span>
+<span class="fc" id="L155">	    ((BarRenderer)cplot.getRenderer()).setBarPainter(new StandardBarPainter());</span>
+
+<span class="fc" id="L157">	    BarRenderer r = (BarRenderer)fc.getCategoryPlot().getRenderer();</span>
+<span class="fc" id="L158">	    r.setSeriesPaint(0, Color.blue);</span>
+		
+<span class="fc" id="L160">		return fc;</span>
+	}
+	
+	/**
+	 *  add content to frame:
+	 *  table with information about defects in different methods
+	 *  panel with statistics about defects analysis with iPlasma, PMD and this software
+	 *  panel with subtitle
+	 *  
+	 */
+	private void addContent() {
+<span class="fc" id="L171">		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();</span>
+<span class="fc" id="L172">		centerRenderer.setHorizontalAlignment( JLabel.CENTER );</span>
+<span class="fc" id="L173">		table.setDefaultRenderer(Object.class, centerRenderer);</span>
+<span class="fc" id="L174">		table.setModel(dtm);</span>
+<span class="fc" id="L175">		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);</span>
+<span class="fc" id="L176">		JScrollPane tableSP = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,</span>
+<span class="fc" id="L177">				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);</span>
+<span class="fc" id="L178">		frame.add(tableSP, BorderLayout.WEST);</span>
+		
+		//Jpanel com a legenda
+<span class="fc" id="L181">		JPanel bottom = new JPanel();</span>
+<span class="fc" id="L182">		bottom.setLayout(new GridLayout(2,1));</span>
+<span class="fc" id="L183">		bottom.setBorder(new EmptyBorder(0,5,0,0));</span>
+		
+		//legenda
+<span class="fc" id="L186">		JLabel legenda = new JLabel(&quot;Subtitle:&quot;);</span>
+<span class="fc" id="L187">		bottom.add(legenda);</span>
+		
+<span class="fc" id="L189">		JPanel aux = new JPanel();</span>
+<span class="fc" id="L190">		aux.setLayout(new GridLayout(2,2));</span>
+<span class="fc" id="L191">		aux.setBorder(new EmptyBorder(0,5,10,10));</span>
+		
+<span class="fc" id="L193">		JLabel dci = new JLabel(&quot;DCI - Defeitos Corretamente Identificados&quot;);</span>
+<span class="fc" id="L194">		JLabel dii = new JLabel(&quot;DII - Defeitos Incorretamente Identificados&quot;);</span>
+<span class="fc" id="L195">		JLabel adci = new JLabel(&quot;ADCI - Ausência de Defeitos Corretamente Identificados&quot;);</span>
+<span class="fc" id="L196">		JLabel adii = new JLabel(&quot;ADII - Ausência de Defeitos Incorretamente Identificados&quot;);</span>
+		
+<span class="fc" id="L198">		aux.add(dci);</span>
+<span class="fc" id="L199">		aux.add(dii);</span>
+<span class="fc" id="L200">		aux.add(adci);</span>
+<span class="fc" id="L201">		aux.add(adii);</span>
+		
+<span class="fc" id="L203">		bottom.add(aux);</span>
+		
+<span class="fc" id="L205">		JPanel p = new JPanel();</span>
+<span class="fc" id="L206">		p.setLayout(new BorderLayout());</span>
+<span class="fc" id="L207">		p.add(tableSP, BorderLayout.CENTER);</span>
+<span class="fc" id="L208">		p.add(bottom, BorderLayout.SOUTH);</span>
+<span class="fc" id="L209">		tab.add(&quot;Table&quot;, p);</span>
+		
+<span class="fc" id="L211">		frame.add(tab);</span>
+		//frame.add(bottom, BorderLayout.SOUTH);
+		
+<span class="fc" id="L214">	}</span>
+	
+	/**
+	 * set information in frame
+	 * display frame
+	 */
+	public void displayResults() {
+<span class="fc" id="L221">		addContent();</span>
+<span class="fc" id="L222">		frame.setPreferredSize(new Dimension(700, 500));</span>
+<span class="fc" id="L223">		frame.pack();</span>
+<span class="fc" id="L224">		frame.setResizable(false);</span>
+<span class="fc" id="L225">		frame.setVisible(true);</span>
+<span class="fc" id="L226">	}</span>
+	
+	/**
+	 * @return table
+	 */
+	public JTable getTable() {
+<span class="fc" id="L232">		return table;</span>
+	}
+	
+	/**
+	 * @return defaultTableModel
+	 */
+	public DefaultTableModel getDTM() {
+<span class="fc" id="L239">		return dtm;</span>
+	}
+	
+	/**
+	 * @return right panel
+	 */
+	public JPanel getTextPanel() {
+<span class="fc" id="L246">		return text;</span>
+	}
+	
+	/**
+	 * @return matrix with data
+	 */
+	public int[][] getMatrix() {
+<span class="fc" id="L253">		return matrix;</span>
+	}
+
+	/**
+	 * @return frame
+	 */
+	public JFrame getFrame() {
+<span class="fc" id="L260">		return frame;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>AllTests (13/dez/2019 21:45:47)</div></body></html>

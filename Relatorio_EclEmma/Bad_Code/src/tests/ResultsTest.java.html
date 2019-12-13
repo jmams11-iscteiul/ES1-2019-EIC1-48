@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ResultsTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (13/dez/2019 21:45:47)</a> &gt; <a href="../../index.html" class="el_group">Bad Code</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">tests</a> &gt; <span class="el_source">ResultsTest.java</span></div><h1>ResultsTest.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package tests;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.JTable;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import badcode.Results;
+
+
+/**
+ * @author Ricardo, João M., João R., Miguel.
+ *
+ */
+<span class="fc" id="L29">class ResultsTest {</span>
+	
+	static Results r;
+	static Results r1;
+	static Results r2;
+	static Results r3;
+<span class="fc" id="L35">	static String[] header = {&quot;MethodID&quot;, &quot;iPlasma&quot;, &quot;PMD&quot;, &quot;UserLongMethod&quot;, &quot;UserFeatureEnvy&quot;};</span>
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeAll
+	static void setUpBeforeClass() throws Exception {
+<span class="fc" id="L41">		r = new Results(header);</span>
+<span class="fc" id="L42">		r1 = new Results(header);</span>
+<span class="fc" id="L43">		r2 = new Results(header);</span>
+<span class="fc" id="L44">		r3 = new Results(header);</span>
+<span class="fc" id="L45">	}</span>
+
+	@Test
+	void testGetters() {
+<span class="fc" id="L49">		Results rg = new Results(header);</span>
+<span class="fc" id="L50">		JTable aux = rg.getTable();</span>
+<span class="fc" id="L51">		assertEquals(rg.getDTM().getRowCount(), aux.getModel().getRowCount());</span>
+<span class="fc" id="L52">		String[] a = {&quot;1&quot;,&quot;.2&quot;,&quot;a&quot;, &quot;a&quot;,&quot;s&quot;};</span>
+<span class="fc" id="L53">		rg.addRow(a);</span>
+<span class="fc" id="L54">		assertEquals(r.getDTM().getRowCount(), aux.getModel().getRowCount());</span>
+<span class="fc" id="L55">		assertTrue(rg.getTextPanel() instanceof JPanel);</span>
+<span class="fc" id="L56">		assertNotNull(rg.getTextPanel());</span>
+<span class="fc" id="L57">		JFrame frame = rg.getFrame();</span>
+<span class="fc" id="L58">		assertNotNull(frame);</span>
+<span class="fc" id="L59">	}</span>
+
+	/**
+	 * 
+	 */
+	@Test
+	void test() {
+<span class="fc" id="L66">		assertNotNull(r);</span>
+		
+<span class="fc" id="L68">		String[] aux = {&quot;1&quot;, &quot;DCII&quot;, &quot;DCII&quot;, &quot;DCII&quot;, &quot;DCII&quot;};</span>
+<span class="fc" id="L69">		r.addRow(aux);</span>
+<span class="fc" id="L70">		r1.addRow(aux);</span>
+<span class="fc" id="L71">		r2.addRow(aux);</span>
+<span class="fc" id="L72">		r3.addRow(aux);</span>
+<span class="fc" id="L73">		assertEquals(r.getDTM().getRowCount(), 1);</span>
+<span class="fc" id="L74">		assertFalse(r.getDTM().isCellEditable(0, 0));</span>
+		
+<span class="fc" id="L76">		int[][] dt = {{200},</span>
+<span class="fc" id="L77">				{50, 50, 50, 50},</span>
+<span class="fc" id="L78">				{40, 60, 50, 50},</span>
+<span class="fc" id="L79">				{100, 0, 0, 100},</span>
+<span class="fc" id="L80">				{70, 120, 10, 0}};</span>
+<span class="fc" id="L81">		String[] td = {&quot;DCI&quot;,&quot;DII&quot;,&quot;ADII&quot;,&quot;ADCI&quot;};</span>
+<span class="fc" id="L82">		String[] s = {&quot;iPlasma&quot;, &quot;PMD&quot;};</span>
+<span class="fc" id="L83">		String[] s1 = {&quot;iPlasma&quot;, &quot;PMD&quot;, &quot;UserFeatureEnvy&quot;};</span>
+<span class="fc" id="L84">		String[] s2 = {&quot;iPlasma&quot;, &quot;PMD&quot;, &quot;UserLongMethod&quot;};</span>
+<span class="fc" id="L85">		String[] s3 = {&quot;iPlasma&quot;, &quot;PMD&quot;, &quot;UserLongMethod&quot;, &quot;UserFeatureEnvy&quot;};</span>
+				
+<span class="fc" id="L87">		r.addResults(dt, td, s);</span>
+<span class="fc" id="L88">		assertArrayEquals(dt, r.getMatrix());</span>
+<span class="fc" id="L89">		assertEquals(((JLabel)r.getTextPanel().getComponent(0)).getText(),&quot;&gt; Número de Métodos: &quot; + dt[0][0]);</span>
+		
+<span class="fc" id="L91">		assertEquals(((JLabel)r.getTextPanel().getComponent(1)).getText(),&quot;- &quot; + s[0] + &quot;: &quot;);</span>
+<span class="fc" id="L92">		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(2)).getComponent(0)).getText(),&quot; &gt; &quot; + td[0] + &quot;: &quot; + dt[1][0]);</span>
+<span class="fc" id="L93">		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(2)).getComponent(1)).getText(),&quot; &gt; &quot; + td[1] + &quot;: &quot; + dt[1][1]);</span>
+<span class="fc" id="L94">		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(2)).getComponent(2)).getText(),&quot; &gt; &quot; + td[2] + &quot;: &quot; + dt[1][2]);</span>
+<span class="fc" id="L95">		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(2)).getComponent(3)).getText(),&quot; &gt; &quot; + td[3] + &quot;: &quot; + dt[1][3]);</span>
+		
+<span class="fc" id="L97">		assertEquals(((JLabel)r.getTextPanel().getComponent(4)).getText(),&quot;- &quot; + s[1] + &quot;: &quot;);</span>
+<span class="fc" id="L98">		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(5)).getComponent(0)).getText(),&quot; &gt; &quot; + td[0] + &quot;: &quot; + dt[2][0]);</span>
+<span class="fc" id="L99">		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(5)).getComponent(1)).getText(),&quot; &gt; &quot; + td[1] + &quot;: &quot; + dt[2][1]);</span>
+<span class="fc" id="L100">		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(5)).getComponent(2)).getText(),&quot; &gt; &quot; + td[2] + &quot;: &quot; + dt[2][2]);</span>
+<span class="fc" id="L101">		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(5)).getComponent(3)).getText(),&quot; &gt; &quot; + td[3] + &quot;: &quot; + dt[2][3]);</span>
+	
+<span class="fc" id="L103">		assertEquals(r.getTextPanel().getComponentCount(), 7);</span>
+	
+<span class="fc" id="L105">		r1.addResults(dt, td, s1);</span>
+<span class="fc" id="L106">		assertEquals(((JLabel)r1.getTextPanel().getComponent(0)).getText(),&quot;&gt; Número de Métodos: &quot; + dt[0][0]);</span>
+		
+<span class="fc" id="L108">		assertEquals(((JLabel)r1.getTextPanel().getComponent(7)).getText(),&quot;- &quot; + s1[2] + &quot;: &quot;);</span>
+<span class="fc" id="L109">		assertEquals(((JLabel)((JPanel)r1.getTextPanel().getComponent(8)).getComponent(0)).getText(),&quot; &gt; &quot; + td[0] + &quot;: &quot; + dt[4][0]);</span>
+<span class="fc" id="L110">		assertEquals(((JLabel)((JPanel)r1.getTextPanel().getComponent(8)).getComponent(1)).getText(),&quot; &gt; &quot; + td[1] + &quot;: &quot; + dt[4][1]);</span>
+<span class="fc" id="L111">		assertEquals(((JLabel)((JPanel)r1.getTextPanel().getComponent(8)).getComponent(2)).getText(),&quot; &gt; &quot; + td[2] + &quot;: &quot; + dt[4][2]);</span>
+<span class="fc" id="L112">		assertEquals(((JLabel)((JPanel)r1.getTextPanel().getComponent(8)).getComponent(3)).getText(),&quot; &gt; &quot; + td[3] + &quot;: &quot; + dt[4][3]);</span>
+	
+<span class="fc" id="L114">		assertEquals(r1.getTextPanel().getComponentCount(), 10);</span>
+	
+<span class="fc" id="L116">		r2.addResults(dt, td, s2);</span>
+<span class="fc" id="L117">		assertEquals(((JLabel)r2.getTextPanel().getComponent(0)).getText(),&quot;&gt; Número de Métodos: &quot; + dt[0][0]);</span>
+		
+<span class="fc" id="L119">		assertEquals(((JLabel)r2.getTextPanel().getComponent(7)).getText(),&quot;- &quot; + s2[2] + &quot;: &quot;);</span>
+<span class="fc" id="L120">		assertEquals(((JLabel)((JPanel)r2.getTextPanel().getComponent(8)).getComponent(0)).getText(),&quot; &gt; &quot; + td[0] + &quot;: &quot; + dt[3][0]);</span>
+<span class="fc" id="L121">		assertEquals(((JLabel)((JPanel)r2.getTextPanel().getComponent(8)).getComponent(1)).getText(),&quot; &gt; &quot; + td[1] + &quot;: &quot; + dt[3][1]);</span>
+<span class="fc" id="L122">		assertEquals(((JLabel)((JPanel)r2.getTextPanel().getComponent(8)).getComponent(2)).getText(),&quot; &gt; &quot; + td[2] + &quot;: &quot; + dt[3][2]);</span>
+<span class="fc" id="L123">		assertEquals(((JLabel)((JPanel)r2.getTextPanel().getComponent(8)).getComponent(3)).getText(),&quot; &gt; &quot; + td[3] + &quot;: &quot; + dt[3][3]);</span>
+<span class="fc" id="L124">		assertEquals(r2.getTextPanel().getComponentCount(), 10);       </span>
+	
+<span class="fc" id="L126">		r3.addResults(dt, td, s3);</span>
+		
+<span class="fc" id="L128">		assertEquals(r3.getTextPanel().getComponentCount(), 13);</span>
+		
+		
+<span class="fc" id="L131">		r.displayResults();</span>
+		
+		
+<span class="fc" id="L134">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>AllTests (13/dez/2019 21:45:47)</div></body></html>

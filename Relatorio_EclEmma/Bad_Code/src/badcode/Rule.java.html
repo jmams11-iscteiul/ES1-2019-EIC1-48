@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Rule.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (13/dez/2019 21:45:47)</a> &gt; <a href="../../index.html" class="el_group">Bad Code</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">badcode</a> &gt; <span class="el_source">Rule.java</span></div><h1>Rule.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package badcode;
+
+/**
+ * @author Ricardo, João M., João R., Miguel.
+ *
+ */
+public class Rule {
+
+	private String metric;
+	private String operator;
+	private double value;
+	
+	/**
+	 * @param metric metric typed by the user
+	 * @param operator operator typed by the user
+	 * @param value value typed by the user
+	 */
+<span class="fc" id="L21">	public Rule(String metric, String operator, double value) {</span>
+<span class="fc" id="L22">		this.metric = metric;</span>
+<span class="fc" id="L23">		this.operator = operator;</span>
+<span class="fc" id="L24">		this.value = value;</span>
+<span class="fc" id="L25">	}</span>
+
+
+	/**
+	 * Checks if the rule created by the user is valid when compared to the excel method passed in the arguments
+	 * 
+	 * @param em excelMethod to be compared to
+	 * @return true if the rule aplies, false otherwise
+	 */
+	@SuppressWarnings(&quot;null&quot;)
+	public boolean check(ExcelMethod em) {
+<span class="fc" id="L36">		double excel = 0;</span>
+
+		//verify metric
+<span class="fc bfc" id="L39" title="All 5 branches covered.">		switch (metric) {</span>
+		case &quot;LAA&quot;:
+<span class="fc" id="L41">			excel = em.getLaa();</span>
+<span class="fc" id="L42">			break;</span>
+		case &quot;ATFD&quot;:
+<span class="fc" id="L44">			excel = em.getAtfd();</span>
+<span class="fc" id="L45">			break;</span>
+		case &quot;LOC&quot;:
+<span class="fc" id="L47">			excel = em.getLoc();</span>
+<span class="fc" id="L48">			break;</span>
+		case &quot;CYCLO&quot;: 
+<span class="fc" id="L50">			excel = em.getCyclo();</span>
+			break;	
+		}
+		
+<span class="fc" id="L54">		Boolean check = null;</span>
+		
+		//verify operator
+<span class="fc bfc" id="L57" title="All 6 branches covered.">		switch (operator) {</span>
+		case &quot;&gt;&quot;:
+<span class="fc bfc" id="L59" title="All 2 branches covered.">			check = excel &gt; value;</span>
+<span class="fc" id="L60">			break;</span>
+		case &quot;&gt;=&quot;:
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">			check = excel &gt;= value;</span>
+<span class="fc" id="L63">			break;			</span>
+		case &quot;&lt;&quot;:
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">			check = excel &lt; value;</span>
+<span class="fc" id="L66">			break;</span>
+		case &quot;&lt;=&quot;:
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">			check = excel &lt;= value;</span>
+<span class="fc" id="L69">			break;</span>
+		case &quot;=&quot;:
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">			check = excel == value;</span>
+			break;
+		}
+
+<span class="fc" id="L75">		return check;</span>
+	}
+
+	/**
+	 * Validates the arguments passed in the parameters. Throws an exception if any of the arguments doesn't match criteria
+	 * 
+	 * @param m metric typed by the user
+	 * @param o operator typed by the user
+	 * @param value value typed by the user
+	 */
+	public static void validateArguments(String m, String o, Double value) {
+<span class="fc bfc" id="L86" title="All 8 branches covered.">		if(!(m.equals(&quot;LAA&quot;) || m.equals(&quot;ATFD&quot;) || m.equals(&quot;LOC&quot;) || m.equals(&quot;CYCLO&quot;)))</span>
+<span class="fc" id="L87">			throw new NullPointerException(&quot;Metrica não existente&quot;);</span>
+<span class="fc bfc" id="L88" title="All 10 branches covered.">		if(!(o.equals(&quot;&gt;&quot;) || o.equals(&quot;&gt;=&quot;) || o.equals(&quot;&lt;&quot;) || o.equals(&quot;&lt;=&quot;) || o.equals(&quot;=&quot;)) )</span>
+<span class="fc" id="L89">			throw new NullPointerException(&quot;Comparador não suportado&quot;);</span>
+		
+<span class="fc" id="L91">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>AllTests (13/dez/2019 21:45:47)</div></body></html>

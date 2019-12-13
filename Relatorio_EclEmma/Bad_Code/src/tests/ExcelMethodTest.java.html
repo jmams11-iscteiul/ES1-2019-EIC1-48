@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ExcelMethodTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (13/dez/2019 21:45:47)</a> &gt; <a href="../../index.html" class="el_group">Bad Code</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">tests</a> &gt; <span class="el_source">ExcelMethodTest.java</span></div><h1>ExcelMethodTest.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package tests;
+
+import static org.junit.Assert.assertEquals;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import badcode.ExcelMethod;
+
+/**
+ * @author Ricardo, João M., João R., Miguel.
+ *
+ */
+<span class="fc" id="L27">class ExcelMethodTest {</span>
+
+	private static ExcelMethod excelMethod;
+	private static int methodID;
+	private static String packageName;
+	private static String className;
+	private static String methodName;
+	private static int loc;
+	private static int cyclo;
+	private static int atfd;
+	private static float laa;
+	private static boolean isLongMethod;
+	private static Boolean iPlasma;
+	private static Boolean pmd;
+	private static boolean isFeatureEnvy;
+	private static XSSFWorkbook workbook;
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeAll
+	static void setUpBeforeClass() throws Exception {
+<span class="fc" id="L49">		workbook = new XSSFWorkbook(new FileInputStream(&quot;resources/Long-Method.xlsx&quot;));</span>
+
+<span class="fc" id="L51">		XSSFSheet excelSheet = workbook.getSheetAt(0);</span>
+<span class="fc" id="L52">		XSSFRow excelRow = excelSheet.getRow(1);</span>
+
+<span class="fc" id="L54">		excelMethod = new ExcelMethod(excelRow);</span>
+
+<span class="fc" id="L56">		methodID = Integer.parseInt(excelRow.getCell(0).getRawValue());</span>
+<span class="fc" id="L57">		packageName = excelRow.getCell(1).toString();</span>
+<span class="fc" id="L58">		className = excelRow.getCell(2).toString();</span>
+<span class="fc" id="L59">		methodName = excelRow.getCell(3).toString();</span>
+<span class="fc" id="L60">		loc = Integer.parseInt(excelRow.getCell(4).getRawValue());</span>
+<span class="fc" id="L61">		cyclo = Integer.parseInt(excelRow.getCell(5).getRawValue());</span>
+<span class="fc" id="L62">		atfd = Integer.parseInt(excelRow.getCell(6).getRawValue());</span>
+<span class="fc" id="L63">		laa = Float.parseFloat(excelRow.getCell(7).toString());</span>
+<span class="fc" id="L64">		isLongMethod = excelRow.getCell(8).getBooleanCellValue();</span>
+<span class="fc" id="L65">		iPlasma = excelRow.getCell(9).getBooleanCellValue();</span>
+<span class="fc" id="L66">		pmd = excelRow.getCell(10).getBooleanCellValue();</span>
+<span class="fc" id="L67">		isFeatureEnvy = excelRow.getCell(11).getBooleanCellValue();</span>
+<span class="fc" id="L68">	}</span>
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@AfterAll
+	static void tearDownAfterClass() throws Exception {
+<span class="fc" id="L75">	}</span>
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeEach
+	void setUp() throws Exception {
+<span class="fc" id="L82">	}</span>
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@AfterEach
+	void tearDown() throws Exception {
+<span class="fc" id="L89">	}</span>
+
+	@Test
+	final void testExcelMethod() throws FileNotFoundException, IOException {
+<span class="fc" id="L93">	}</span>
+
+	/**
+	 * Test method for {@link ExcelMethod#getMethodID()}.
+	 */
+	@Test
+	final void testGetMethodID() {
+<span class="fc" id="L100">		assertEquals(methodID, excelMethod.getMethodID());</span>
+<span class="fc" id="L101">	}</span>
+
+	/**
+	 * Test method for {@link ExcelMethod#getPackageName()}.
+	 */
+	@Test
+	final void testGetPackageName() {
+<span class="fc" id="L108">		assertEquals(packageName, excelMethod.getPackageName());</span>
+<span class="fc" id="L109">	}</span>
+
+	/**
+	 * Test method for {@link ExcelMethod#getClassName()}.
+	 */
+	@Test
+	final void testGetClassName() {
+<span class="fc" id="L116">		assertEquals(className, excelMethod.getClassName());</span>
+<span class="fc" id="L117">	}</span>
+
+	/**
+	 * Test method for {@link ExcelMethod#getMethodName()}.
+	 */
+	@Test
+	final void testGetMethodName() {
+<span class="fc" id="L124">		assertEquals(methodName, excelMethod.getMethodName());</span>
+<span class="fc" id="L125">	}</span>
+
+	/**
+	 * Test method for {@link ExcelMethod#getLoc()}.
+	 */
+	@Test
+	final void testGetLoc() {
+<span class="fc" id="L132">		assertEquals(loc, excelMethod.getLoc());</span>
+<span class="fc" id="L133">	}</span>
+
+	/**
+	 * Test method for {@link ExcelMethod#getCyclo()}.
+	 */
+	@Test
+	final void testGetCyclo() {
+<span class="fc" id="L140">		assertEquals(cyclo, excelMethod.getCyclo());</span>
+<span class="fc" id="L141">	}</span>
+
+	/**
+	 * Test method for {@link ExcelMethod#getAtfd()}.
+	 */
+	@Test
+	final void testGetAtfd() {
+<span class="fc" id="L148">		assertEquals(atfd, excelMethod.getAtfd());</span>
+<span class="fc" id="L149">	}</span>
+
+	/**
+	 * Test method for {@link ExcelMethod#getLaa()}.
+	 */
+	@Test
+	final void testGetLaa() {
+<span class="fc" id="L156">		assertEquals(laa, excelMethod.getLaa(), 0.0f);</span>
+<span class="fc" id="L157">	}</span>
+
+	/**
+	 * Test method for {@link ExcelMethod#isLongMethod()}.
+	 */
+	@Test
+	final void testIsLongMethod() {
+<span class="fc" id="L164">		assertEquals(isLongMethod, excelMethod.isLongMethod());</span>
+<span class="fc" id="L165">	}</span>
+
+	/**
+	 * Test method for {@link ExcelMethod#getiPlasma()}.
+	 */
+	@Test
+	final void testGetiPlasma() {
+<span class="fc" id="L172">		assertEquals(iPlasma, excelMethod.getiPlasma());</span>
+<span class="fc" id="L173">	}</span>
+
+	/**
+	 * Test method for {@link ExcelMethod#getPmd()}.
+	 */
+	@Test
+	final void testGetPmd() {
+<span class="fc" id="L180">		assertEquals(pmd, excelMethod.getPmd());</span>
+<span class="fc" id="L181">	}</span>
+
+	/**
+	 * Test method for {@link ExcelMethod#isFeatureEnvy()}.
+	 */
+	@Test
+	final void testIsFeatureEnvy() {
+<span class="fc" id="L188">		assertEquals(isFeatureEnvy, excelMethod.isFeatureEnvy());</span>
+<span class="fc" id="L189">	}</span>
+
+	/**
+	 * Test method for {@link ExcelMethod#toString()}.
+	 */
+	@Test
+	final void testToString() {
+<span class="fc" id="L196">		String test = &quot;[ \n&quot; + &quot;MethodID: &quot; + methodID + &quot;\nPackage: &quot; + packageName + &quot;\nClass: &quot; + className + &quot;\nMethodName: &quot; + methodName + &quot;\nLOC: &quot; + loc + &quot;\nCYCLO: &quot;</span>
+<span class="fc" id="L197">				+ cyclo + &quot;\nATFD: &quot; + atfd + &quot;\nLAA: &quot; + laa + &quot;\nis_long_method: &quot; + isLongMethod + &quot;\niPlasma: &quot; + iPlasma</span>
+<span class="fc" id="L198">				+ &quot;\nPMD: &quot; + pmd + &quot;\nis_feature_envy: &quot; + isFeatureEnvy + &quot;\n]&quot;;</span>
+<span class="fc" id="L199">		assertEquals(excelMethod.toString(), test);</span>
+<span class="fc" id="L200">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>AllTests (13/dez/2019 21:45:47)</div></body></html>

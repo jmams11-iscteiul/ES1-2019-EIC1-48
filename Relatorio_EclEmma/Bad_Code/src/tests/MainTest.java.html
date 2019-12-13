@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>MainTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (13/dez/2019 21:45:47)</a> &gt; <a href="../../index.html" class="el_group">Bad Code</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">tests</a> &gt; <span class="el_source">MainTest.java</span></div><h1>MainTest.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package tests;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import badcode.ExcelMethod;
+import badcode.Main;
+import badcode.Results;
+
+/**
+ * @author Ricardo, Joao M., Joao G., Miguel
+ *
+ */
+<span class="fc" id="L21">class MainTest {</span>
+
+	static Main aux;
+	
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeAll
+	static void setUpBeforeClass() throws Exception {
+<span class="fc" id="L30">		aux = new Main();</span>
+<span class="fc" id="L31">	}</span>
+
+	/**
+	 * Test method for {@link badcode.Main#Main()}.
+	 */
+	@Test
+	final void testMain() {
+<span class="fc" id="L38">		Main test = new Main();</span>
+<span class="fc" id="L39">		assertNotNull(test.getGUI());</span>
+<span class="fc" id="L40">	}</span>
+
+	/**
+	 * Test method for {@link badcode.Main#loadExcel(java.lang.String)}.
+	 */
+	@Test
+	final void testLoadExcel() {
+<span class="fc" id="L47">		Main aux = new Main();</span>
+<span class="fc" id="L48">		ArrayList&lt;ExcelMethod&gt; auxList = aux.getList();</span>
+<span class="fc" id="L49">		assertEquals(0, auxList.size());</span>
+<span class="fc" id="L50">		aux.loadExcel(&quot;./resources/Long-Method.xlsx&quot;);</span>
+<span class="fc" id="L51">		auxList = aux.getList();</span>
+<span class="fc" id="L52">		assertEquals(420, auxList.size());</span>
+		
+<span class="fc" id="L54">		NullPointerException thrown = assertThrows(NullPointerException.class,</span>
+<span class="pc" id="L55">				() -&gt; aux.loadExcel(&quot;./resources/LongMethods.xlsx&quot;));</span>
+<span class="fc" id="L56">		assertTrue(thrown.getMessage().contains(&quot;Woorkbook é null!&quot;));</span>
+
+<span class="fc" id="L58">		NullPointerException thrown2 = assertThrows(NullPointerException.class,</span>
+<span class="pc" id="L59">				() -&gt; aux.loadExcel(&quot;./resources/testes.txt&quot;));</span>
+<span class="fc" id="L60">		assertTrue(thrown2.getMessage().contains(&quot;Woorkbook é null!&quot;));</span>
+<span class="fc" id="L61">	}</span>
+	
+	
+
+	/**
+	 * Test method for {@link badcode.Main#getList()}.
+	 */
+	@Test
+	final void testGetList() {
+<span class="fc" id="L70">		assertEquals(0, aux.getList().size());</span>
+<span class="fc" id="L71">	}</span>
+	
+	/**
+	 * Test method for {@link badcode.Main#getGUI()}.
+	 */
+	@Test
+	final void testGetGUI() {
+<span class="fc" id="L78">		assertNotNull(aux.getGUI());</span>
+<span class="fc" id="L79">	}</span>
+
+	/**
+	 * Test method for {@link badcode.Main#analyzeTable(int, int, java.lang.String, int, double, java.lang.String)}.
+	 */
+	@Test
+	final void testAnalyzeTable() {
+<span class="fc" id="L86">		assertNull(aux.analyzeTable(1, 1, 1, 1, true, true, &quot;LOC &gt; 1 AND CYCLO &gt; 1&quot;));</span>
+<span class="fc" id="L87">		aux.loadExcel(&quot;./resources/Long-Method.xlsx&quot;);</span>
+<span class="fc" id="L88">		Results temp = aux.analyzeTable(1, 1, 1, 1, true, true, &quot;LOC &gt; 1 AND CYCLO &gt; 1&quot;);</span>
+<span class="fc" id="L89">		int [][] m = temp.getMatrix();</span>
+<span class="fc" id="L90">		int [][] tempMatrix= {{420},{140,0,0,280},{140,18,0,262},{140,117,0,163},{114,55,0,251}};</span>
+<span class="fc" id="L91">		assertArrayEquals(tempMatrix, m);</span>
+<span class="fc" id="L92">		assertNotEquals(tempMatrix, new int [0][0]);</span>
+		
+<span class="fc" id="L94">		NullPointerException thrown = assertThrows(NullPointerException.class,</span>
+<span class="pc" id="L95">				() -&gt; aux.analyzeTable(13, 18, 15, 5, true, true, &quot;AND&quot;));</span>
+<span class="fc" id="L96">		assertTrue(thrown.getMessage().contains(&quot;Regra não Suportada!&quot;));</span>
+		
+<span class="fc" id="L98">		temp = aux.analyzeTable(1, 1, 1, 0.1, true, true, &quot;&quot;);</span>
+<span class="fc" id="L99">		temp = aux.analyzeTable(13, 18, 15, 5, true, false, &quot;LOC &gt; 1 OR CYCLO &gt; 1&quot;);</span>
+<span class="fc" id="L100">		temp = aux.analyzeTable(13, 18, 15, 5, false, true, &quot;LOC &gt; 1 AND CYCLO &gt; 1&quot;);</span>
+<span class="fc" id="L101">		temp = aux.analyzeTable(13, 18, 15, 5, false, false, &quot;LOC &gt; 1 AND CYCLO &gt; 1&quot;);</span>
+<span class="fc" id="L102">		temp = aux.analyzeTable(13, 18, 15, 5, false, false, &quot;LOC &gt; 1 OR CYCLO &gt; 1 OR LAA &gt;= 200 OR ATFD &lt;= 2&quot;);</span>
+		
+<span class="fc" id="L104">		NullPointerException thrown2 = assertThrows(NullPointerException.class,</span>
+<span class="pc" id="L105">				() -&gt; aux.analyzeTable(13, 18, 15, 5, false, false, &quot;LOC &gt; 1 AND CYCLO &gt; 1 AND&quot;));</span>
+<span class="fc" id="L106">		assertTrue(thrown2.getMessage().contains(&quot;Regra não Suportada!&quot;));</span>
+		
+<span class="fc" id="L108">		NullPointerException thrown3 = assertThrows(NullPointerException.class,</span>
+<span class="pc" id="L109">				() -&gt; aux.analyzeTable(13, 18, 15, 5, false, false, &quot;LOCU &gt; 2&quot;));</span>
+<span class="fc" id="L110">		assertTrue(thrown3.getMessage().contains(&quot;Regra não Suportada!&quot;));</span>
+		
+<span class="fc" id="L112">		Results temp2 = aux.analyzeTable(13, 18, 15, 5, true, true, &quot;LOC &gt; 1 AND CYCLO &gt; 1 OR LAA &gt;= 200 AND ATFD &lt;= 2&quot;);</span>
+<span class="fc" id="L113">		int [][] m2 = temp2.getMatrix();</span>
+<span class="fc" id="L114">		int [][] tempMatrix2= {{420},{140,0,0,280},{140,18,0,262},{117,2,23,278},{40,2,74,304}};</span>
+<span class="fc" id="L115">		assertArrayEquals(tempMatrix2, m2);</span>
+<span class="fc" id="L116">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>AllTests (13/dez/2019 21:45:47)</div></body></html>

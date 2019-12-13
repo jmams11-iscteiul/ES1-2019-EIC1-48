@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (13/dez/2019 21:45:47)</a> &gt; <a href="../../index.html" class="el_group">Bad Code</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">badcode</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">package badcode;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+
+import javax.swing.JOptionPane;
+
+import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+/**
+ * @author Ricardo, João M., João R., Miguel.
+ *
+ */
+public class Main {
+	/**
+	 * list - array with &quot;ExcelMethods&quot; information about functions of a existing
+	 * project
+	 * 
+	 * @see GUI, ExcelMethod
+	 */
+	private GUI gui;
+	private ArrayList&lt;ExcelMethod&gt; excelMethodsList;
+
+	/**
+	 * @author Ricardo, João M., João R., Miguel.
+	 * 
+	 *         Enum with all the fault types
+	 *
+	 */
+<span class="fc" id="L37">	private enum FaultType {</span>
+<span class="fc" id="L38">		DCI, DII, ADCI, ADII;</span>
+	}
+
+	/**
+	 * Initiate attributes Open a window with JTextFields to enter thresholds and
+	 * import an ExcelFile.
+	 */
+<span class="fc" id="L45">	public Main() {</span>
+<span class="fc" id="L46">		this.gui = new GUI(this);</span>
+<span class="fc" id="L47">		this.excelMethodsList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L48">		open();</span>
+<span class="fc" id="L49">	}</span>
+
+	/**
+	 * Open a window with JTextFields to enter thresholds and import an ExcelFile.
+	 * 
+	 * @see GUI.open()
+	 */
+	private void open() {
+<span class="fc" id="L57">		gui.open();</span>
+<span class="fc" id="L58">	}</span>
+
+	/**
+	 * If path is correct and the ExcelFile exists, load a XSSFSheet with the
+	 * information of excel
+	 * 
+	 * @param path path to an Excel File
+	 * @see Main#importExcel(String)
+	 */
+	public void loadExcel(String path) {
+<span class="fc" id="L68">		XSSFWorkbook workbook = importExcel(path);</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">		if (workbook != null) {</span>
+<span class="fc" id="L70">			XSSFSheet excelSheet = workbook.getSheetAt(0);</span>
+
+<span class="fc bfc" id="L72" title="All 2 branches covered.">			for (int row = 1; row &lt; excelSheet.getLastRowNum() + 1; row++) {</span>
+<span class="fc" id="L73">				XSSFRow excelRow = excelSheet.getRow(row);</span>
+<span class="fc" id="L74">				ExcelMethod aux = new ExcelMethod(excelRow);</span>
+<span class="fc" id="L75">				excelMethodsList.add(aux);</span>
+			}
+<span class="fc" id="L77">			gui.drawTable(workbook);</span>
+<span class="fc" id="L78">		} else {</span>
+<span class="fc" id="L79">			throw new NullPointerException(&quot;Woorkbook é null!&quot;);</span>
+		}
+<span class="fc" id="L81">	}</span>
+
+	/**
+	 * @return list with all the ExcelMethods loaded
+	 */
+	public ArrayList&lt;ExcelMethod&gt; getList() {
+<span class="fc" id="L87">		return this.excelMethodsList;</span>
+	}
+
+	/**
+	 * @return GUI
+	 */
+	public GUI getGUI() {
+<span class="fc" id="L94">		return gui;</span>
+	}
+
+	/**
+	 * @param path - path to an existing excel file
+	 * @return XSSFWorkbook to read the information of Excel
+	 */
+	private XSSFWorkbook importExcel(String path) {
+<span class="fc" id="L102">		XSSFWorkbook workbook = null;</span>
+		try {
+<span class="fc" id="L104">			workbook = new XSSFWorkbook(new FileInputStream(path));</span>
+<span class="fc" id="L105">		} catch (FileNotFoundException e) {</span>
+<span class="fc" id="L106">			System.out.println(&quot;Ficheiro não encontrado!&quot;);</span>
+<span class="nc" id="L107">		} catch (IOException e) {</span>
+<span class="nc" id="L108">			System.out.println(&quot;Erro na procura do ficheiro...&quot;);</span>
+<span class="fc" id="L109">		} catch (NotOfficeXmlFileException e) {</span>
+<span class="fc" id="L110">			JOptionPane.showMessageDialog(null, &quot;Introduza um ficheiro Excel!&quot;);</span>
+		}
+<span class="fc" id="L112">		return workbook;</span>
+	}
+
+	/**
+	 * Return the fault type based on inputs
+	 * 
+	 * @param a
+	 * @param b
+	 * @return fault type
+	 */
+	private FaultType getFaultType(boolean a, boolean b) {
+<span class="fc" id="L123">		FaultType temp = null;</span>
+<span class="fc bfc" id="L124" title="All 4 branches covered.">		if (a &amp;&amp; b) {</span>
+<span class="fc" id="L125">			temp = FaultType.DCI;</span>
+<span class="fc bfc" id="L126" title="All 4 branches covered.">		} else if (!a &amp;&amp; b) {</span>
+<span class="fc" id="L127">			temp = FaultType.DII;</span>
+<span class="pc bpc" id="L128" title="1 of 4 branches missed.">		} else if (a &amp;&amp; !b) {</span>
+<span class="fc" id="L129">			temp = FaultType.ADII;</span>
+<span class="pc bpc" id="L130" title="2 of 4 branches missed.">		} else if (!a &amp;&amp; !b) {</span>
+<span class="fc" id="L131">			temp = FaultType.ADCI;</span>
+		}
+<span class="fc" id="L133">		return temp;</span>
+	}
+
+	/**
+	 * Iterates excel file with information about functions For each function see if
+	 * is a Long Method or a Envy Feature based on user thresholds Compares results
+	 * between this software analyzer with other softwares analyzers (iPlasma and
+	 * PMD)
+	 * 
+	 * @param locThreshold   LOC (logMethod threshold)
+	 * @param cycloThreshold CYCLO (logMethod threshold)
+	 * @param aftdThreshold  ATFD (envyFeature threshold)
+	 * @param laaThreshold   LAA (envyFeature threshold)
+	 * @param featureEnvySelected checkbox value of feature envy
+	 * @param longMethodSelected checkbox value of long method
+	 * @param userExpression expression typed by the user
+	 * @return results
+	 */
+	public Results analyzeTable(int locThreshold, int cycloThreshold, int aftdThreshold, double laaThreshold,
+			boolean featureEnvySelected, boolean longMethodSelected, String userExpression) {
+<span class="fc bfc" id="L153" title="All 2 branches covered.">		if (excelMethodsList.size() != 0) {</span>
+<span class="fc" id="L154">			boolean isLongMethod = false;</span>
+<span class="fc" id="L155">			boolean isFeatureEnvy = false;</span>
+
+<span class="fc" id="L157">			int nMethods = excelMethodsList.size();</span>
+<span class="fc" id="L158">			String faultULM = &quot;-&quot;;</span>
+<span class="fc" id="L159">			String faultUFE = &quot;-&quot;;</span>
+<span class="fc" id="L160">			String faultUR = &quot;-&quot;;</span>
+<span class="fc" id="L161">			boolean userExpressionValid = validateUserExpression(userExpression);</span>
+
+<span class="fc" id="L163">			ArrayList&lt;FaultType&gt; iPlasmasFaults = new ArrayList&lt;FaultType&gt;();</span>
+<span class="fc" id="L164">			ArrayList&lt;FaultType&gt; PMDFaults = new ArrayList&lt;FaultType&gt;();</span>
+<span class="fc" id="L165">			ArrayList&lt;FaultType&gt; userLMFaults = new ArrayList&lt;FaultType&gt;();</span>
+<span class="fc" id="L166">			ArrayList&lt;FaultType&gt; userFEFaults = new ArrayList&lt;FaultType&gt;();</span>
+
+			// criar janela de resultados
+
+<span class="fc" id="L170">			String[] header = { &quot;MethodID&quot;, &quot;iPlasma&quot;, &quot;PMD&quot;, &quot;UserLongMethod&quot;, &quot;UserFeatureEnvy&quot;, &quot;UserRule&quot; };</span>
+<span class="fc" id="L171">			Results resultado = new Results(header);</span>
+
+<span class="fc" id="L173">			Rule[] rules = null;</span>
+<span class="fc" id="L174">			LinkedList&lt;String&gt; logicOperators = null;</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">			if (!userExpression.equals(&quot;&quot;)) {</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">				if (!userExpressionValid)</span>
+<span class="fc" id="L177">					throw new NullPointerException(&quot;Regra não Suportada!&quot;);</span>
+
+<span class="fc" id="L179">				String[] ruleArray = userExpression.split(&quot;AND|OR&quot;);</span>
+<span class="fc" id="L180">				rules = new Rule[ruleArray.length];</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">				for (int i = 0; i &lt; ruleArray.length; i++) {</span>
+<span class="fc" id="L182">					String[] textRule = ruleArray[i].trim().split(&quot; &quot;);</span>
+<span class="fc" id="L183">					Rule r = new Rule(textRule[0].trim(), textRule[1].trim(), Double.parseDouble(textRule[2].trim()));</span>
+<span class="fc" id="L184">					rules[i] = r;</span>
+				}
+
+<span class="fc" id="L187">				logicOperators = new LinkedList&lt;String&gt;();</span>
+<span class="fc" id="L188">				String[] allWords = userExpression.split(&quot; &quot;);</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">				for (int i = 0; i &lt; allWords.length; i++) {</span>
+<span class="fc bfc" id="L190" title="All 4 branches covered.">					if (allWords[i].trim().equals(&quot;AND&quot;) || allWords[i].trim().equals(&quot;OR&quot;))</span>
+<span class="fc" id="L191">						logicOperators.add(allWords[i].trim());</span>
+				}
+			}
+
+<span class="fc bfc" id="L195" title="All 2 branches covered.">			for (int row = 0; row &lt; excelMethodsList.size(); row++) {</span>
+<span class="fc" id="L196">				ExcelMethod currentMethod = excelMethodsList.get(row);</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">				if (!userExpression.equals(&quot;&quot;))</span>
+<span class="fc" id="L198">					faultUR = userMetricValue(rules, logicOperators, currentMethod).toString().toUpperCase();</span>
+<span class="fc" id="L199">				int locFunction = currentMethod.getLoc();</span>
+<span class="fc" id="L200">				int cycloFunction = currentMethod.getCyclo();</span>
+<span class="fc" id="L201">				int atfdExcelValue = currentMethod.getAtfd();</span>
+<span class="fc" id="L202">				double laaExcelValue = currentMethod.getLaa();</span>
+				// ler booleans da tabela
+<span class="fc" id="L204">				boolean isFeatureEnvyExcelValue = currentMethod.isFeatureEnvy();</span>
+<span class="fc" id="L205">				boolean isLongMethodExcelValue = currentMethod.isLongMethod();</span>
+<span class="fc" id="L206">				boolean iPlasmaExcelValue = currentMethod.getiPlasma();</span>
+<span class="fc" id="L207">				boolean pmdExcelValue = currentMethod.getPmd();</span>
+
+				// comparação iplasma
+<span class="fc" id="L210">				FaultType aux = getFaultType(isLongMethodExcelValue, iPlasmaExcelValue);</span>
+<span class="fc" id="L211">				String indPlasma = aux.toString();</span>
+<span class="fc" id="L212">				iPlasmasFaults.add(aux);</span>
+				// comparação pmd
+<span class="fc" id="L214">				aux = getFaultType(isLongMethodExcelValue, pmdExcelValue);</span>
+<span class="fc" id="L215">				String indPMD = aux.toString();</span>
+<span class="fc" id="L216">				PMDFaults.add(aux);</span>
+				// comparação regras user long
+<span class="fc bfc" id="L218" title="All 2 branches covered.">				if (longMethodSelected) {</span>
+<span class="fc bfc" id="L219" title="All 4 branches covered.">					isLongMethod = (locFunction &gt; locThreshold &amp;&amp; cycloFunction &gt; cycloThreshold);</span>
+<span class="fc" id="L220">					aux = getFaultType(isLongMethodExcelValue, isLongMethod);</span>
+<span class="fc" id="L221">					faultULM = aux.toString();</span>
+<span class="fc" id="L222">					userLMFaults.add(aux);</span>
+				}
+				// comparação regras user envy
+<span class="fc bfc" id="L225" title="All 2 branches covered.">				if (featureEnvySelected) {</span>
+<span class="fc bfc" id="L226" title="All 4 branches covered.">					isFeatureEnvy = (atfdExcelValue &gt; aftdThreshold &amp;&amp; laaExcelValue &lt; laaThreshold);</span>
+<span class="fc" id="L227">					aux = getFaultType(isFeatureEnvyExcelValue, isFeatureEnvy);</span>
+<span class="fc" id="L228">					faultUFE = aux.toString();</span>
+<span class="fc" id="L229">					userFEFaults.add(aux);</span>
+				}
+<span class="fc" id="L231">				String[] newRow = { String.valueOf(currentMethod.getMethodID()), indPlasma, indPMD, faultULM, faultUFE,</span>
+<span class="fc" id="L232">						faultUR };</span>
+<span class="fc" id="L233">				resultado.addRow(newRow);</span>
+			}
+
+<span class="fc" id="L236">			int dciPlasma = Collections.frequency(iPlasmasFaults, FaultType.DCI);</span>
+<span class="fc" id="L237">			int diiPlasma = Collections.frequency(iPlasmasFaults, FaultType.DII);</span>
+<span class="fc" id="L238">			int adiiPlasma = Collections.frequency(iPlasmasFaults, FaultType.ADII);</span>
+<span class="fc" id="L239">			int adciPlasma = Collections.frequency(iPlasmasFaults, FaultType.ADCI);</span>
+
+<span class="fc" id="L241">			int dciPMD = Collections.frequency(PMDFaults, FaultType.DCI);</span>
+<span class="fc" id="L242">			int diiPMD = Collections.frequency(PMDFaults, FaultType.DII);</span>
+<span class="fc" id="L243">			int adiiPMD = Collections.frequency(PMDFaults, FaultType.ADII);</span>
+<span class="fc" id="L244">			int adciPMD = Collections.frequency(PMDFaults, FaultType.ADCI);</span>
+
+<span class="fc" id="L246">			int dciUser = Collections.frequency(userLMFaults, FaultType.DCI);</span>
+<span class="fc" id="L247">			int diiUser = Collections.frequency(userLMFaults, FaultType.DII);</span>
+<span class="fc" id="L248">			int adiiUser = Collections.frequency(userLMFaults, FaultType.ADII);</span>
+<span class="fc" id="L249">			int adciUser = Collections.frequency(userLMFaults, FaultType.ADCI);</span>
+
+<span class="fc" id="L251">			int dciEnvy = Collections.frequency(userFEFaults, FaultType.DCI);</span>
+<span class="fc" id="L252">			int diiEnvy = Collections.frequency(userFEFaults, FaultType.DII);</span>
+<span class="fc" id="L253">			int adiiEnvy = Collections.frequency(userFEFaults, FaultType.ADII);</span>
+<span class="fc" id="L254">			int adciEnvy = Collections.frequency(userFEFaults, FaultType.ADCI);</span>
+
+			// array com todos os valores necessários para apresentar ao user
+<span class="fc" id="L257">			int[][] data = { { nMethods }, { dciPlasma, diiPlasma, adiiPlasma, adciPlasma },</span>
+<span class="fc" id="L258">					{ dciPMD, diiPMD, adiiPMD, adciPMD }, { dciUser, diiUser, adiiUser, adciUser },</span>
+<span class="fc" id="L259">					{ dciEnvy, diiEnvy, adiiEnvy, adciEnvy } };</span>
+<span class="fc" id="L260">			String[] tiposDefeitos = { &quot;DCI&quot;, &quot;DII&quot;, &quot;ADII&quot;, &quot;ADCI&quot; };</span>
+<span class="fc" id="L261">			String[] tiposInfo = tiposInfoPedido(longMethodSelected, featureEnvySelected);</span>
+
+<span class="fc" id="L263">			resultado.addResults(data, tiposDefeitos, tiposInfo);</span>
+
+<span class="fc" id="L265">			return resultado;</span>
+		} else {
+<span class="fc" id="L267">			return null;</span>
+		}
+	}
+
+	/**
+	 * @param lm - indicate if Long Method is selected in user's interface (if (lm
+	 *           != &quot;&quot;) long method is selected)
+	 * @param fe - indicate if Envy Feature is selected in user's interface
+	 * @return a array of string with iPlasma, PMD and thresholds selected by user
+	 */
+	private String[] tiposInfoPedido(boolean lm, boolean fe) {
+<span class="fc bfc" id="L278" title="All 4 branches covered.">		if (!lm &amp;&amp; !fe) {</span>
+<span class="fc" id="L279">			String[] ini = { &quot;iPlasma&quot;, &quot;PMD&quot; };</span>
+<span class="fc" id="L280">			return ini;</span>
+<span class="pc bpc" id="L281" title="1 of 4 branches missed.">		} else if (!lm &amp;&amp; fe) {</span>
+<span class="fc" id="L282">			String[] ini = { &quot;iPlasma&quot;, &quot;PMD&quot;, &quot;UserFeatureEnvy&quot; };</span>
+<span class="fc" id="L283">			return ini;</span>
+<span class="pc bpc" id="L284" title="1 of 4 branches missed.">		} else if (lm &amp;&amp; !fe) {</span>
+<span class="fc" id="L285">			String[] ini = { &quot;iPlasma&quot;, &quot;PMD&quot;, &quot;UserLongMethod&quot; };</span>
+<span class="fc" id="L286">			return ini;</span>
+		} else {
+<span class="fc" id="L288">			String[] ini = { &quot;iPlasma&quot;, &quot;PMD&quot;, &quot;UserLongMethod&quot;, &quot;UserFeatureEnvy&quot; };</span>
+<span class="fc" id="L289">			return ini;</span>
+		}
+	}
+
+	/**
+	 * @param rules
+	 * @param ops
+	 * @param em
+	 * @return value of the metric created by user
+	 */
+	private Boolean userMetricValue(Rule[] rules, LinkedList&lt;String&gt; ops, ExcelMethod em) {
+<span class="fc" id="L300">		boolean b = rules[0].check(em);</span>
+<span class="fc bfc" id="L301" title="All 2 branches covered.">		for (int i = 1; i &lt; rules.length - 1; i++) {</span>
+<span class="fc" id="L302">			boolean aux = rules[i].check(em);</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">			if (ops.get(i - 1).equals(&quot;AND&quot;))</span>
+<span class="fc bfc" id="L304" title="All 4 branches covered.">				b = b &amp;&amp; aux;</span>
+<span class="fc bfc" id="L305" title="All 2 branches covered.">			if (ops.get(i - 1).equals(&quot;OR&quot;))</span>
+<span class="pc bpc" id="L306" title="1 of 4 branches missed.">				b = b || aux;</span>
+		}
+<span class="fc" id="L308">		return b;</span>
+	}
+
+	/**
+	 * Validates if the expression submited by the user is a valid expression.
+	 * 
+	 * @param rule
+	 * @return true if the expression is valid, false otherwise
+	 */
+	private Boolean validateUserExpression(String rule) {
+<span class="fc" id="L318">		String[] splitted = rule.split(&quot;AND|OR&quot;);</span>
+<span class="fc bfc" id="L319" title="All 2 branches covered.">		if(splitted.length == 0)</span>
+<span class="fc" id="L320">			return false;</span>
+<span class="fc bfc" id="L321" title="All 2 branches covered.">		for (int i = 0; i &lt; splitted.length; i++) {</span>
+<span class="fc" id="L322">			String[] textRule = splitted[i].trim().split(&quot; &quot;);</span>
+<span class="fc bfc" id="L323" title="All 2 branches covered.">			if (textRule.length != 3) {</span>
+<span class="fc" id="L324">				return false;</span>
+			} else {
+				try {
+<span class="fc" id="L327">					Rule.validateArguments(textRule[0].trim(), textRule[1].trim(),</span>
+<span class="fc" id="L328">							Double.parseDouble(textRule[2].trim()));</span>
+<span class="fc" id="L329">					int ao = 0;</span>
+<span class="fc" id="L330">					String[] allWords = rule.split(&quot; &quot;);</span>
+<span class="fc bfc" id="L331" title="All 2 branches covered.">					for (int j = 0; j &lt; allWords.length; j++)</span>
+<span class="fc bfc" id="L332" title="All 4 branches covered.">						if (allWords[j].trim().equals(&quot;AND&quot;) || allWords[j].trim().equals(&quot;OR&quot;))</span>
+<span class="fc" id="L333">							ao++;</span>
+<span class="fc bfc" id="L334" title="All 2 branches covered.">					if (ao != splitted.length - 1) {</span>
+<span class="fc" id="L335">						return false;</span>
+					}
+<span class="fc" id="L337">				} catch (NullPointerException e) {</span>
+<span class="fc" id="L338">					JOptionPane.showMessageDialog(null, e.getMessage());</span>
+<span class="fc" id="L339">					return false;</span>
+				}
+			}
+		}
+
+<span class="fc" id="L344">		return true;</span>
+
+	}
+
+	/**
+	 * @param args - this main doesn't receive any arguments
+	 */
+	public static void main(String[] args) {
+<span class="nc" id="L352">		new Main();</span>
+<span class="nc" id="L353">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>AllTests (13/dez/2019 21:45:47)</div></body></html>

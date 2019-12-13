@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ExcelMethod.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (13/dez/2019 21:45:47)</a> &gt; <a href="../../index.html" class="el_group">Bad Code</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">badcode</a> &gt; <span class="el_source">ExcelMethod.java</span></div><h1>ExcelMethod.java</h1><pre class="source lang-java linenums">package badcode;
+
+import org.apache.poi.xssf.usermodel.XSSFRow;
+
+/**
+ * @author Ricardo, João M., João R., Miguel.
+ *
+ */
+public class ExcelMethod {
+	
+	private int methodID;
+	private String packageName;
+	private String className;
+	private String methodName;
+	private int loc;
+	private int cyclo;
+	private int atfd;
+	private float laa;
+	private boolean isLongMethod;
+	private Boolean iPlasma;
+	private Boolean pmd;
+	private boolean isFeatureEnvy;
+	
+	/**
+	 * Create java class based on the excel information for easier accessibility 
+	 * 
+	 * @param excelRow Excel file row
+	 */
+<span class="fc" id="L29">	public ExcelMethod(XSSFRow excelRow){</span>
+<span class="fc" id="L30">		methodID = Integer.parseInt(excelRow.getCell(0).getRawValue());</span>
+<span class="fc" id="L31">		packageName = excelRow.getCell(1).toString();</span>
+<span class="fc" id="L32">		className = excelRow.getCell(2).toString();</span>
+<span class="fc" id="L33">		methodName = excelRow.getCell(3).toString();</span>
+<span class="fc" id="L34">		loc = Integer.parseInt(excelRow.getCell(4).getRawValue());</span>
+<span class="fc" id="L35">		cyclo = Integer.parseInt(excelRow.getCell(5).getRawValue());</span>
+<span class="fc" id="L36">		atfd = Integer.parseInt(excelRow.getCell(6).getRawValue());</span>
+<span class="fc" id="L37">		laa = Float.parseFloat(excelRow.getCell(7).toString());</span>
+<span class="fc" id="L38">		isLongMethod = excelRow.getCell(8).getBooleanCellValue();</span>
+<span class="fc" id="L39">		iPlasma = excelRow.getCell(9).getBooleanCellValue();</span>
+<span class="fc" id="L40">		pmd = excelRow.getCell(10).getBooleanCellValue();</span>
+<span class="fc" id="L41">		isFeatureEnvy = excelRow.getCell(11).getBooleanCellValue();</span>
+<span class="fc" id="L42">	}</span>
+	
+	/**
+	 * @return methodID
+	 */
+	public int getMethodID() {
+<span class="fc" id="L48">		return methodID;</span>
+	}
+
+	/**
+	 * @return method package name
+	 */
+	public String getPackageName() {
+<span class="fc" id="L55">		return packageName;</span>
+	}
+
+	/**
+	 * @return class of the method
+	 */
+	public String getClassName() {
+<span class="fc" id="L62">		return className;</span>
+	}
+
+	/**
+	 * @return method name
+	 */
+	public String getMethodName() {
+<span class="fc" id="L69">		return methodName;</span>
+	}
+
+	/**
+	 * @return number of lines of code in this method
+	 */
+	public int getLoc() {
+<span class="fc" id="L76">		return loc;</span>
+	}
+
+	/**
+	 * @return cyclic complexity of this method
+	 */
+	public int getCyclo() {
+<span class="fc" id="L83">		return cyclo;</span>
+	}
+
+	/**
+	 * @return number of accesses to other classes
+	 */
+	public int getAtfd() {
+<span class="fc" id="L90">		return atfd;</span>
+	}
+
+	/**
+	 * @return number of accesses to attributes of the same class
+	 */
+	public float getLaa() {
+<span class="fc" id="L97">		return laa;</span>
+	}
+
+	/**
+	 * @return if LongMethod is true or false in the excel file
+	 */
+	public boolean isLongMethod() {
+<span class="fc" id="L104">		return isLongMethod;</span>
+	}
+
+	/**
+	 * @return value of the iPlasma evaluation
+	 */
+	public Boolean getiPlasma() {
+<span class="fc" id="L111">		return iPlasma;</span>
+	}
+
+	/**
+	 * @return value of the PDM evaluation
+	 */
+	public Boolean getPmd() {
+<span class="fc" id="L118">		return pmd;</span>
+	}
+
+	/**
+	 * @return if FeatureEnvy is true or false in the excel file
+	 */
+	public boolean isFeatureEnvy() {
+<span class="fc" id="L125">		return isFeatureEnvy;</span>
+	}
+
+
+
+	/* (non-Javadoc)
+	 * 
+	 * Prints all the atributes of this class in the console
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+<span class="fc" id="L138">		String toReturn = &quot;[ \n&quot;;</span>
+<span class="fc" id="L139">		toReturn += &quot;MethodID: &quot; + this.methodID + &quot;\n&quot;; </span>
+<span class="fc" id="L140">		toReturn += &quot;Package: &quot; + this.packageName + &quot;\n&quot;;</span>
+<span class="fc" id="L141">		toReturn += &quot;Class: &quot; + this.className + &quot;\n&quot;;</span>
+<span class="fc" id="L142">		toReturn += &quot;MethodName: &quot; + this.methodName + &quot;\n&quot;;</span>
+<span class="fc" id="L143">		toReturn += &quot;LOC: &quot; + this.loc + &quot;\n&quot;;</span>
+<span class="fc" id="L144">		toReturn += &quot;CYCLO: &quot; + this.cyclo + &quot;\n&quot;;</span>
+<span class="fc" id="L145">		toReturn += &quot;ATFD: &quot; + this.atfd + &quot;\n&quot;;</span>
+<span class="fc" id="L146">		toReturn += &quot;LAA: &quot; + this.laa + &quot;\n&quot;;</span>
+<span class="fc" id="L147">		toReturn += &quot;is_long_method: &quot; + this.isLongMethod + &quot;\n&quot;;</span>
+<span class="fc" id="L148">		toReturn += &quot;iPlasma: &quot; + this.iPlasma + &quot;\n&quot;;</span>
+<span class="fc" id="L149">		toReturn += &quot;PMD: &quot; + this.pmd + &quot;\n&quot;;</span>
+<span class="fc" id="L150">		toReturn += &quot;is_feature_envy: &quot; + this.isFeatureEnvy + &quot;\n&quot;;</span>
+<span class="fc" id="L151">		toReturn += &quot;]&quot;;</span>
+<span class="fc" id="L152">		return toReturn;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>AllTests (13/dez/2019 21:45:47)</div></body></html>

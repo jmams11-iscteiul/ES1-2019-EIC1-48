@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>GUI.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (13/dez/2019 21:45:47)</a> &gt; <a href="../../index.html" class="el_group">Bad Code</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">badcode</a> &gt; <span class="el_source">GUI.java</span></div><h1>GUI.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">package badcode;</span>
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableModel;
+
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+/**
+ * @author Ricardo, João M., João R., Miguel.
+ *
+ */
+public class GUI {
+	private JFrame frame;
+	private JButton startButton;
+	private JTable table;
+	
+	private Main main;
+
+	/**
+	 * Creates a window and adds all the necessary components
+	 * 
+	 * @param main class that processes the information
+	 * @see GUI#addFrameContent()
+	 */
+<span class="fc" id="L47">	public GUI(Main main) {</span>
+<span class="fc" id="L48">		this.main = main;</span>
+		
+		//JFrame.setDefaultLookAndFeelDecorated(true);
+<span class="fc" id="L51">		frame = new JFrame(&quot;GUI&quot;);</span>
+<span class="fc" id="L52">		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);</span>
+<span class="fc" id="L53">		frame.setLayout(new BorderLayout());</span>
+<span class="fc" id="L54">		addFrameContent();</span>
+<span class="fc" id="L55">		frame.pack();</span>
+<span class="fc" id="L56">		frame.setSize(500, 400);</span>
+<span class="fc" id="L57">		frame.setResizable(false);</span>
+<span class="fc" id="L58">		frame.setLocationRelativeTo(null);</span>
+<span class="fc" id="L59">	}</span>
+
+	/**
+	 * Opens the user interface
+	 */
+	public void open() {
+<span class="fc" id="L65">		frame.setVisible(true);</span>
+<span class="fc" id="L66">	}</span>
+
+	/**
+	 * Adds all the necessary components do the JFrame
+	 */
+	private void addFrameContent() {
+		// Left Panel - painel com as opcoes para escolher
+<span class="fc" id="L73">		JPanel featureEnvyPanel = createPanel(&quot;Feature Envy&quot;, &quot;ATFD&quot;, &quot;LAA&quot;);</span>
+
+<span class="fc" id="L75">		JPanel longMethodPanel = createPanel(&quot;Long Method&quot;, &quot;LOC&quot;, &quot;CYCLO&quot;);</span>
+		
+<span class="fc" id="L77">		JPanel userFunc = new JPanel();</span>
+<span class="fc" id="L78">		JCheckBox box = new JCheckBox();</span>
+<span class="fc" id="L79">		JLabel label = new JLabel(&quot;UserExpression&quot;);</span>
+<span class="fc" id="L80">		JTextField text = new JTextField(&quot;ex: LAA &gt; 20 AND ATFD &gt; 10&quot;);</span>
+<span class="fc" id="L81">		text.addFocusListener(new FocusListener() {</span>
+			public void focusGained(FocusEvent e) {
+<span class="nc bnc" id="L83" title="All 2 branches missed.">				if(text.getText().contentEquals(&quot;ex: LAA &gt; 20 AND ATFD &gt; 10&quot;))</span>
+<span class="nc" id="L84">					text.setText(&quot;&quot;);</span>
+<span class="nc" id="L85">			}</span>
+			
+			public void focusLost(FocusEvent e) {
+<span class="nc bnc" id="L88" title="All 2 branches missed.">				if(text.getText().isEmpty())</span>
+<span class="nc" id="L89">					text.setText(&quot;ex: LAA &gt; 20 AND ATFD &gt; 10&quot;);</span>
+<span class="nc" id="L90">			}</span>
+		});
+		
+<span class="fc" id="L93">		text.setPreferredSize(new Dimension(200, 20));</span>
+<span class="fc" id="L94">		text.setEditable(false);</span>
+<span class="fc" id="L95">		box.addItemListener(new ItemListener() {</span>
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+<span class="nc bnc" id="L98" title="All 2 branches missed.">				if(e.getStateChange() == ItemEvent.SELECTED)  {</span>
+<span class="nc" id="L99">					text.setEditable(true);</span>
+<span class="nc" id="L100">				}</span>
+				else {
+<span class="nc" id="L102">					text.setEditable(false);</span>
+				}
+				
+<span class="nc" id="L105">			}</span>
+			
+		});
+<span class="fc" id="L108">		userFunc.add(box);</span>
+<span class="fc" id="L109">		userFunc.add(label);</span>
+<span class="fc" id="L110">		userFunc.add(text);</span>
+		
+		
+		
+		
+
+<span class="fc" id="L116">		JPanel leftPanel = new JPanel(new GridLayout(3, 1));</span>
+<span class="fc" id="L117">		leftPanel.add(longMethodPanel);</span>
+<span class="fc" id="L118">		leftPanel.add(featureEnvyPanel);</span>
+<span class="fc" id="L119">		leftPanel.add(userFunc);</span>
+		// Fim Left Panel
+
+		// RightPanel - painel com botao start
+<span class="fc" id="L123">		startButton = new JButton(&quot;Start&quot;);</span>
+<span class="fc" id="L124">		startButton.setSize(100, 100);</span>
+<span class="fc" id="L125">		startButton.setPreferredSize(new Dimension(100, leftPanel.getPreferredSize().height - leftPanel.getPreferredSize().height*3/10));</span>
+<span class="fc" id="L126">		startButton.addActionListener(new ActionListener() {</span>
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L130">				int locThreshold = -1;</span>
+<span class="nc" id="L131">				int cycloThreshold = -1;</span>
+<span class="nc" id="L132">				int atfdThreshold = -1;</span>
+<span class="nc" id="L133">				double laaThreshold = -1;</span>
+<span class="nc" id="L134">				String userExpression = &quot;&quot;;</span>
+				try {
+<span class="nc" id="L136">					boolean isFeatureEnvySelected = ((JCheckBox) featureEnvyPanel.getComponent(0)).isSelected();</span>
+<span class="nc" id="L137">					boolean isLongMethodSelected = ((JCheckBox) longMethodPanel.getComponent(0)).isSelected();</span>
+<span class="nc" id="L138">					boolean isUserExpressionSelected = ((JCheckBox) userFunc.getComponent(0)).isSelected();</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">					if(isFeatureEnvySelected) {</span>
+<span class="nc" id="L140">						JTextField aux = (JTextField) featureEnvyPanel.getComponent(2);</span>
+<span class="nc" id="L141">						atfdThreshold = Integer.parseInt(aux.getText());</span>
+<span class="nc" id="L142">						aux = (JTextField) featureEnvyPanel.getComponent(3);</span>
+<span class="nc" id="L143">						laaThreshold = Double.parseDouble(aux.getText());</span>
+					}
+<span class="nc bnc" id="L145" title="All 2 branches missed.">					if(isLongMethodSelected) {</span>
+<span class="nc" id="L146">						JTextField aux = (JTextField) longMethodPanel.getComponent(2);</span>
+<span class="nc" id="L147">						locThreshold = Integer.parseInt(aux.getText());</span>
+<span class="nc" id="L148">						aux = (JTextField) longMethodPanel.getComponent(3);</span>
+<span class="nc" id="L149">						cycloThreshold = Integer.parseInt(aux.getText());</span>
+					}
+<span class="nc bnc" id="L151" title="All 2 branches missed.">					if(isUserExpressionSelected) {</span>
+<span class="nc" id="L152">						JTextField aux = (JTextField) userFunc.getComponent(2);</span>
+<span class="nc" id="L153">						userExpression = aux.getText();</span>
+					}
+<span class="nc" id="L155">					Results res = main.analyzeTable(locThreshold, cycloThreshold, atfdThreshold, laaThreshold, isFeatureEnvySelected, isLongMethodSelected, userExpression);</span>
+<span class="nc" id="L156">					res.displayResults();</span>
+<span class="nc" id="L157">				} catch (NumberFormatException e) {</span>
+<span class="nc" id="L158">					JOptionPane.showMessageDialog(null, &quot;Introduza Numeros Válidos para cada Métrica&quot;);</span>
+<span class="nc" id="L159">				} catch (NullPointerException e) {</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">					if(e.getMessage() != null)</span>
+<span class="nc" id="L161">						JOptionPane.showMessageDialog(null, e.getMessage());</span>
+					else
+<span class="nc" id="L163">						JOptionPane.showMessageDialog(null, &quot;Importe um ficheiro Excel!&quot;);</span>
+				}
+<span class="nc" id="L165">			}</span>
+		});
+
+<span class="fc" id="L168">		JPanel rightPanel = new JPanel();</span>
+<span class="fc" id="L169">		rightPanel.add(startButton);</span>
+		// Fim RightPanel
+
+<span class="fc" id="L172">		JPanel searchFilePanel = createImportFilePanel();</span>
+
+<span class="fc" id="L174">		JPanel upperPanel = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L175">		upperPanel.add(leftPanel, BorderLayout.WEST);</span>
+<span class="fc" id="L176">		upperPanel.add(searchFilePanel, BorderLayout.SOUTH);</span>
+<span class="fc" id="L177">		upperPanel.add(rightPanel, BorderLayout.EAST);</span>
+
+
+		// ScrollPane com tabela
+<span class="fc" id="L181">		table = new JTable();</span>
+<span class="fc" id="L182">		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);</span>
+<span class="fc" id="L183">		JScrollPane excelScrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,</span>
+<span class="fc" id="L184">				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);</span>
+
+		
+<span class="fc" id="L187">		JPanel bottomPanel = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L188">		bottomPanel.add(excelScrollPane);</span>
+		
+
+<span class="fc" id="L191">		JPanel panel = new JPanel(new GridLayout(2, 1));</span>
+<span class="fc" id="L192">		panel.add(upperPanel);</span>
+<span class="fc" id="L193">		panel.add(bottomPanel);</span>
+
+<span class="fc" id="L195">		frame.add(panel);</span>
+<span class="fc" id="L196">	}</span>
+
+	/**
+	 * Creates a panel with a specific layout (one label and two textfields) 
+	 * based on the strings in the arguments
+	 * 
+	 * @param label for this panel
+	 * @param text for the first textfield
+	 * @param text for the second textfield
+	 * @return the whole panel to be added to the frame
+	 */
+	private JPanel createPanel(String labelText, String textfield1, String textfield2) {
+<span class="fc" id="L208">		JPanel toReturn = new JPanel();</span>
+
+<span class="fc" id="L210">		JCheckBox box = new JCheckBox();</span>
+<span class="fc" id="L211">		JLabel label = new JLabel(labelText);</span>
+<span class="fc" id="L212">		JTextField text1 = new JTextField(textfield1);</span>
+<span class="fc" id="L213">		text1.addFocusListener(new FocusListener() {</span>
+			public void focusGained(FocusEvent e) {
+<span class="nc bnc" id="L215" title="All 2 branches missed.">				if(text1.getText().contentEquals(textfield1))</span>
+<span class="nc" id="L216">					text1.setText(&quot;&quot;);</span>
+<span class="nc" id="L217">			}</span>
+			
+			public void focusLost(FocusEvent e) {
+<span class="nc bnc" id="L220" title="All 2 branches missed.">				if(text1.getText().isEmpty())</span>
+<span class="nc" id="L221">					text1.setText(textfield1);</span>
+<span class="nc" id="L222">			}</span>
+		});
+<span class="fc" id="L224">		JTextField text2 = new JTextField(textfield2);</span>
+<span class="fc" id="L225">		text2.addFocusListener(new FocusListener() {</span>
+			public void focusGained(FocusEvent e) {
+<span class="nc bnc" id="L227" title="All 2 branches missed.">				if(text2.getText().contentEquals(textfield2))</span>
+<span class="nc" id="L228">					text2.setText(&quot;&quot;);</span>
+<span class="nc" id="L229">			}</span>
+			
+			public void focusLost(FocusEvent e) {
+<span class="nc bnc" id="L232" title="All 2 branches missed.">				if(text2.getText().isEmpty())</span>
+<span class="nc" id="L233">					text2.setText(textfield2);</span>
+<span class="nc" id="L234">			}</span>
+		});
+<span class="fc" id="L236">		text1.setPreferredSize(new Dimension(100, 20));</span>
+<span class="fc" id="L237">		text2.setPreferredSize(new Dimension(100, 20));</span>
+
+		
+<span class="fc" id="L240">		text1.setEditable(false);</span>
+<span class="fc" id="L241">		text2.setEditable(false);</span>
+<span class="fc" id="L242">		box.addItemListener(new ItemListener() {</span>
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+<span class="nc bnc" id="L245" title="All 2 branches missed.">				if(e.getStateChange() == ItemEvent.SELECTED)  {</span>
+<span class="nc" id="L246">					text1.setEditable(true);</span>
+<span class="nc" id="L247">					text2.setEditable(true);</span>
+<span class="nc" id="L248">				}</span>
+				else {
+<span class="nc" id="L250">					text1.setEditable(false);</span>
+<span class="nc" id="L251">					text2.setEditable(false);</span>
+				}
+				
+<span class="nc" id="L254">			}</span>
+			
+		});
+		
+<span class="fc" id="L258">		toReturn.add(box);</span>
+<span class="fc" id="L259">		toReturn.add(label);</span>
+<span class="fc" id="L260">		toReturn.add(text1);</span>
+<span class="fc" id="L261">		toReturn.add(text2);</span>
+
+<span class="fc" id="L263">		return toReturn;</span>
+	}
+
+	/**
+	 * Creates the panel with all the buttons related to importing 
+	 * and viewing the excel file
+	 * 
+	 * @return panel with all the buttons to be added to the frame
+	 */
+	private JPanel createImportFilePanel() {
+<span class="fc" id="L273">		JPanel toReturn = new JPanel();</span>
+
+<span class="fc" id="L275">		JTextField searchFileResultLabel = new JTextField(&quot;&quot;);</span>
+<span class="fc" id="L276">		searchFileResultLabel.setPreferredSize(new Dimension(100, 20));</span>
+<span class="fc" id="L277">		searchFileResultLabel.setEditable(false);</span>
+
+<span class="fc" id="L279">		JButton searchFileButton = new JButton(&quot;Search File&quot;);</span>
+<span class="fc" id="L280">		searchFileButton.addActionListener(new ActionListener() {</span>
+			@Override
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L283">				JFileChooser fc = new JFileChooser();</span>
+<span class="nc" id="L284">				fc.setDialogTitle(&quot;Select excel file to import&quot;);</span>
+<span class="nc" id="L285">				int result = fc.showOpenDialog(null);</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">				if (result == JFileChooser.APPROVE_OPTION) {</span>
+<span class="nc" id="L287">					String excelPath = fc.getSelectedFile().getAbsolutePath();</span>
+<span class="nc" id="L288">					searchFileResultLabel.setText(excelPath);</span>
+				}
+<span class="nc" id="L290">			}</span>
+		});
+
+		// botão import
+<span class="fc" id="L294">		JButton importExcelButton = new JButton(&quot;Import Excel&quot;);</span>
+<span class="fc" id="L295">		importExcelButton.addActionListener(new ActionListener() {</span>
+			@Override
+			public void actionPerformed(ActionEvent e) {
+<span class="nc bnc" id="L298" title="All 2 branches missed.">				if (searchFileResultLabel.getText() != &quot;&quot;) {</span>
+					try {
+<span class="nc" id="L300">					main.loadExcel(searchFileResultLabel.getText()); </span>
+<span class="nc" id="L301">					} catch (NullPointerException ee) {</span>
+						
+					}
+					
+				}
+<span class="nc" id="L306">			}</span>
+		});
+
+<span class="fc" id="L309">		toReturn.add(searchFileButton);</span>
+<span class="fc" id="L310">		toReturn.add(searchFileResultLabel);</span>
+<span class="fc" id="L311">		toReturn.add(importExcelButton);</span>
+
+<span class="fc" id="L313">		return toReturn;</span>
+	}
+	
+	/**
+	 * Displays the excel file passed in the argument in the user interface
+	 * 
+	 * @param workbook excel file
+	 */
+	@SuppressWarnings(&quot;serial&quot;)
+	public void drawTable(XSSFWorkbook workbook) {
+<span class="fc" id="L323">		XSSFSheet excelSheet = workbook.getSheetAt(0);</span>
+<span class="fc" id="L324">		XSSFRow header = excelSheet.getRow(0);</span>
+<span class="fc" id="L325">		String[] headerrow = new String[header.getLastCellNum()];</span>
+<span class="fc bfc" id="L326" title="All 2 branches covered.">		for(int i = 0; i &lt; header.getLastCellNum(); i++) </span>
+<span class="fc" id="L327">			headerrow[i] = header.getCell(i).getStringCellValue();</span>
+<span class="fc" id="L328">		DefaultTableModel dtm = new DefaultTableModel(null, headerrow) {</span>
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+<span class="nc" id="L332">		       return false;</span>
+		    }
+		};
+<span class="fc bfc" id="L335" title="All 2 branches covered.">		for(int row = 1; row &lt; excelSheet.getLastRowNum() + 1; row++) {</span>
+<span class="fc" id="L336">			XSSFRow excelRow = excelSheet.getRow(row);</span>
+
+<span class="fc" id="L338">			XSSFCell methodID = excelRow.getCell(0);</span>
+<span class="fc" id="L339">			XSSFCell pacote = excelRow.getCell(1);</span>
+<span class="fc" id="L340">			XSSFCell classe = excelRow.getCell(2);</span>
+<span class="fc" id="L341">			XSSFCell method = excelRow.getCell(3);</span>
+<span class="fc" id="L342">			XSSFCell loc = excelRow.getCell(4);</span>
+<span class="fc" id="L343">			XSSFCell cyclo = excelRow.getCell(5);</span>
+<span class="fc" id="L344">			XSSFCell atfd = excelRow.getCell(6);</span>
+<span class="fc" id="L345">			XSSFCell laa = excelRow.getCell(7);</span>
+<span class="fc" id="L346">			XSSFCell is_long_method = excelRow.getCell(8);</span>
+<span class="fc" id="L347">			XSSFCell iplasma = excelRow.getCell(9);</span>
+<span class="fc" id="L348">			XSSFCell pmd = excelRow.getCell(10);</span>
+<span class="fc" id="L349">			XSSFCell is_feature_envy = excelRow.getCell(11);</span>
+
+<span class="fc" id="L351">			dtm.addRow(new Object[] { methodID, pacote, classe, method, loc, cyclo, atfd, laa,</span>
+<span class="fc" id="L352">					is_long_method, iplasma, pmd, is_feature_envy});</span>
+
+		}
+<span class="fc" id="L355">		table.setModel(dtm);</span>
+<span class="fc" id="L356">	}</span>
+	
+	
+	/**
+	 * @return GUI table
+	 */
+	public JTable getTable() {
+<span class="fc" id="L363">		return table;</span>
+	}
+	
+	/**
+	 * @return GUI frame
+	 */
+	public JFrame getFrame() {
+<span class="fc" id="L370">		return frame;</span>
+	}
+	
+	/**
+	 * @return GUI startButton
+	 */
+	public JButton getStartButton() {
+<span class="fc" id="L377">		return startButton;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>AllTests (13/dez/2019 21:45:47)</div></body></html>
