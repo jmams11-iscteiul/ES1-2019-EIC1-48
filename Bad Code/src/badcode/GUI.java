@@ -296,7 +296,12 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (searchFileResultLabel.getText() != "") {
-					main.loadExcel(searchFileResultLabel.getText());
+					try {
+					main.loadExcel(searchFileResultLabel.getText()); 
+					} catch (NullPointerException ee) {
+						
+					}
+					
 				}
 			}
 		});

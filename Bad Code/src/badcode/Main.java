@@ -75,6 +75,8 @@ public class Main {
 				excelMethodsList.add(aux);
 			}
 			gui.drawTable(workbook);
+		} else {
+			throw new NullPointerException("Woorkbook é null!");
 		}
 	}
 

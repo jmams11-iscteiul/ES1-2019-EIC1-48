@@ -19,14 +19,8 @@ public class Rule {
 	 * @param value value typed by the user
 	 */
 	public Rule(String metric, String operator, double value) {
-		if(metric.equals("LAA") || metric.equals("ATFD") || metric.equals("LOC") || metric.equals("CYCLO") )
-			this.metric = metric;
-		else
-			throw new NullPointerException("Metrica não existente");
-		if(operator.equals(">") || operator.equals(">=") || operator.equals("<") || operator.equals("<=") || operator.equals("==") )
-			this.operator = operator;
-		else
-			throw new NullPointerException("Comparador não suportado");
+		this.metric = metric;
+		this.operator = operator;
 		this.value = value;
 	}
 
@@ -54,9 +48,7 @@ public class Rule {
 			break;
 		case "CYCLO": 
 			excel = em.getCyclo();
-			break;
-		default: 
-			return (Boolean) null;		
+			break;	
 		}
 		
 		Boolean check = null;
@@ -93,7 +85,7 @@ public class Rule {
 	public static void validateArguments(String m, String o, Double value) {
 		if(!(m.equals("LAA") || m.equals("ATFD") || m.equals("LOC") || m.equals("CYCLO")))
 			throw new NullPointerException("Metrica não existente");
-		if(!(o.equals(">") || o.equals(">=") || o.equals("<") || o.equals("<=") || o.equals("==")) )
+		if(!(o.equals(">") || o.equals(">=") || o.equals("<") || o.equals("<=") || o.equals("=")) )
 			throw new NullPointerException("Comparador não suportado");
 		
 	}
