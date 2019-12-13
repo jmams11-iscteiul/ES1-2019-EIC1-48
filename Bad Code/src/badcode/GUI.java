@@ -74,10 +74,50 @@ public class GUI {
 		JPanel featureEnvyPanel = createPanel("Feature Envy", "ATFD", "LAA");
 
 		JPanel longMethodPanel = createPanel("Long Method", "LOC", "CYCLO");
+		
+		JPanel userFunc = new JPanel();
+		JCheckBox box = new JCheckBox();
+		JLabel label = new JLabel("UserExpression");
+		JTextField text = new JTextField("ex: LAA > 20 AND ATFD > 10");
+		text.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {
+				if(text.getText().contentEquals("ex: LAA > 20 AND ATFD > 10"))
+					text.setText("");
+			}
+			
+			public void focusLost(FocusEvent e) {
+				if(text.getText().isEmpty())
+					text.setText("ex: LAA > 20 AND ATFD > 10");
+			}
+		});
+		
+		text.setPreferredSize(new Dimension(200, 20));
+		text.setEditable(false);
+		box.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if(e.getStateChange() == ItemEvent.SELECTED)  {
+					text.setEditable(true);
+				}
+				else {
+					text.setEditable(false);
+				}
+				
+			}
+			
+		});
+		userFunc.add(box);
+		userFunc.add(label);
+		userFunc.add(text);
+		
+		
+		
+		
 
 		JPanel leftPanel = new JPanel(new GridLayout(3, 1));
 		leftPanel.add(longMethodPanel);
 		leftPanel.add(featureEnvyPanel);
+		leftPanel.add(userFunc);
 		// Fim Left Panel
 
 		// RightPanel - painel com botao start
@@ -86,18 +126,17 @@ public class GUI {
 		startButton.setPreferredSize(new Dimension(100, leftPanel.getPreferredSize().height - leftPanel.getPreferredSize().height*3/10));
 		startButton.addActionListener(new ActionListener() {
 
-			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				int locThreshold = -1;
 				int cycloThreshold = -1;
 				int atfdThreshold = -1;
 				double laaThreshold = -1;
-				String feLogic="";
-				String lmLogic="";
+				String userExpression = "";
 				try {
 					boolean isFeatureEnvySelected = ((JCheckBox) featureEnvyPanel.getComponent(0)).isSelected();
 					boolean isLongMethodSelected = ((JCheckBox) longMethodPanel.getComponent(0)).isSelected();
+					boolean isUserExpressionSelected = ((JCheckBox) userFunc.getComponent(0)).isSelected();
 					if(isFeatureEnvySelected) {
 						JTextField aux = (JTextField) featureEnvyPanel.getComponent(2);
 						atfdThreshold = Integer.parseInt(aux.getText());
@@ -110,12 +149,19 @@ public class GUI {
 						aux = (JTextField) longMethodPanel.getComponent(3);
 						cycloThreshold = Integer.parseInt(aux.getText());
 					}
-					Results res = main.analyzeTable(locThreshold, cycloThreshold, atfdThreshold, laaThreshold, isFeatureEnvySelected, isLongMethodSelected);
+					if(isUserExpressionSelected) {
+						JTextField aux = (JTextField) userFunc.getComponent(2);
+						userExpression = aux.getText();
+					}
+					Results res = main.analyzeTable(locThreshold, cycloThreshold, atfdThreshold, laaThreshold, isFeatureEnvySelected, isLongMethodSelected, userExpression);
 					res.displayResults();
 				} catch (NumberFormatException e) {
 					JOptionPane.showMessageDialog(null, "Introduza Numeros Válidos para cada Métrica");
 				} catch (NullPointerException e) {
-					JOptionPane.showMessageDialog(null, "Importe um Ficheiro Excel");
+					if(e.getMessage() != null)
+						JOptionPane.showMessageDialog(null, e.getMessage());
+					else
+						JOptionPane.showMessageDialog(null, "Importe um ficheiro Excel!");
 				}
 			}
 		});
@@ -177,7 +223,6 @@ public class GUI {
 					text1.setText(textfield1);
 			}
 		});
-//		JComboBox<String> logicFunction = new JComboBox(new Object[] {"ANana "OR"});
 		JTextField text2 = new JTextField(textfield2);
 		text2.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
@@ -215,7 +260,6 @@ public class GUI {
 		toReturn.add(box);
 		toReturn.add(label);
 		toReturn.add(text1);
-//		toReturn.add(logicFunction);
 		toReturn.add(text2);
 
 		return toReturn;

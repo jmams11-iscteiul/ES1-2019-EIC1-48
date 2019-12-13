@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
 
@@ -19,7 +20,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class Main {
 	/**
-	 * list - array with "ExcelMethods" information about functions of a existing project
+	 * list - array with "ExcelMethods" information about functions of a existing
+	 * project
+	 * 
 	 * @see GUI, ExcelMethod
 	 */
 	private GUI gui;
@@ -28,7 +31,7 @@ public class Main {
 	/**
 	 * @author Ricardo, João M., João R., Miguel.
 	 * 
-	 * Enum with all the fault types
+	 *         Enum with all the fault types
 	 *
 	 */
 	private enum FaultType {
@@ -36,8 +39,8 @@ public class Main {
 	}
 
 	/**
-	 * Initiate attributes
-	 * Open a window with JTextFields to enter thresholds and import an ExcelFile. 
+	 * Initiate attributes Open a window with JTextFields to enter thresholds and
+	 * import an ExcelFile.
 	 */
 	public Main() {
 		this.gui = new GUI(this);
@@ -46,15 +49,17 @@ public class Main {
 	}
 
 	/**
-	 * Open a window with JTextFields to enter thresholds and import an ExcelFile. 
-	 * @see GUI.open() 
+	 * Open a window with JTextFields to enter thresholds and import an ExcelFile.
+	 * 
+	 * @see GUI.open()
 	 */
 	private void open() {
 		gui.open();
 	}
 
 	/**
-	 * If path is correct and the ExcelFile exists, load a XSSFSheet with the information of excel
+	 * If path is correct and the ExcelFile exists, load a XSSFSheet with the
+	 * information of excel
 	 * 
 	 * @param path - path to an Excel File
 	 * @see Main#importExcel(String)
@@ -79,9 +84,9 @@ public class Main {
 	public ArrayList<ExcelMethod> getList() {
 		return this.excelMethodsList;
 	}
-	
+
 	/**
-	 * @return GUI 
+	 * @return GUI
 	 */
 	public GUI getGUI() {
 		return gui;
@@ -127,27 +132,33 @@ public class Main {
 	}
 
 	/**
-	 * Iterates excel file with information about functions
-	 * For each function see if is a Long Method or a Envy Feature based on user thresholds
-	 * Compares  results between this software analyzer with other softwares analyzers (iPlasma and PMD)
+	 * Iterates excel file with information about functions For each function see if
+	 * is a Long Method or a Envy Feature based on user thresholds Compares results
+	 * between this software analyzer with other softwares analyzers (iPlasma and
+	 * PMD)
 	 * 
-	 * @param locThreshold - LOC (logMethod threshold)
+	 * @param locThreshold   - LOC (logMethod threshold)
 	 * @param cycloThreshold - CYCLO (logMethod threshold)
-	 * @param lmLogic - logical function between longMethod thresholds (and/or)
-	 * @param aftdThreshold - ATFD (envyFeature threshold)
-	 * @param laaThreshold - LAA (envyFeature threshold)
-	 * @param feLogic - logical function between envyFeature thresholds (and/or)
+	 * @param lmLogic        - logical function between longMethod thresholds
+	 *                       (and/or)
+	 * @param aftdThreshold  - ATFD (envyFeature threshold)
+	 * @param laaThreshold   - LAA (envyFeature threshold)
+	 * @param feLogic        - logical function between envyFeature thresholds
+	 *                       (and/or)
 	 * 
 	 * @return results
 	 */
-	public Results analyzeTable(int locThreshold, int cycloThreshold, int aftdThreshold, double laaThreshold, boolean featureEnvySelected, boolean longMethodSelected) {
+	public Results analyzeTable(int locThreshold, int cycloThreshold, int aftdThreshold, double laaThreshold,
+			boolean featureEnvySelected, boolean longMethodSelected, String userExpression) {
 		if (excelMethodsList.size() != 0) {
 			boolean isLongMethod = false;
 			boolean isFeatureEnvy = false;
 
 			int nMethods = excelMethodsList.size();
-			String indULM = "-";
-			String indUFE = "-";
+			String faultULM = "-";
+			String faultUFE = "-";
+			String faultUR = "-";
+			boolean userExpressionValid = validateUserExpression(userExpression);
 
 			ArrayList<FaultType> iPlasmasFaults = new ArrayList<FaultType>();
 			ArrayList<FaultType> PMDFaults = new ArrayList<FaultType>();
@@ -156,11 +167,35 @@ public class Main {
 
 			// criar janela de resultados
 
-			String[] header = { "MethodID", "iPlasma", "PMD", "UserLongMethod", "UserFeatureEnvy" };
+			String[] header = { "MethodID", "iPlasma", "PMD", "UserLongMethod", "UserFeatureEnvy", "UserRule" };
 			Results resultado = new Results(header);
+
+			Rule[] rules = null;
+			LinkedList<String> logicOperators = null;
+			if (!userExpression.equals("")) {
+				if (!userExpressionValid)
+					throw new NullPointerException("Regra não Suportada!");
+
+				String[] ruleArray = userExpression.split("AND|OR");
+				rules = new Rule[ruleArray.length];
+				for (int i = 0; i < ruleArray.length; i++) {
+					String[] textRule = ruleArray[i].trim().split(" ");
+					Rule r = new Rule(textRule[0].trim(), textRule[1].trim(), Double.parseDouble(textRule[2].trim()));
+					rules[i] = r;
+				}
+
+				logicOperators = new LinkedList<String>();
+				String[] allWords = userExpression.split(" ");
+				for (int i = 0; i < allWords.length; i++) {
+					if (allWords[i].trim().equals("AND") || allWords[i].trim().equals("OR"))
+						logicOperators.add(allWords[i].trim());
+				}
+			}
 
 			for (int row = 0; row < excelMethodsList.size(); row++) {
 				ExcelMethod currentMethod = excelMethodsList.get(row);
+				if (!userExpression.equals(""))
+					faultUR = userMetricValue(rules, logicOperators, currentMethod).toString().toUpperCase();
 				int locFunction = currentMethod.getLoc();
 				int cycloFunction = currentMethod.getCyclo();
 				int atfdExcelValue = currentMethod.getAtfd();
@@ -183,17 +218,18 @@ public class Main {
 				if (longMethodSelected) {
 					isLongMethod = (locFunction > locThreshold && cycloFunction > cycloThreshold);
 					aux = getFaultType(isLongMethodExcelValue, isLongMethod);
-					indULM = aux.toString();
+					faultULM = aux.toString();
 					userLMFaults.add(aux);
 				}
 				// comparação regras user envy
 				if (featureEnvySelected) {
 					isFeatureEnvy = (atfdExcelValue > aftdThreshold && laaExcelValue < laaThreshold);
 					aux = getFaultType(isFeatureEnvyExcelValue, isFeatureEnvy);
-					indUFE = aux.toString();
+					faultUFE = aux.toString();
 					userFEFaults.add(aux);
 				}
-				String[] newRow = { String.valueOf(currentMethod.getMethodID()), indPlasma, indPMD, indULM, indUFE };
+				String[] newRow = { String.valueOf(currentMethod.getMethodID()), indPlasma, indPMD, faultULM, faultUFE,
+						faultUR };
 				resultado.addRow(newRow);
 			}
 
@@ -201,17 +237,17 @@ public class Main {
 			int diiPlasma = Collections.frequency(iPlasmasFaults, FaultType.DII);
 			int adiiPlasma = Collections.frequency(iPlasmasFaults, FaultType.ADII);
 			int adciPlasma = Collections.frequency(iPlasmasFaults, FaultType.ADCI);
-             
+
 			int dciPMD = Collections.frequency(PMDFaults, FaultType.DCI);
 			int diiPMD = Collections.frequency(PMDFaults, FaultType.DII);
 			int adiiPMD = Collections.frequency(PMDFaults, FaultType.ADII);
 			int adciPMD = Collections.frequency(PMDFaults, FaultType.ADCI);
-             
+
 			int dciUser = Collections.frequency(userLMFaults, FaultType.DCI);
 			int diiUser = Collections.frequency(userLMFaults, FaultType.DII);
 			int adiiUser = Collections.frequency(userLMFaults, FaultType.ADII);
 			int adciUser = Collections.frequency(userLMFaults, FaultType.ADCI);
-            
+
 			int dciEnvy = Collections.frequency(userFEFaults, FaultType.DCI);
 			int diiEnvy = Collections.frequency(userFEFaults, FaultType.DII);
 			int adiiEnvy = Collections.frequency(userFEFaults, FaultType.ADII);
@@ -226,7 +262,6 @@ public class Main {
 
 			resultado.addResults(data, tiposDefeitos, tiposInfo);
 
-//			resultado.displayResults();
 			return resultado;
 		} else {
 			return null;
@@ -234,9 +269,10 @@ public class Main {
 	}
 
 	/**
-	 * @param lm - indicate if Long Method is selected in user's interface (if (lm != "") long method is selected)
-	 * @param fe - indicate if Envy Feature is selected in user's interface 
-	 * @return a array of string with iPlasma, PMD and thresholds selected by user 
+	 * @param lm - indicate if Long Method is selected in user's interface (if (lm
+	 *           != "") long method is selected)
+	 * @param fe - indicate if Envy Feature is selected in user's interface
+	 * @return a array of string with iPlasma, PMD and thresholds selected by user
 	 */
 	private String[] tiposInfoPedido(boolean lm, boolean fe) {
 		if (!lm && !fe) {
@@ -252,6 +288,49 @@ public class Main {
 			String[] ini = { "iPlasma", "PMD", "UserLongMethod", "UserFeatureEnvy" };
 			return ini;
 		}
+	}
+
+	private Boolean userMetricValue(Rule[] rules, LinkedList<String> ops, ExcelMethod em) {
+		boolean b = rules[0].check(em);
+		for (int i = 1; i < rules.length - 1; i++) {
+			boolean aux = rules[i].check(em);
+			if (ops.get(i - 1).equals("AND"))
+				b = b && aux;
+			if (ops.get(i - 1).equals("OR"))
+				b = b || aux;
+		}
+		return b;
+	}
+
+	private Boolean validateUserExpression(String rule) {
+		String[] splitted = rule.split("AND|OR");
+		if(splitted.length == 0)
+			return false;
+		for (int i = 0; i < splitted.length; i++) {
+			String[] textRule = splitted[i].trim().split(" ");
+			if (textRule.length != 3) {
+				return false;
+			} else {
+				try {
+					Rule.validateArguments(textRule[0].trim(), textRule[1].trim(),
+							Double.parseDouble(textRule[2].trim()));
+					int ao = 0;
+					String[] allWords = rule.split(" ");
+					for (int j = 0; j < allWords.length; j++)
+						if (allWords[j].trim().equals("AND") || allWords[j].trim().equals("OR"))
+							ao++;
+					if (ao != splitted.length - 1) {
+						return false;
+					}
+				} catch (NullPointerException e) {
+					JOptionPane.showMessageDialog(null, e.getMessage());
+					return false;
+				}
+			}
+		}
+
+		return true;
+
 	}
 
 	/**
