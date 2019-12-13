@@ -61,7 +61,7 @@ public class Main {
 	 * If path is correct and the ExcelFile exists, load a XSSFSheet with the
 	 * information of excel
 	 * 
-	 * @param path - path to an Excel File
+	 * @param path path to an Excel File
 	 * @see Main#importExcel(String)
 	 */
 	public void loadExcel(String path) {
@@ -139,10 +139,10 @@ public class Main {
 	 * between this software analyzer with other softwares analyzers (iPlasma and
 	 * PMD)
 	 * 
-	 * @param locThreshold   - LOC (logMethod threshold)
-	 * @param cycloThreshold - CYCLO (logMethod threshold)
-	 * @param aftdThreshold  - ATFD (envyFeature threshold)
-	 * @param laaThreshold   - LAA (envyFeature threshold)
+	 * @param locThreshold   LOC (logMethod threshold)
+	 * @param cycloThreshold CYCLO (logMethod threshold)
+	 * @param aftdThreshold  ATFD (envyFeature threshold)
+	 * @param laaThreshold   LAA (envyFeature threshold)
 	 * @param featureEnvySelected checkbox value of feature envy
 	 * @param longMethodSelected checkbox value of long method
 	 * @param userExpression expression typed by the user

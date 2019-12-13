@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import badcode.ExcelMethod;
 import badcode.Main;
+import badcode.Results;
 
 /**
  * @author Ricardo, Joao M., Joao G., Miguel
@@ -102,11 +103,11 @@ class MainTest {
 		
 		NullPointerException thrown2 = assertThrows(NullPointerException.class,
 				() -> aux.analyzeTable(13, 18, 15, 5, false, false, "LOC > 1 AND CYCLO > 1 AND"));
-		assertTrue(thrown.getMessage().contains("Regra não Suportada!"));
+		assertTrue(thrown2.getMessage().contains("Regra não Suportada!"));
 		
 		NullPointerException thrown3 = assertThrows(NullPointerException.class,
 				() -> aux.analyzeTable(13, 18, 15, 5, false, false, "LOCU > 2"));
-		assertTrue(thrown.getMessage().contains("Regra não Suportada!"));
+		assertTrue(thrown3.getMessage().contains("Regra não Suportada!"));
 		
 		Results temp2 = aux.analyzeTable(13, 18, 15, 5, true, true, "LOC > 1 AND CYCLO > 1 OR LAA >= 200 AND ATFD <= 2");
 		int [][] m2 = temp2.getMatrix();
