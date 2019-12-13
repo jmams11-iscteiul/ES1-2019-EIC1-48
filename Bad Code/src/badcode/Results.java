@@ -1,5 +1,6 @@
 package badcode;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -7,10 +8,21 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.StandardBarPainter;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  * @author Ricardo, João M., João R., Miguel.
@@ -24,8 +36,10 @@ public class Results {
 	private JFrame frame;
 	private JTable table;
 	private DefaultTableModel dtm;
-	private JPanel right;
+	private JPanel text;
+	private JTabbedPane tab;
 	private int [][] matrix;
+	private JFreeChart chart;
 	
 	/**
 	 * @param headerrow - columns to create in the table to display results
@@ -44,7 +58,8 @@ public class Results {
 		       return false;
 		    }
 		};
-		right = new JPanel();
+		tab = new JTabbedPane();
+		text = new JPanel();
 		
 	}
 	
@@ -74,31 +89,70 @@ public class Results {
 	 * {"iPlasma", "PMD", "UserLongMethod", "UserFeatureEnvy"};
 	 */
 	public void addResults(int[][] data, String[] tiposDefeitos, String[] tiposInfo) {
-		matrix=data;
-		right.setLayout(new GridLayout(9,1));
-		right.setBorder(new EmptyBorder(10,0,10,50));
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+		matrix = data;
+		text.setLayout(new GridLayout(13,1));
+		text.setBorder(new EmptyBorder(10,0,10,0));
 		
 		JLabel nMetodos = new JLabel("> Número de Métodos: " + data[0][0]);
-		right.add(nMetodos);
+		nMetodos.setHorizontalAlignment(JLabel.CENTER);
+		text.add(nMetodos);
 		
+		int k = 0;
 		for(int i = 0; i < tiposInfo.length; i++) {
 			JLabel tipo = new JLabel("- " + tiposInfo[i] + ": ");
 			JPanel panel = new JPanel();
 			panel.setLayout(new GridLayout(2,2));
-			
+					
 			//caso não seja necessário o UserLongMethod passar essa vetor de dados na matriz
 			if(tiposInfo.length == 3 && i == 2) 
 				if(tiposInfo[2].equals("UserFeatureEnvy"))
-					i++;
+					k = 1;
 			
 			for(int j = 0; j < tiposDefeitos.length; j++) {
-				JLabel defeito = new JLabel(" > " + tiposDefeitos[j] + ": " + data[i + 1][j]);
+				JLabel defeito = new JLabel(" > " + tiposDefeitos[j] + ": " + data[i + 1 + k][j]);
+				defeito.setHorizontalAlignment(JLabel.CENTER);
+				dataset.addValue(data[i + 1 + k][j], tiposInfo[i], tiposDefeitos[j]);
 				panel.add(defeito);
 			}
-			right.add(tipo);
-			right.add(panel);
+
+			float uip = (((float)data[i + 1 + k][1] + (float)data[i + 1 + k][2])/(float)data[0][0])*100;
+			String uipS = String.format ("%.2f", uip);
+			JLabel uncorrectlyIdentifiedFaultPercentage = new JLabel("=> Uncorretly Identified Fault Percentage: " + uipS + "%");
+			uncorrectlyIdentifiedFaultPercentage.setHorizontalAlignment(JLabel.CENTER);
+			
+			tipo.setHorizontalAlignment(JLabel.CENTER);
+			text.add(tipo);
+			text.add(panel);
+			text.add(uncorrectlyIdentifiedFaultPercentage);
 		}
-		frame.add(right, BorderLayout.EAST);
+		
+		tab.addTab("Text", text);
+		
+		chart = createChart(dataset);
+		ChartPanel cp = new ChartPanel(chart);
+		tab.addTab("Chart", cp);
+	}
+	
+	
+	/**
+	 * 
+	 * @param cds Dataset with the analyzer and user rules results
+	 * @return Bar Chart with the info from the dataset
+	 */
+	private JFreeChart createChart(CategoryDataset cds) {
+		JFreeChart fc = ChartFactory.createBarChart("Faults", "Fault Types", "Value", cds, PlotOrientation.VERTICAL, true, true, false);
+		
+		//Customize chart
+		fc.setBackgroundPaint(Color.white);
+		CategoryPlot cplot = (CategoryPlot)fc.getPlot();
+	    ((BarRenderer)cplot.getRenderer()).setBarPainter(new StandardBarPainter());
+
+	    BarRenderer r = (BarRenderer)fc.getCategoryPlot().getRenderer();
+	    r.setSeriesPaint(0, Color.blue);
+		
+		return fc;
 	}
 	
 	/**
@@ -143,9 +197,18 @@ public class Results {
 		
 		bottom.add(aux);
 		
-		frame.add(bottom, BorderLayout.SOUTH);
+		JPanel p = new JPanel();
+		p.setLayout(new BorderLayout());
+		p.add(tableSP, BorderLayout.CENTER);
+		p.add(bottom, BorderLayout.SOUTH);
+		tab.add("Table", p);
+		
+		frame.add(tab);
+		//frame.add(bottom, BorderLayout.SOUTH);
 		
 	}
+	
+	
 	
 	/**
 	 * set information in frame
@@ -176,8 +239,8 @@ public class Results {
 	/**
 	 * @return right panel
 	 */
-	public JPanel getRight() {
-		return right;
+	public JPanel getTextPanel() {
+		return text;
 	}
 	
 	/**

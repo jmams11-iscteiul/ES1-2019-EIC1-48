@@ -113,7 +113,7 @@ public class GUI {
 					Results res = main.analyzeTable(locThreshold, cycloThreshold, lmLogic, atfdThreshold, laaThreshold, feLogic);
 					res.displayResults();
 				} catch (NumberFormatException e) {
-					JOptionPane.showMessageDialog(null, "Introduza Numeros Inteiros");
+					JOptionPane.showMessageDialog(null, "Introduza Numeros Válidos para cada Métrica");
 				} catch (NullPointerException e) {
 					JOptionPane.showMessageDialog(null, "Importe um Ficheiro Excel");
 				}
