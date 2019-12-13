@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -53,8 +54,13 @@ class ResultsTest {
 		assertEquals(r.getDTM().getRowCount(), aux.getModel().getRowCount());
 		assertTrue(rg.getTextPanel() instanceof JPanel);
 		assertNotNull(rg.getTextPanel());
+		JFrame frame = rg.getFrame();
+		assertNotNull(frame);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	void test() {
 		assertNotNull(r);
@@ -88,47 +94,42 @@ class ResultsTest {
 		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(2)).getComponent(2)).getText()," > " + td[2] + ": " + dt[1][2]);
 		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(2)).getComponent(3)).getText()," > " + td[3] + ": " + dt[1][3]);
 		
-		assertEquals(((JLabel)r.getTextPanel().getComponent(3)).getText(),"- " + s[1] + ": ");
-		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(4)).getComponent(0)).getText()," > " + td[0] + ": " + dt[2][0]);
-		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(4)).getComponent(1)).getText()," > " + td[1] + ": " + dt[2][1]);
-		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(4)).getComponent(2)).getText()," > " + td[2] + ": " + dt[2][2]);
-		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(4)).getComponent(3)).getText()," > " + td[3] + ": " + dt[2][3]);
+		assertEquals(((JLabel)r.getTextPanel().getComponent(4)).getText(),"- " + s[1] + ": ");
+		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(5)).getComponent(0)).getText()," > " + td[0] + ": " + dt[2][0]);
+		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(5)).getComponent(1)).getText()," > " + td[1] + ": " + dt[2][1]);
+		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(5)).getComponent(2)).getText()," > " + td[2] + ": " + dt[2][2]);
+		assertEquals(((JLabel)((JPanel)r.getTextPanel().getComponent(5)).getComponent(3)).getText()," > " + td[3] + ": " + dt[2][3]);
 	
-		assertEquals(r.getTextPanel().getComponentCount(), 5);
+		assertEquals(r.getTextPanel().getComponentCount(), 7);
 	
 		r1.addResults(dt, td, s1);
 		assertEquals(((JLabel)r1.getTextPanel().getComponent(0)).getText(),"> Número de Métodos: " + dt[0][0]);
 		
-		assertEquals(((JLabel)r1.getTextPanel().getComponent(5)).getText(),"- " + s1[2] + ": ");
-		assertEquals(((JLabel)((JPanel)r1.getTextPanel().getComponent(6)).getComponent(0)).getText()," > " + td[0] + ": " + dt[4][0]);
-		assertEquals(((JLabel)((JPanel)r1.getTextPanel().getComponent(6)).getComponent(1)).getText()," > " + td[1] + ": " + dt[4][1]);
-		assertEquals(((JLabel)((JPanel)r1.getTextPanel().getComponent(6)).getComponent(2)).getText()," > " + td[2] + ": " + dt[4][2]);
-		assertEquals(((JLabel)((JPanel)r1.getTextPanel().getComponent(6)).getComponent(3)).getText()," > " + td[3] + ": " + dt[4][3]);
+		assertEquals(((JLabel)r1.getTextPanel().getComponent(7)).getText(),"- " + s1[2] + ": ");
+		assertEquals(((JLabel)((JPanel)r1.getTextPanel().getComponent(8)).getComponent(0)).getText()," > " + td[0] + ": " + dt[4][0]);
+		assertEquals(((JLabel)((JPanel)r1.getTextPanel().getComponent(8)).getComponent(1)).getText()," > " + td[1] + ": " + dt[4][1]);
+		assertEquals(((JLabel)((JPanel)r1.getTextPanel().getComponent(8)).getComponent(2)).getText()," > " + td[2] + ": " + dt[4][2]);
+		assertEquals(((JLabel)((JPanel)r1.getTextPanel().getComponent(8)).getComponent(3)).getText()," > " + td[3] + ": " + dt[4][3]);
 	
-		assertEquals(r1.getTextPanel().getComponentCount(), 7);
+		assertEquals(r1.getTextPanel().getComponentCount(), 10);
 	
 		r2.addResults(dt, td, s2);
 		assertEquals(((JLabel)r2.getTextPanel().getComponent(0)).getText(),"> Número de Métodos: " + dt[0][0]);
 		
-		assertEquals(((JLabel)r2.getTextPanel().getComponent(5)).getText(),"- " + s2[2] + ": ");
-		assertEquals(((JLabel)((JPanel)r2.getTextPanel().getComponent(6)).getComponent(0)).getText()," > " + td[0] + ": " + dt[3][0]);
-		assertEquals(((JLabel)((JPanel)r2.getTextPanel().getComponent(6)).getComponent(1)).getText()," > " + td[1] + ": " + dt[3][1]);
-		assertEquals(((JLabel)((JPanel)r2.getTextPanel().getComponent(6)).getComponent(2)).getText()," > " + td[2] + ": " + dt[3][2]);
-		assertEquals(((JLabel)((JPanel)r2.getTextPanel().getComponent(6)).getComponent(3)).getText()," > " + td[3] + ": " + dt[3][3]);
-		assertEquals(r2.getTextPanel().getComponentCount(), 7);
+		assertEquals(((JLabel)r2.getTextPanel().getComponent(7)).getText(),"- " + s2[2] + ": ");
+		assertEquals(((JLabel)((JPanel)r2.getTextPanel().getComponent(8)).getComponent(0)).getText()," > " + td[0] + ": " + dt[3][0]);
+		assertEquals(((JLabel)((JPanel)r2.getTextPanel().getComponent(8)).getComponent(1)).getText()," > " + td[1] + ": " + dt[3][1]);
+		assertEquals(((JLabel)((JPanel)r2.getTextPanel().getComponent(8)).getComponent(2)).getText()," > " + td[2] + ": " + dt[3][2]);
+		assertEquals(((JLabel)((JPanel)r2.getTextPanel().getComponent(8)).getComponent(3)).getText()," > " + td[3] + ": " + dt[3][3]);
+		assertEquals(r2.getTextPanel().getComponentCount(), 10);       
 	
 		r3.addResults(dt, td, s3);
 		
-		assertEquals(r3.getTextPanel().getComponentCount(), 9);
+		assertEquals(r3.getTextPanel().getComponentCount(), 13);
 		
 		
 		r.displayResults();
 		
-		JPanel frameContent = (JPanel)((JLayeredPane)((JRootPane)r.getTextPanel().getComponent(0)).getComponent(1)).getComponent(0);
-		
-		assertEquals(frameContent.getComponentCount(), 3);
-		
-		assertEquals(((JPanel)frameContent.getComponent(2)).getComponentCount(), 2);
 		
 	}
 	
