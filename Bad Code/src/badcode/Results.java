@@ -124,7 +124,11 @@ public class Results {
 			
 			tipo.setHorizontalAlignment(JLabel.CENTER);
 			text.add(tipo);
+			panel.setOpaque(true);
+			panel.setBackground(Color.WHITE);
 			text.add(panel);
+			uncorrectlyIdentifiedFaultPercentage.setOpaque(true);
+			uncorrectlyIdentifiedFaultPercentage.setBackground(Color.WHITE);
 			text.add(uncorrectlyIdentifiedFaultPercentage);
 		}
 		
